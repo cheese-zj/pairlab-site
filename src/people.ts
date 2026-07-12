@@ -70,7 +70,7 @@ export const labMembers: Person[] = ([
     name: 'Jinhe Tang',
     surname: 'Tang',
     role: 'Member',
-    image: '/people/linkedin-default-avatar.svg',
+    image: '/people/jinhe-tang.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jinhe-tang-199aaa407/', kind: 'linkedin' },
       { label: 'Email', href: 'mailto:jtan0428@uni.sydney.edu.au', kind: 'email' },
