@@ -27,14 +27,14 @@ npm run preview
 
 The Cloudflare `_redirects` file serves these client-side routes through the Vite entry point.
 
-## Deploy with GitHub + Cloudflare Pages
+## Deploy with GitHub + Cloudflare Workers
 
-1. Create a Cloudflare Pages project named `pairlab-aus-bot` and connect the `cheese-zj/pairlab-site` repository.
-2. Set `npm run build` as the build command and `dist` as the output directory.
+1. Create a Cloudflare Workers Builds project named `pairlab-aus-bot` and connect the `cheese-zj/pairlab-site` repository.
+2. Set `npm run build` as the build command and `npx wrangler deploy` as the deploy command.
 3. Keep `main` as the production branch; Cloudflare's Git integration will deploy every push.
-4. In Cloudflare Pages, add `aus.bot` as the custom domain and follow the DNS prompt.
+4. Add `aus.bot` as the custom domain and follow the DNS prompt.
 
-The included GitHub Actions workflow is an optional second deployment path. To enable it, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets. Without those secrets, the workflow validates the production build and safely skips deployment.
+Wrangler serves `dist/` as Worker static assets and uses SPA fallback routing for React routes. The included GitHub Actions workflow is an optional second deployment path. To enable it, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets. Without those secrets, the workflow validates the production build and safely skips deployment.
 
 ## Content notes
 
