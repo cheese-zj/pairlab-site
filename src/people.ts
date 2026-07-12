@@ -59,7 +59,7 @@ export const labMembers: Person[] = ([
     name: 'Zhaoyan Qian',
     surname: 'Qian',
     role: 'Member',
-    image: '/people/linkedin-default-avatar.svg',
+    image: '/people/zhaoyan-qian.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/zhaoyan-qian-a531a2248/', kind: 'linkedin' },
     ],
