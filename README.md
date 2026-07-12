@@ -29,12 +29,12 @@ The Cloudflare `_redirects` file serves these client-side routes through the Vit
 
 ## Deploy with GitHub + Cloudflare Pages
 
-1. Create a Cloudflare Pages project named `pairlab-aus-bot`.
-2. In the GitHub repository, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as Actions secrets.
-3. Push to `main`; the included workflow builds and deploys `dist/`.
+1. Create a Cloudflare Pages project named `pairlab-aus-bot` and connect the `cheese-zj/pairlab-site` repository.
+2. Set `npm run build` as the build command and `dist` as the output directory.
+3. Keep `main` as the production branch; Cloudflare's Git integration will deploy every push.
 4. In Cloudflare Pages, add `aus.bot` as the custom domain and follow the DNS prompt.
 
-Cloudflare's direct Git integration also works: use `npm run build` as the build command and `dist` as the output directory.
+The included GitHub Actions workflow is an optional second deployment path. To enable it, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets. Without those secrets, the workflow validates the production build and safely skips deployment.
 
 ## Content notes
 
