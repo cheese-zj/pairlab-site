@@ -44,6 +44,17 @@ export const labMembers: Person[] = ([
   },
   {
     id: '03',
+    slug: 'jieting-long',
+    name: 'Jieting (Monica) Long',
+    surname: 'Long',
+    role: 'Member',
+    image: '/people/linkedin-default-avatar.svg',
+    links: [
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jieting-long/', kind: 'linkedin' },
+    ],
+  },
+  {
+    id: '04',
     slug: 'yijie-lu',
     name: 'Yijie Lu',
     surname: 'Lu',
@@ -54,7 +65,7 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '04',
+    id: '05',
     slug: 'zhaoyan-qian',
     name: 'Zhaoyan Qian',
     surname: 'Qian',
@@ -65,7 +76,7 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '05',
+    id: '06',
     slug: 'jinhe-tang',
     name: 'Jinhe Tang',
     surname: 'Tang',
@@ -77,7 +88,18 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '06',
+    id: '07',
+    slug: 'ellen-wang',
+    name: 'Ellen Wang',
+    surname: 'Wang',
+    role: 'Member',
+    image: '/people/ellen-wang.webp',
+    links: [
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ellen-wang-8905bb15a/', kind: 'linkedin' },
+    ],
+  },
+  {
+    id: '08',
     slug: 'james-zhao',
     name: 'James Zhao',
     surname: 'Zhao',
@@ -89,7 +111,7 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '07',
+    id: '09',
     slug: 'yanan-zhou',
     name: 'Yanan Zhou',
     surname: 'Zhou',
