@@ -48,7 +48,7 @@ export const labMembers: Person[] = ([
     name: 'Yijie Lu',
     surname: 'Lu',
     role: 'Member',
-    image: '/people/linkedin-default-avatar.svg',
+    image: '/people/yijie-lu.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/yijie-lu-252318299/', kind: 'linkedin' },
     ],
