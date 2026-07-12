@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs><linearGradient id="bg" x1="0" y1="1" x2="1"><stop stop-color="#756640"/><stop offset="1" stop-color="#cdb98b"/></linearGradient><pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2" fill="#11120f" fill-opacity=".18"/></pattern></defs>
+  <rect width="1200" height="900" fill="url(#bg)"/><rect width="1200" height="900" fill="url(#dots)"/>
+  <g fill="none" stroke="#11120f" stroke-width="2" opacity=".7">
+    <path d="M160 700 360 250l190 260 195-350 300 520"/><path d="M160 700 550 510l495 170M360 250l385-90M550 510l195-350"/>
+  </g>
+  <g stroke="#11120f" stroke-width="3"><circle cx="160" cy="700" r="34" fill="#29415f"/><circle cx="360" cy="250" r="45" fill="#f5efe5"/><circle cx="550" cy="510" r="54" fill="#b77761"/><circle cx="745" cy="160" r="26" fill="#f5efe5"/><circle cx="1045" cy="680" r="48" fill="#29415f"/></g>
+  <g fill="#11120f" font-family="sans-serif" font-size="18"><text x="145" y="706">01</text><text x="345" y="257">02</text><text x="535" y="517">03</text><text x="730" y="167">04</text><text x="1030" y="687">05</text></g>
+</svg>
