@@ -29,7 +29,7 @@ The Cloudflare `_redirects` file serves these client-side routes through the Vit
 
 ## Deploy with GitHub + Cloudflare Workers
 
-1. Create a Cloudflare Workers Builds project named `pairlab-aus-bot` and connect the `cheese-zj/pairlab-site` repository.
+1. Create a Cloudflare Workers Builds project named `pairlab-site` and connect the `cheese-zj/pairlab-site` repository.
 2. Set `npm run build` as the build command and `npx wrangler deploy` as the deploy command.
 3. Keep `main` as the production branch; Cloudflare's Git integration will deploy every push.
 4. Add `aus.bot` as the custom domain and follow the DNS prompt.
