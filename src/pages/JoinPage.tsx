@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { ArrowRight } from 'lucide-react'
 
 function JoinPage() {
   useEffect(() => { document.title = 'Join — PAIR Lab' }, [])
@@ -16,7 +15,6 @@ function JoinPage() {
         <span>Academic collaboration</span>
         <span>Industry partnerships</span>
       </div>
-      <a className="join-contact" href="mailto:weiming.zhi@sydney.edu.au">Start a conversation <ArrowRight /></a>
     </main>
   )
 }
