@@ -165,8 +165,9 @@ button { font: inherit; }
 .people-title > p { grid-column: 2; max-width: 360px; margin: 0 0 4px; color: rgba(17, 18, 15, .62); font-size: 16px; font-weight: 500; line-height: 1.45; letter-spacing: -.01em; text-transform: none; }
 .people-lead { display: grid; min-height: min(660px, 72svh); grid-template-columns: minmax(0, 1.14fr) minmax(360px, .86fr); gap: 1px; color: white; background: var(--ink); }
 .people-lead-photo { --person-image: none; position: relative; min-height: 580px; overflow: hidden; background: var(--blue); isolation: isolate; }
+.people-lead-photo::before { position: absolute; z-index: -3; inset: -24px; opacity: .42; background: var(--person-image) center 30% / cover no-repeat; content: ""; filter: blur(20px) saturate(.72); }
 .people-lead-photo::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(8, 10, 8, .03) 55%, rgba(8, 10, 8, .62)); content: ""; }
-.people-lead-photo > span { position: absolute; z-index: -2; inset: 0; background: var(--person-image) center 30% / cover no-repeat; transition: transform .8s cubic-bezier(.2, .7, .1, 1); }
+.people-lead-photo > span { position: absolute; z-index: -2; inset: 0; background: var(--person-image) center 30% / 88% auto no-repeat; transition: transform .8s cubic-bezier(.2, .7, .1, 1); }
 .people-lead:hover .people-lead-photo > span { transform: scale(1.025); }
 .people-lead-photo small { position: absolute; right: 26px; bottom: 24px; left: 26px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .people-lead-copy { display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(34px, 5vw, 74px); background: var(--ink); }
@@ -277,6 +278,8 @@ button { font: inherit; }
   .project-next { grid-column: 1; margin-top: 24px; }
   .people-lead { min-height: 0; grid-template-columns: 1fr; }
   .people-lead-photo { min-height: 500px; }
+  .people-lead-photo::before { display: none; }
+  .people-lead-photo > span { background-size: cover; }
   .people-lead-copy { padding: 42px 20px 48px; }
   .people-lead-copy h2 { font-size: 56px; }
   .people-lead-copy > p { margin-bottom: 30px; font-size: 15px; }
