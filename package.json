@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "check:cloudflare": "node scripts/check-cloudflare-assets.mjs",
     "preview": "vite preview",
     "lint": "eslint ."
   },

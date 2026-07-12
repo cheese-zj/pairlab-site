@@ -15,9 +15,7 @@ function HomePage() {
         <MosaicFlow />
         <div className="home-copy">
           <h1 className="hero-wordmark">
-            <video autoPlay muted playsInline preload="auto" poster="/hero-wordmark-poster.png" aria-hidden="true">
-              <source src="/hero-wordmark.webm" type="video/webm" />
-            </video>
+            <img src="/hero-wordmark.webp" alt="" aria-hidden="true" />
             <span className="sr-only">PAIR Lab</span>
           </h1>
           <h2>Physical AI &amp; Robotics</h2>

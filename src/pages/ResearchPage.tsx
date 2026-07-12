@@ -87,7 +87,7 @@ function DemoModal({ project, onClose }: DemoModalProps) {
       <section className="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
         <header className="demo-modal-header">
           <div>
-            <span>In progress / Demo reel</span>
+            <span>{project.type} / Demo reel</span>
             <h2 id="demo-modal-title">{project.title}</h2>
             {project.subtitle ? <p>{project.subtitle}</p> : null}
           </div>
