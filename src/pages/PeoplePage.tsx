@@ -1,104 +1,89 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import type { CSSProperties } from 'react'
-import { ArrowRight, ArrowUpRight, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, GraduationCap, Link2, Mail } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { people } from '../people'
-import type { Person } from '../people'
+import { labLead, labMembers } from '../people'
+import type { Person, PersonLink } from '../people'
 
-type PersonModalProps = {
-  person: Person
-  onClose: () => void
+function LinkIcon({ kind }: Pick<PersonLink, 'kind'>) {
+  if (kind === 'linkedin') return <Link2 size={15} />
+  if (kind === 'scholar') return <GraduationCap size={16} />
+  if (kind === 'email') return <Mail size={15} />
+  return <ArrowUpRight size={15} />
 }
 
-function PersonModal({ person, onClose }: PersonModalProps) {
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-    }
-
-    document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.body.style.overflow = previousOverflow
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [onClose])
-
+function PersonLinks({ person }: { person: Person }) {
   return (
-    <div className="person-modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
-      <section className="person-modal" role="dialog" aria-modal="true" aria-labelledby="person-modal-title">
-        <div className="person-modal-image">
-          <img src={person.image} alt={person.name} />
-          <span>{person.id} / People</span>
-        </div>
-        <div className="person-modal-content">
-          <header>
-            <span>{person.role}</span>
-            <button type="button" onClick={onClose} aria-label="Close profile" autoFocus><X size={22} /></button>
-          </header>
-          <h2 id="person-modal-title">{person.name}</h2>
-          <p className="person-modal-summary">{person.summary}</p>
-          <div className="person-modal-biography">
-            {person.biography.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-          </div>
-          <ul className="person-highlights" aria-label="Selected recognition">
-            {person.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
-          </ul>
-          <div className="person-modal-links">
-            {person.links.map((link) => (
-              <a href={link.href} key={link.label} target={link.href.startsWith('http') ? '_blank' : undefined} rel={link.href.startsWith('http') ? 'noreferrer' : undefined}>
-                {link.label} <ArrowUpRight size={15} />
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+    <div className="people-person-links" aria-label={`${person.name} links`}>
+      {person.links.map((link) => {
+        const external = link.href.startsWith('http')
+        return (
+          <a href={link.href} key={link.href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}>
+            <LinkIcon kind={link.kind} />
+            <span>{link.label}</span>
+            {external ? <ArrowUpRight className="people-link-arrow" size={14} /> : null}
+          </a>
+        )
+      })}
     </div>
   )
 }
 
-function PeoplePage() {
-  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null)
+function MemberCard({ person }: { person: Person }) {
+  return (
+    <article className="people-person-card">
+      <div className="people-person-portrait" style={{ '--person-image': `url(${person.image})` } as CSSProperties}>
+        <span className="people-person-photo" role="img" aria-label={`${person.name} portrait`} />
+        <span className="people-person-index">{person.id}</span>
+      </div>
+      <div className="people-person-details">
+        <span>{person.role}</span>
+        <h3>{person.name}</h3>
+        <PersonLinks person={person} />
+      </div>
+    </article>
+  )
+}
 
+function PeoplePage() {
   useEffect(() => { document.title = 'People — PAIR Lab' }, [])
 
   return (
     <main className="route-page people-page">
       <header className="page-title people-title">
         <h1>People</h1>
-        <span className="people-tab" aria-label="Current people view">Team</span>
+        <p>The people building adaptable, intelligent robots at Sydney.</p>
       </header>
 
-      <section className="people-card-grid" aria-label="PAIR Lab people">
-        {people.map((person) => (
-          <button
-            className="people-person-card"
-            type="button"
-            key={person.slug}
-            onClick={() => setSelectedPerson(person)}
-            aria-haspopup="dialog"
-            style={{ '--person-image': `url(${person.image})` } as CSSProperties}
-          >
-            <span className="people-person-photo" aria-hidden="true" />
-            <span className="people-person-shade" aria-hidden="true" />
-            <span className="people-person-meta"><span>{person.id}</span><span>{person.role}</span></span>
-            <span className="people-person-copy">
-              <strong>{person.name}</strong>
-              <span aria-hidden="true"><ArrowUpRight size={23} /></span>
-            </span>
-          </button>
-        ))}
-
-        <Link className="people-join-card" to="/join">
-          <span>Research opportunities</span>
-          <h2>We are<br />growing.</h2>
-          <p>Prospective students, researchers, and collaborators are welcome to get in touch.</p>
-          <span className="people-join-action">Work with us <ArrowRight size={20} /></span>
-        </Link>
+      <section className="people-lead" aria-labelledby="people-lead-heading">
+        <div className="people-lead-photo" style={{ '--person-image': `url(${labLead.image})` } as CSSProperties}>
+          <span role="img" aria-label={`${labLead.name} portrait`} />
+          <small>{labLead.id} / Lab lead</small>
+        </div>
+        <div className="people-lead-copy">
+          <span>{labLead.role}</span>
+          <h2 id="people-lead-heading">{labLead.name}</h2>
+          <p>{labLead.summary}</p>
+          <PersonLinks person={labLead} />
+        </div>
       </section>
 
-      {selectedPerson ? <PersonModal person={selectedPerson} onClose={() => setSelectedPerson(null)} /> : null}
+      <section className="people-members" aria-labelledby="people-members-heading">
+        <header>
+          <h2 id="people-members-heading">Team</h2>
+          <span>{String(labMembers.length).padStart(2, '0')} members · A–Z by surname</span>
+        </header>
+        <div className="people-card-grid">
+          {labMembers.map((person) => <MemberCard person={person} key={person.slug} />)}
+
+          <Link className="people-join-card" to="/join">
+            <span>Research opportunities</span>
+            <h2>Work<br />with us.</h2>
+            <p>Prospective students, researchers, and collaborators are welcome to get in touch.</p>
+            <span className="people-join-action">View opportunities <ArrowRight size={20} /></span>
+          </Link>
+        </div>
+      </section>
     </main>
   )
 }

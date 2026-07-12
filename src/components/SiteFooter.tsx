@@ -8,7 +8,7 @@ function SiteFooter() {
       <div>
         <a href="https://simontruffer.ch/mt-shift/" target="_blank" rel="noreferrer">MT Shift — Simon Truffer</a>
         <a href="https://www.weimingzhi.com/publication-list" target="_blank" rel="noreferrer">Publications</a>
-        <a href="mailto:weiming.zhi@sydney.edu.au">Email</a>
+        <a href="mailto:pairlab212@gmail.com">Email</a>
       </div>
       <span>© {new Date().getFullYear()}</span>
     </footer>

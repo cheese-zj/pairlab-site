@@ -26,19 +26,27 @@ function MosaicFlow() {
     let animationFrame = 0
     let lastFrame = 0
     let isVisible = true
-    let tileSprite: HTMLCanvasElement
+    let darkTileSprite: HTMLCanvasElement
+    let lightTileSprite: HTMLCanvasElement
 
-    const buildSprite = () => {
-      tileSprite = document.createElement('canvas')
-      tileSprite.width = Math.ceil(TILE_SIZE * ratio)
-      tileSprite.height = Math.ceil(TILE_SIZE * ratio)
-      const spriteContext = tileSprite.getContext('2d')
-      if (!spriteContext) return
-      spriteContext.scale(ratio, ratio)
-      spriteContext.fillStyle = '#0a0c0a'
-      spriteContext.beginPath()
-      spriteContext.roundRect(0, 0, TILE_SIZE, TILE_SIZE, 3)
-      spriteContext.fill()
+    const createSprite = (colour: string) => {
+      const sprite = document.createElement('canvas')
+      sprite.width = Math.ceil(TILE_SIZE * ratio)
+      sprite.height = Math.ceil(TILE_SIZE * ratio)
+      const spriteContext = sprite.getContext('2d')
+      if (spriteContext) {
+        spriteContext.scale(ratio, ratio)
+        spriteContext.fillStyle = colour
+        spriteContext.beginPath()
+        spriteContext.roundRect(0, 0, TILE_SIZE, TILE_SIZE, 3)
+        spriteContext.fill()
+      }
+      return sprite
+    }
+
+    const buildSprites = () => {
+      darkTileSprite = createSprite('#0a0c0a')
+      lightTileSprite = createSprite('#ffffff')
     }
 
     const resize = () => {
@@ -49,7 +57,7 @@ function MosaicFlow() {
       canvas.width = Math.ceil(width * ratio)
       canvas.height = Math.ceil(height * ratio)
       context.setTransform(ratio, 0, 0, ratio, 0, 0)
-      buildSprite()
+      buildSprites()
     }
 
     const draw = (time: number) => {
@@ -73,7 +81,17 @@ function MosaicFlow() {
           const flow = 0.14 + broadFlow ** 2 * 0.52 + secondaryFlow * 0.16
 
           context.globalAlpha = Math.min(0.96, flow * randomDepth * flicker)
-          context.drawImage(tileSprite, x, y, TILE_SIZE, TILE_SIZE)
+          context.drawImage(darkTileSprite, x, y, TILE_SIZE, TILE_SIZE)
+
+          const canSparkle = randomAt(column, row, 5) > 0.988
+          if (canSparkle && !reduceMotion) {
+            const sparkleSpeed = 0.55 + randomAt(column, row, 6) * 0.4
+            const sparklePhase = randomAt(column, row, 7) * Math.PI * 2
+            const sparkleWave = Math.sin(seconds * sparkleSpeed + sparklePhase)
+            const sparkle = Math.max(0, (sparkleWave - 0.86) / 0.14) ** 2
+            context.globalAlpha = sparkle * 0.32
+            context.drawImage(lightTileSprite, x, y, TILE_SIZE, TILE_SIZE)
+          }
         }
       }
 
