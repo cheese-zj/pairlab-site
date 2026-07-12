@@ -37,7 +37,7 @@ export const labMembers: Person[] = ([
     name: 'Mingyuan Ba',
     surname: 'Ba',
     role: 'Member',
-    image: '/people/linkedin-default-avatar.svg',
+    image: '/people/mingyuan-ba.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mingyuan-ba-425258412/', kind: 'linkedin' },
     ],
