@@ -69,6 +69,12 @@ export const researchProjects: ResearchProject[] = [
     hoverImage: '/triman-autonomous-hover.gif',
     videos: [
       {
+        title: 'Tri-manual garment hanging',
+        src: '/triman-cloth.mp4',
+        poster: '/triman-cloth-poster.webp',
+        caption: 'Three robotic arms coordinate to place a garment onto a clothes hanger.',
+      },
+      {
         title: 'Autonomous three-arm policy',
         src: '/triman-autonomous.mp4',
         poster: '/triman-autonomous-poster.webp',
@@ -79,12 +85,6 @@ export const researchProjects: ResearchProject[] = [
         src: '/triman-demo-collection.mp4',
         poster: '/triman-collection-poster.webp',
         caption: 'A collection of coordinated tri-manual manipulation tasks and behaviours.',
-      },
-      {
-        title: 'Coordinated cloth manipulation',
-        src: '/triman-cloth.mp4',
-        poster: '/triman-cloth-poster.webp',
-        caption: 'Three robotic arms coordinating to lift and manipulate deformable cloth.',
       },
     ],
     summary: 'Coordinated tri-manual visuomotor imitation learning for complex manipulation.',
