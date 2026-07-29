@@ -67,26 +67,7 @@ export const researchProjects: ResearchProject[] = [
     type: 'In progress',
     image: '/trimanpolicy-baseline-dats.png',
     hoverImage: '/triman-autonomous-hover.gif',
-    videos: [
-      {
-        title: 'Tri-manual garment hanging',
-        src: '/triman-cloth.mp4',
-        poster: '/triman-cloth-poster.webp',
-        caption: 'Three robotic arms coordinate to place a garment onto a clothes hanger.',
-      },
-      {
-        title: 'Autonomous three-arm policy',
-        src: '/triman-autonomous.mp4',
-        poster: '/triman-autonomous-poster.webp',
-        caption: 'A coordinated autonomous three-arm policy for multi-stage object manipulation.',
-      },
-      {
-        title: 'Tri-manual demo collection',
-        src: '/triman-demo-collection.mp4',
-        poster: '/triman-collection-poster.webp',
-        caption: 'A collection of coordinated tri-manual manipulation tasks and behaviours.',
-      },
-    ],
+    externalUrl: '/research/trimanpolicy/',
     summary: 'Coordinated tri-manual visuomotor imitation learning for complex manipulation.',
     description: 'An in-progress project studying coordinated visuomotor policies across three robotic arms.',
   },
