@@ -73,25 +73,6 @@ export const researchProjects: ResearchProject[] = [
   },
   {
     id: '04',
-    slug: 'sai-dual-robot-collaboration',
-    title: 'SAI',
-    subtitle: 'A three-stage curriculum for dual-robot collaboration',
-    type: 'Demo',
-    image: '/sai-dual-robot-poster.webp',
-    hoverImage: '/sai-dual-robot.gif',
-    videos: [
-      {
-        title: 'Dual-robot collaborative manipulation',
-        src: '/sai-dual-robot.mp4',
-        poster: '/sai-dual-robot-poster.webp',
-        caption: 'Coupled policies for dual-robot collaboration without synchronised dual-operator demonstrations or explicit inter-robot communication.',
-      },
-    ],
-    summary: 'A three-stage curriculum for learning coupled dual-robot collaboration policies.',
-    description: 'A collaborative mobile manipulation demo spanning bed making, laundry collection, and household interaction tasks.',
-  },
-  {
-    id: '05',
     slug: 'autointervene',
     title: 'AutoIntervene',
     subtitle: 'Calibrated Intervention for Action-Chunking Imitation Learning Policies',

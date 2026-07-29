@@ -20,13 +20,13 @@ export const labLead: Person = {
   slug: 'weiming-zhi',
   name: 'Weiming (William) Zhi',
   surname: 'Zhi',
-  role: 'Lab lead · Lecturer',
+  role: 'Lab lead · Faculty',
   image: '/weiming-zhi.webp',
   summary: 'Robotics and Embodied AI researcher developing robots that see and act in unstructured environments.',
   links: [
     { label: 'Profile', href: 'https://www.weimingzhi.com/', kind: 'profile' },
     { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=Y6MWNsQAAAAJ', kind: 'scholar' },
-    { label: 'Email', href: 'mailto:weiming.zhi@sydney.edu.au', kind: 'email' },
+    { label: 'weiming.zhi@sydney.edu.au', href: 'mailto:weiming.zhi@sydney.edu.au', kind: 'email' },
   ],
 }
 
