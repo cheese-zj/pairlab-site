@@ -38,6 +38,6 @@ Wrangler serves `dist/` as Worker static assets and uses SPA fallback routing fo
 
 ## Content notes
 
-Research and biography copy is based on the lab lead's public profile and current University of Sydney research descriptions. The hero uses the supplied University of Sydney Quadrangle photograph.
+Research and biography copy is based on the lab lead's public profile and current University of Sydney research descriptions. The hero crossfades between supplied photographs of the lab's robotics systems.
 
 Research demo videos are stored in `public/` and copied into `dist/` by Vite, so they deploy with the site without a backend. Cloudflare Pages currently limits each static asset to 25 MiB; compress new videos below that threshold before adding them to a project's `videos` array.

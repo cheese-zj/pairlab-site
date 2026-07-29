@@ -8,8 +8,9 @@ function HomePage() {
 
   return (
     <main className="home-page">
-      <div className="home-photo">
-        <img src="/usyd-quadrangle.jpg" alt="The University of Sydney Quadrangle" />
+      <div className="home-photo" role="img" aria-label="Robotics systems in the PAIR Lab at the University of Sydney">
+        <img className="home-photo-humanoid" src="/pairlab-humanoid.webp" alt="" aria-hidden="true" />
+        <img className="home-photo-dual-arm" src="/pairlab-dual-arm.webp" alt="" aria-hidden="true" />
       </div>
       <section className="home-panel">
         <MosaicFlow />
