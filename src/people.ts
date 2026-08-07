@@ -25,7 +25,7 @@ export const labLead: Person = {
   summary: 'Robotics and Embodied AI researcher developing robots that see and act in unstructured environments.',
   links: [
     { label: 'Profile', href: 'https://www.weimingzhi.com/', kind: 'profile' },
-    { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=Y6MWNsQAAAAJ', kind: 'scholar' },
+    { label: 'Google Scholar', href: 'https://scholar.google.com/citations?hl=en&user=Y6MWNsQAAAAJ&view_op=list_works&sortby=pubdate', kind: 'scholar' },
     { label: 'Email', href: 'mailto:weiming.zhi@sydney.edu.au', kind: 'email' },
   ],
 }
