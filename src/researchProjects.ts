@@ -98,32 +98,7 @@ export const researchProjects: ResearchProject[] = [
     type: 'Robot intervention',
     image: '/autointervene-bag-poster.webp',
     hoverImage: '/autointervene-bag-hover.gif',
-    videos: [
-      {
-        title: 'Bag packing',
-        src: '/autointervene-bag.mp4',
-        poster: '/autointervene-bag-poster.webp',
-        caption: 'Multi-stage manipulation for organising objects and packing a soft bag.',
-      },
-      {
-        title: 'Object disassembly',
-        src: '/autointervene-disassembly.mp4',
-        poster: '/autointervene-disassembly-poster.webp',
-        caption: 'Coordinated manipulation for disassembling and separating object components.',
-      },
-      {
-        title: 'Towel folding',
-        src: '/autointervene-towel.mp4',
-        poster: '/autointervene-towel-poster.webp',
-        caption: 'Bimanual handling and folding of deformable fabric.',
-      },
-      {
-        title: 'Vegetable sorting',
-        src: '/autointervene-vegetable.mp4',
-        poster: '/autointervene-vegetable-poster.webp',
-        caption: 'Sorting and placing small objects into a structured tray.',
-      },
-    ],
+    externalUrl: '/research/autointervene/',
     summary: 'Calibrated intervention for action-chunking imitation learning policies.',
     description: 'AutoIntervene monitors action-chunking policies and provides calibrated intervention across long-horizon manipulation tasks.',
   },

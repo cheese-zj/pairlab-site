@@ -6,4 +6,4 @@ main = "./src/worker.ts"
 directory = "./dist"
 not_found_handling = "single-page-application"
 binding = "ASSETS"
-run_worker_first = [ "/research/trimanpolicy", "/research/trimanpolicy/*" ]
+run_worker_first = [ "/research/trimanpolicy", "/research/trimanpolicy/*", "/research/autointervene", "/research/autointervene/*" ]

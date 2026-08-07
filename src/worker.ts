@@ -4,21 +4,30 @@ type Env = {
   }
 }
 
-const projectPath = '/research/trimanpolicy'
-const projectOrigin = 'https://cheese-zj.github.io/trimanpolicy-site'
+const proxiedProjects = [
+  {
+    path: '/research/trimanpolicy',
+    origin: 'https://cheese-zj.github.io/trimanpolicy-site',
+  },
+  {
+    path: '/research/autointervene',
+    origin: 'https://123qwedsa123.github.io/AutoIntervene',
+  },
+]
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const requestUrl = new URL(request.url)
+    const project = proxiedProjects.find(({ path }) => requestUrl.pathname === path || requestUrl.pathname.startsWith(`${path}/`))
 
-    if (requestUrl.pathname === projectPath) {
-      requestUrl.pathname = `${projectPath}/`
+    if (project && requestUrl.pathname === project.path) {
+      requestUrl.pathname = `${project.path}/`
       return Response.redirect(requestUrl.toString(), 308)
     }
 
-    if (requestUrl.pathname.startsWith(`${projectPath}/`)) {
-      const upstreamPath = requestUrl.pathname.slice(projectPath.length)
-      const upstreamUrl = new URL(`${projectOrigin}${upstreamPath}`)
+    if (project) {
+      const upstreamPath = requestUrl.pathname.slice(project.path.length)
+      const upstreamUrl = new URL(`${project.origin}${upstreamPath}`)
       upstreamUrl.search = requestUrl.search
 
       return fetch(new Request(upstreamUrl, request))
