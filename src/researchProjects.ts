@@ -127,4 +127,15 @@ export const researchProjects: ResearchProject[] = [
     summary: 'Calibrated intervention for action-chunking imitation learning policies.',
     description: 'AutoIntervene monitors action-chunking policies and provides calibrated intervention across long-horizon manipulation tasks.',
   },
+  {
+    id: '06',
+    slug: 'constraint-aware-streaming-flow',
+    title: 'CASF',
+    subtitle: 'Constraining Streaming Flow Models for Adapting Learned Robot Trajectory Distributions',
+    type: 'Robot safety',
+    image: '/casf-overview.webp',
+    externalUrl: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11610877',
+    summary: 'Constraint-aware post-training adaptation for safe, collision-free streaming flow policies.',
+    description: 'CASF reshapes learned streaming-flow velocity fields with constraint-dependent metrics, enforcing collision avoidance, joint limits, and feasible workspaces without retraining.',
+  },
 ]
