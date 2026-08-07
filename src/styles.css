@@ -79,7 +79,7 @@ button { font: inherit; }
 }
 .home-panel { position: relative; z-index: 1; display: flex; width: 68%; min-height: 100svh; flex-direction: column; justify-content: center; margin-left: auto; padding: 92px clamp(34px, 5vw, 84px) 62px clamp(34px, 5vw, 84px); color: white; isolation: isolate; }
 .home-panel::before { position: absolute; z-index: -2; inset: 0 auto 0 -47.1%; width: 147.1%; background: #0a0c0a; content: ""; mask-image: linear-gradient(90deg, transparent 0%, transparent 24%, rgba(0, 0, 0, .08) 38%, rgba(0, 0, 0, .38) 50%, rgba(0, 0, 0, .76) 62%, rgba(0, 0, 0, .94) 72%, #000 82%); }
-.mosaic-flow { position: absolute; z-index: -1; inset: 0 auto 0 -47.1%; width: 137.1%; height: 100%; pointer-events: none; mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .12) 10%, rgba(0, 0, 0, .55) 23%, #000 45%, rgba(0, 0, 0, .5) 78%, transparent 100%); }
+.mosaic-flow { position: absolute; z-index: -1; inset: 0 auto 0 -47.1%; width: 137.1%; height: 100%; pointer-events: none; mask-image: linear-gradient(90deg, transparent 0%, transparent 48%, rgba(0, 0, 0, .08) 54%, rgba(0, 0, 0, .38) 64%, rgba(0, 0, 0, .82) 76%, rgba(0, 0, 0, .42) 88%, transparent 100%); }
 .home-copy { width: min(540px, 100%); margin-left: auto; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 .hero-wordmark { position: relative; width: 100%; margin: 0; line-height: 0; }
 .hero-wordmark img { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 218; object-fit: contain; object-position: left center; }
