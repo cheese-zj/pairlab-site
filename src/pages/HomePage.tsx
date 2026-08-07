@@ -24,7 +24,6 @@ function HomePage() {
           <h2>Physical AI &amp; Robotics</h2>
           <p className="home-summary">Robots that perceive, learn and move in the real world.</p>
           <Link to="/research">Explore research <ArrowRight /></Link>
-          <span>Led by Dr Weiming (William) Zhi</span>
         </div>
       </section>
     </main>

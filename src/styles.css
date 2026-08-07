@@ -87,12 +87,12 @@ button { font: inherit; }
 .hero-wordmark img { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 218; object-fit: contain; object-position: left center; }
 .home-copy h2 { margin: 29px 0 17px; font-size: clamp(25px, 2.15vw, 33px); font-weight: 400; line-height: 1.08; letter-spacing: -.015em; }
 .home-summary { max-width: 470px; margin: 0 0 32px; color: rgba(255, 255, 255, .76); font-size: 16px; font-weight: 400; line-height: 1.55; letter-spacing: .005em; }
-.home-copy > a { display: flex; justify-content: space-between; align-items: center; width: min(420px, 100%); min-height: 58px; padding: 15px 18px; color: white; border: 1px solid rgba(255, 255, 255, .42); border-radius: var(--radius); background: rgba(255, 255, 255, .045); font-size: 13px; font-weight: 600; letter-spacing: .01em; transition: color .2s ease, background .2s ease, border-color .2s ease; }
-.home-copy > a:hover { color: var(--ink); border-color: white; background: white; }
+.home-copy > a { display: flex; justify-content: space-between; align-items: center; width: min(420px, 100%); min-height: 60px; padding: 10px 12px 10px 19px; color: var(--ink); border: 1px solid white; border-radius: var(--radius); background: white; box-shadow: 0 12px 34px rgba(0, 0, 0, .22); font-size: 13px; font-weight: 700; letter-spacing: .015em; transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.home-copy > a:hover { border-color: var(--cream); background: var(--cream); box-shadow: 0 17px 42px rgba(0, 0, 0, .3); transform: translateY(-2px); }
+.home-copy > a:active { box-shadow: 0 9px 24px rgba(0, 0, 0, .22); transform: translateY(0); }
 .home-copy > a:focus-visible { outline: 2px solid white; outline-offset: 3px; }
-.home-copy > a svg { width: 19px; transition: transform .2s ease; }
-.home-copy > a:hover svg { transform: translateX(3px); }
-.home-copy > span { display: block; margin-top: 22px; padding-left: 12px; color: rgba(255, 255, 255, .53); border-left: 1px solid rgba(255, 255, 255, .28); font-size: 11px; letter-spacing: .015em; }
+.home-copy > a svg { width: 34px; height: 34px; padding: 8px; color: white; border-radius: 50%; background: var(--ink); transition: transform .2s ease; }
+.home-copy > a:hover svg { transform: translateX(2px) rotate(-4deg); }
 
 /* Routed pages */
 .route-page { min-height: 100svh; font-family: var(--route-font); font-optical-sizing: auto; }
@@ -270,7 +270,6 @@ button { font: inherit; }
   .home-copy h2 { margin: 24px 0 15px; font-size: 27px; }
   .home-summary { margin-bottom: 25px; font-size: 15px; }
   .home-copy > a { width: 100%; }
-  .home-copy > span { margin-top: 18px; }
   .page-title { grid-template-columns: 1fr; padding: 88px 20px 34px; }
   .page-title h1,
   .join-heading h1 { font-size: 72px; }
