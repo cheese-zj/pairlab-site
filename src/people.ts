@@ -48,7 +48,7 @@ export const labMembers: Person[] = ([
     name: 'Jieting (Monica) Long',
     surname: 'Long',
     role: 'Member',
-    image: '/people/linkedin-default-avatar.svg',
+    image: '/people/jieting-long.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jieting-long/', kind: 'linkedin' },
     ],
