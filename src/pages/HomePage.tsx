@@ -11,6 +11,8 @@ function HomePage() {
       <div className="home-photo" role="img" aria-label="Robotics systems in the PAIR Lab at the University of Sydney">
         <img className="home-photo-humanoid" src="/pairlab-humanoid.webp" alt="" aria-hidden="true" />
         <img className="home-photo-dual-arm" src="/pairlab-dual-arm.webp" alt="" aria-hidden="true" />
+        <img className="home-photo-demo" src="/pairlab-demo.webp" alt="" aria-hidden="true" />
+        <img className="home-photo-quadrangle" src="/usyd-quadrangle.webp" alt="" aria-hidden="true" />
       </div>
       <section className="home-panel">
         <MosaicFlow />
