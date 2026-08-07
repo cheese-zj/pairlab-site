@@ -200,7 +200,7 @@ button { font: inherit; }
 .people-members > header { display: flex; justify-content: space-between; align-items: end; gap: 30px; padding: 54px var(--page-gutter) 26px; border-bottom: 1px solid rgba(17, 18, 15, .22); }
 .people-members > header h2 { margin: 0; font-size: clamp(42px, 5vw, 70px); font-weight: 510; font-stretch: 98%; line-height: .94; letter-spacing: -.006em; }
 .people-members > header span { color: rgba(17, 18, 15, .52); font-size: 10px; font-weight: 590; letter-spacing: .08em; text-transform: uppercase; }
-.people-card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; padding: 1px; background: var(--ink); }
+.people-card-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px; padding: 1px; background: var(--ink); }
 .people-person-card { min-width: 0; overflow: hidden; background: var(--cream); }
 .people-person-portrait { --person-image: none; position: relative; overflow: hidden; aspect-ratio: 4 / 4.4; color: white; background: var(--blue); isolation: isolate; }
 .people-person-portrait::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(8, 10, 8, .2), transparent 26%, rgba(8, 10, 8, .12)); content: ""; pointer-events: none; }
@@ -214,7 +214,7 @@ button { font: inherit; }
 .people-person-details .people-person-links { gap: 6px; }
 .people-person-details .people-person-links a { min-height: 36px; gap: 6px; padding: 9px; color: rgba(17, 18, 15, .68); border-color: rgba(17, 18, 15, .3); font-size: 10px; }
 .people-person-details .people-person-links a:hover { color: white; border-color: var(--ink); background: var(--ink); }
-.people-join-card { position: relative; display: flex; min-height: 100%; grid-column: span 2; flex-direction: column; overflow: hidden; padding: 28px; background: var(--yellow); isolation: isolate; }
+.people-join-card { position: relative; display: flex; min-height: 100%; grid-column: span 1; flex-direction: column; overflow: hidden; padding: 28px; background: var(--yellow); isolation: isolate; }
 .people-join-card::before { position: absolute; z-index: -1; right: -4%; bottom: -22%; width: min(46vw, 610px); aspect-ratio: 1; opacity: .09; background: url('/pairlab-emblem.png') center / contain no-repeat; content: ""; filter: grayscale(1) contrast(1.4); transform: rotate(-8deg); transition: opacity .3s ease, transform .6s cubic-bezier(.2, .7, .1, 1); }
 .people-join-card:hover::before { opacity: .16; transform: rotate(-3deg) scale(1.04); }
 .people-join-card > span:first-child { font-size: 10px; font-weight: 590; letter-spacing: .08em; text-transform: uppercase; }
