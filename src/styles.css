@@ -6,6 +6,7 @@
   --coral: #b77761;
   --yellow: #cdb98b;
   --green: #355746;
+  --page-max-width: 1600px;
   --radius: 8px;
   --radius-small: 6px;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -19,6 +20,7 @@
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; background: var(--ink); }
+#root { width: min(100%, var(--page-max-width)); min-height: 100svh; margin-inline: auto; overflow: hidden; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
 ::selection { color: white; background: var(--blue); }
@@ -28,7 +30,7 @@ button { font: inherit; }
   position: fixed;
   z-index: 100;
   top: 14px;
-  left: 14px;
+  left: max(14px, calc((100vw - var(--page-max-width)) / 2 + 14px));
   display: flex;
   height: 46px;
   align-items: center;
@@ -71,7 +73,7 @@ button { font: inherit; }
   100% { opacity: 1; }
 }
 .home-panel { position: relative; z-index: 1; display: flex; width: 68%; min-height: 100svh; flex-direction: column; justify-content: center; margin-left: auto; padding: 92px clamp(34px, 5vw, 84px) 62px clamp(34px, 5vw, 84px); color: white; isolation: isolate; }
-.home-panel::before { position: absolute; z-index: -2; inset: 0 auto 0 -47.1%; width: 147.1%; background: #0a0c0a; content: ""; mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .08) 12%, rgba(0, 0, 0, .38) 24%, rgba(0, 0, 0, .72) 37%, rgba(0, 0, 0, .94) 51%, #000 65%); }
+.home-panel::before { position: absolute; z-index: -2; inset: 0 auto 0 -47.1%; width: 147.1%; background: #0a0c0a; content: ""; mask-image: linear-gradient(90deg, transparent 0%, transparent 24%, rgba(0, 0, 0, .08) 38%, rgba(0, 0, 0, .38) 50%, rgba(0, 0, 0, .76) 62%, rgba(0, 0, 0, .94) 72%, #000 82%); }
 .mosaic-flow { position: absolute; z-index: -1; inset: 0 auto 0 -47.1%; width: 137.1%; height: 100%; pointer-events: none; mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .12) 10%, rgba(0, 0, 0, .55) 23%, #000 45%, rgba(0, 0, 0, .5) 78%, transparent 100%); }
 .home-copy { width: min(540px, 100%); margin-left: auto; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 .hero-wordmark { position: relative; width: 100%; margin: 0; line-height: 0; }
@@ -249,7 +251,7 @@ button { font: inherit; }
   .home-photo-humanoid { object-position: 46% center; }
   .home-photo .home-photo-dual-arm { object-position: 43% center; }
   .home-panel { width: 100%; min-height: 100svh; padding: 62px 20px 48px; }
-  .home-panel::before { inset: 0; width: 100%; mask-image: linear-gradient(0deg, #000 0%, #000 46%, rgba(0, 0, 0, .82) 62%, rgba(0, 0, 0, .28) 80%, transparent 97%); }
+  .home-panel::before { inset: 0; width: 100%; mask-image: linear-gradient(0deg, #000 0%, #000 38%, rgba(0, 0, 0, .82) 54%, rgba(0, 0, 0, .28) 72%, transparent 92%); }
   .mosaic-flow { inset: 15% 0 40%; width: 100%; height: 45%; mask-image: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, .65) 22%, #000 48%, rgba(0, 0, 0, .72) 76%, transparent 100%); }
   .home-copy { margin-left: 0; }
   .home-copy h2 { margin: 24px 0 15px; font-size: 27px; }
