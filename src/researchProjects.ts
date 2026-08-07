@@ -64,7 +64,7 @@ export const researchProjects: ResearchProject[] = [
     slug: 'trimanpolicy',
     title: 'TriManPolicy',
     subtitle: 'Coordinated Tri-Manual Visuomotor Imitation Learning',
-    type: 'In progress',
+    type: 'Tri-manual learning',
     image: '/trimanpolicy-baseline-dats.png',
     hoverImage: '/triman-autonomous-hover.gif',
     externalUrl: '/research/trimanpolicy/',
