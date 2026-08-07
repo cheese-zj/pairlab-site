@@ -37,7 +37,7 @@ export const labMembers: Person[] = ([
     name: 'Mingyuan Ba',
     surname: 'Ba',
     role: 'Member',
-    image: '/people/mingyuan-ba.webp',
+    image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mingyuan-ba-425258412/', kind: 'linkedin' },
     ],
@@ -70,7 +70,7 @@ export const labMembers: Person[] = ([
     name: 'Yijie Lu',
     surname: 'Lu',
     role: 'Member',
-    image: '/people/yijie-lu.webp',
+    image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/yijie-lu-252318299/', kind: 'linkedin' },
     ],
@@ -81,7 +81,7 @@ export const labMembers: Person[] = ([
     name: 'Zhaoyan Qian',
     surname: 'Qian',
     role: 'Member',
-    image: '/people/zhaoyan-qian.webp',
+    image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/zhaoyan-qian-a531a2248/', kind: 'linkedin' },
     ],
@@ -92,7 +92,7 @@ export const labMembers: Person[] = ([
     name: 'Jinhe Tang',
     surname: 'Tang',
     role: 'Member',
-    image: '/people/jinhe-tang.webp',
+    image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jinhe-tang-199aaa407/', kind: 'linkedin' },
       { label: 'Email', href: 'mailto:jtan0428@uni.sydney.edu.au', kind: 'email' },
