@@ -61,6 +61,7 @@ export const labMembers: Person[] = ([
     role: 'Member',
     image: '/people/zihao-li.webp',
     links: [
+      { label: 'Profile', href: 'https://jeong-zju.github.io/', kind: 'profile' },
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/%E5%AD%90%E8%B1%AA-%E6%9D%8E-418583386/', kind: 'linkedin' },
     ],
   },
