@@ -71,7 +71,7 @@ function PeoplePage() {
       <section className="people-members" aria-labelledby="people-members-heading">
         <header>
           <h2 id="people-members-heading">Team</h2>
-          <span>{String(labMembers.length).padStart(2, '0')} members · A–Z by surname</span>
+          <span>{String(labMembers.length).padStart(2, '0')} members · A–Z by first name</span>
         </header>
         <div className="people-card-grid">
           {labMembers.map((person) => <MemberCard person={person} key={person.slug} />)}

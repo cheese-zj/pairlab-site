@@ -32,7 +32,7 @@ export const labLead: Person = {
 
 export const labMembers: Person[] = ([
   {
-    id: '02',
+    id: '09',
     slug: 'mingyuan-ba',
     name: 'Mingyuan Ba',
     surname: 'Ba',
@@ -43,7 +43,16 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '03',
+    id: '13',
+    slug: 'zara-cui',
+    name: 'Zara Cui',
+    surname: 'Cui',
+    role: 'Member',
+    image: '/people/linkedin-default-avatar.svg',
+    links: [],
+  },
+  {
+    id: '10',
     slug: 'rubin-dai',
     name: 'Rubin Dai',
     surname: 'Dai',
@@ -54,7 +63,16 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '04',
+    id: '05',
+    slug: 'isa-he',
+    name: 'Isa He',
+    surname: 'He',
+    role: 'Member',
+    image: '/people/linkedin-default-avatar.svg',
+    links: [],
+  },
+  {
+    id: '15',
     slug: 'zihao-li',
     name: 'Zihao Li',
     surname: 'Li',
@@ -66,7 +84,7 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '05',
+    id: '07',
     slug: 'jieting-long',
     name: 'Jieting (Monica) Long',
     surname: 'Long',
@@ -77,7 +95,7 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '06',
+    id: '12',
     slug: 'yijie-lu',
     name: 'Yijie Lu',
     surname: 'Lu',
@@ -88,7 +106,25 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '07',
+    id: '02',
+    slug: 'bill-nguyen',
+    name: 'Bill Nguyen',
+    surname: 'Nguyen',
+    role: 'Member',
+    image: '/people/linkedin-default-avatar.svg',
+    links: [],
+  },
+  {
+    id: '03',
+    slug: 'dave-pu',
+    name: 'Dave Pu',
+    surname: 'Pu',
+    role: 'Member',
+    image: '/people/linkedin-default-avatar.svg',
+    links: [],
+  },
+  {
+    id: '14',
     slug: 'zhaoyan-qian',
     name: 'Zhaoyan Qian',
     surname: 'Qian',
@@ -111,7 +147,7 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '09',
+    id: '04',
     slug: 'ellen-wang',
     name: 'Ellen Wang',
     surname: 'Wang',
@@ -122,7 +158,7 @@ export const labMembers: Person[] = ([
     ],
   },
   {
-    id: '10',
+    id: '06',
     slug: 'james-zhao',
     name: 'James Zhao',
     surname: 'Zhao',
@@ -146,4 +182,4 @@ export const labMembers: Person[] = ([
       { label: 'Email', href: 'mailto:yzho5556@uni.sydney.edu.au', kind: 'email' },
     ],
   },
-] satisfies Person[]).sort((a, b) => a.surname.localeCompare(b.surname, 'en'))
+] satisfies Person[]).sort((a, b) => a.name.localeCompare(b.name, 'en'))
