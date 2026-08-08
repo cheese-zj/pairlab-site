@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { ArrowUpRight, Play, X } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { researchProjects } from '../researchProjects'
 import type { ResearchProject } from '../researchProjects'
@@ -8,10 +7,9 @@ import type { ResearchProject } from '../researchProjects'
 type ProjectCardProps = {
   project: ResearchProject
   index: number
-  onOpenDemo: (project: ResearchProject) => void
 }
 
-function ProjectCard({ project, index, onOpenDemo }: ProjectCardProps) {
+function ProjectCard({ project, index }: ProjectCardProps) {
   const className = `research-project-card project-card-${index + 1}${project.hoverImage ? ' has-hover-media' : ''}${project.videos ? ' is-demo' : ''}`
   const style = {
     '--project-image': `url(${project.image})`,
@@ -33,27 +31,11 @@ function ProjectCard({ project, index, onOpenDemo }: ProjectCardProps) {
           {project.subtitle ? <span>{project.subtitle}</span> : null}
         </span>
         <span className="project-card-action" aria-hidden="true">
-          {project.videos ? <Play size={21} fill="currentColor" /> : <ArrowUpRight size={24} />}
+          <ArrowUpRight size={24} />
         </span>
       </span>
     </>
   )
-
-  if (project.externalUrl) {
-    return (
-      <a className={className} href={project.externalUrl} style={style}>
-        {content}
-      </a>
-    )
-  }
-
-  if (project.videos) {
-    return (
-      <button className={className} type="button" style={style} onClick={() => onOpenDemo(project)} aria-haspopup="dialog">
-        {content}
-      </button>
-    )
-  }
 
   return (
     <Link className={className} to={`/research/${project.slug}`} style={style}>
@@ -62,58 +44,7 @@ function ProjectCard({ project, index, onOpenDemo }: ProjectCardProps) {
   )
 }
 
-type DemoModalProps = {
-  project: ResearchProject
-  onClose: () => void
-}
-
-function DemoModal({ project, onClose }: DemoModalProps) {
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-    }
-
-    document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.body.style.overflow = previousOverflow
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [onClose])
-
-  return (
-    <div className="demo-modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
-      <section className="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
-        <header className="demo-modal-header">
-          <div>
-            <span>{project.type} / Demo reel</span>
-            <h2 id="demo-modal-title">{project.title}</h2>
-            {project.subtitle ? <p>{project.subtitle}</p> : null}
-          </div>
-          <button type="button" onClick={onClose} aria-label="Close demo" autoFocus><X size={22} /></button>
-        </header>
-        <div className="demo-video-grid">
-          {project.videos?.map((video, index) => (
-            <article className="demo-video-card" key={video.src}>
-              <video controls playsInline preload="metadata" src={video.src} poster={video.poster} aria-label={video.title} />
-              <div>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <h3>{video.title}</h3>
-                {video.caption ? <p>{video.caption}</p> : null}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-    </div>
-  )
-}
-
 function ResearchPage() {
-  const [openDemo, setOpenDemo] = useState<ResearchProject | null>(null)
-  useEffect(() => { document.title = 'Research — PAIR Lab' }, [])
-
   return (
     <main className="route-page research-page">
       <header className="page-title research-title">
@@ -121,12 +52,43 @@ function ResearchPage() {
         <span className="research-tab" aria-label="Current research view">Projects</span>
       </header>
 
+      <section className="research-intro" aria-labelledby="research-intro-title">
+        <p>Based at the University of Sydney, PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world.</p>
+        <div>
+          <h2 id="research-intro-title">From learned policies to capable physical behaviour.</h2>
+          <p>Our work spans imitation learning, dexterous and multi-arm manipulation, collaborative robotics, policy monitoring and constraint-aware motion. Each project is tested through physical demonstrations and practical tasks.</p>
+        </div>
+      </section>
+
       <section className="research-project-grid" aria-label="Research projects">
         {researchProjects.map((project, index) => (
-          <ProjectCard project={project} index={index} onOpenDemo={setOpenDemo} key={project.slug} />
+          <ProjectCard project={project} index={index} key={project.slug} />
         ))}
       </section>
-      {openDemo ? <DemoModal project={openDemo} onClose={() => setOpenDemo(null)} /> : null}
+
+      <section className="research-areas" aria-labelledby="research-areas-title">
+        <header>
+          <span>Research focus</span>
+          <h2 id="research-areas-title">How we approach physical intelligence</h2>
+        </header>
+        <div>
+          <article>
+            <span>01</span>
+            <h3>Learning from demonstration</h3>
+            <p>Visuomotor and action-chunking policies for robots learning coordinated behaviour from physical examples.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Dexterous manipulation</h3>
+            <p>Hands, tools and multiple robotic arms working through contact-rich, long-horizon tasks.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Reliable autonomy</h3>
+            <p>Monitoring, calibrated intervention and constraint-aware adaptation for learned robot policies.</p>
+          </article>
+        </div>
+      </section>
     </main>
   )
 }

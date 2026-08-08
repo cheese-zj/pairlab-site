@@ -21,11 +21,12 @@ npm run preview
 
 - `/` — homepage
 - `/research` — image-led research project catalogue
-- `/research/:slug` — individual research project pages
+- `/research/:slug` — pre-rendered individual research project pages
 - `/people` — lab members
+- `/publications` — selected papers, project sites and research outputs
 - `/join` — student and collaboration enquiries
 
-The Cloudflare `_redirects` file serves these client-side routes through the Vite entry point.
+The production build statically pre-renders every public route, writes `sitemap.xml`, and generates a custom `404.html`. Cloudflare serves the generated HTML with `404-page` fallback handling while React hydrates the pages for client-side navigation.
 
 ## Deploy with GitHub + Cloudflare Workers
 
@@ -34,7 +35,15 @@ The Cloudflare `_redirects` file serves these client-side routes through the Vit
 3. Keep `main` as the production branch; Cloudflare's Git integration will deploy every push.
 4. Add `aus.bot` as the custom domain and follow the DNS prompt.
 
-Wrangler serves `dist/` as Worker static assets and uses SPA fallback routing for React routes. The included GitHub Actions workflow is an optional second deployment path. To enable it, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets. Without those secrets, the workflow validates the production build and safely skips deployment.
+Wrangler serves `dist/` as Worker static assets. The included GitHub Actions workflow is an optional second deployment path. To enable it, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets. Without those secrets, the workflow validates the production build and skips deployment.
+
+## Search indexing
+
+- Canonical production URL: `https://aus.bot`
+- Sitemap: `https://aus.bot/sitemap.xml`
+- Robots file: `https://aus.bot/robots.txt`
+
+After deployment, verify the domain in Google Search Console, submit the sitemap, and inspect the homepage plus the research and publications pages.
 
 ## Content notes
 

@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import type { CSSProperties } from 'react'
 import { ArrowRight, ArrowUpRight, GraduationCap, Link2, Mail } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -46,8 +45,6 @@ function MemberCard({ person }: { person: Person }) {
 }
 
 function PeoplePage() {
-  useEffect(() => { document.title = 'People — PAIR Lab' }, [])
-
   return (
     <main className="route-page people-page">
       <header className="page-title people-title">

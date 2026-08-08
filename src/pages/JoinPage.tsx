@@ -1,9 +1,6 @@
-import { useEffect } from 'react'
 import { ArrowUpRight, Mail } from 'lucide-react'
 
 function JoinPage() {
-  useEffect(() => { document.title = 'Join — PAIR Lab' }, [])
-
   return (
     <main className="route-page join-page">
       <section className="join-heading">

@@ -7,7 +7,7 @@ function SiteFooter() {
         <Link to="/">PAIR Lab</Link>
         <p>School of Computer Science · The University of Sydney</p>
         <div className="site-footer-links">
-          <a href="https://www.weimingzhi.com/publication-list" target="_blank" rel="noreferrer">Publications</a>
+          <Link to="/publications">Publications</Link>
           <a href="mailto:pairlab212@gmail.com">Email</a>
         </div>
         <span>© {new Date().getFullYear()}</span>

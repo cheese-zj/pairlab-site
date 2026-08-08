@@ -25,7 +25,8 @@ const assets = await Promise.all(files.map(async (path) => ({
 })))
 
 const oversizedAssets = assets.filter(({ bytes }) => bytes > maximumAssetBytes)
-const missingRequiredFiles = ['index.html', '_headers'].filter((path) => !assets.some((asset) => asset.path === path))
+const requiredFiles = ['index.html', '404.html', 'sitemap.xml', 'robots.txt', '_headers', 'research/index.html', 'publications/index.html']
+const missingRequiredFiles = requiredFiles.filter((path) => !assets.some((asset) => asset.path === path))
 const largestAsset = assets.toSorted((a, b) => b.bytes - a.bytes)[0]
 
 if (assets.length > maximumAssetCount) {

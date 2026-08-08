@@ -7,6 +7,9 @@ export type ResearchProject = {
   image: string
   hoverImage?: string
   externalUrl?: string
+  externalLabel?: string
+  topics: string[]
+  details: string[]
   videos?: Array<{
     title: string
     src: string
@@ -27,6 +30,12 @@ export const researchProjects: ResearchProject[] = [
     image: '/patch-method.webp',
     hoverImage: '/patch-towel-rollout.gif',
     externalUrl: 'https://yananzhou5555.github.io/PATCH/#towel-demo',
+    externalLabel: 'Visit project site',
+    topics: ['Robot monitoring', 'Imitation learning', 'Reliable autonomy'],
+    details: [
+      'Learned robot policies can drift away from the intended task before a failure is obvious. PATCH studies action-conditioned perception as a way to recognise those execution changes earlier.',
+      'The project focuses on structured intervention during long-horizon manipulation, connecting robot learning with practical monitoring for real-world deployment.',
+    ],
     summary: 'Action-chunk-conditioned robot monitoring for timely, structured intervention.',
     description: 'PATCH monitors robot behaviour through action-conditioned perception and routes structured intervention when execution needs support.',
   },
@@ -58,6 +67,11 @@ export const researchProjects: ResearchProject[] = [
     ],
     summary: 'Dexterous hands using everyday tools across autonomous and teleoperated tasks.',
     description: 'An in-progress demo collection exploring dexterous tool use, multi-stage manipulation, and long-horizon data collection.',
+    topics: ['Dexterous manipulation', 'Robot learning', 'Teleoperation'],
+    details: [
+      'This ongoing collection tests robotic hands on everyday tools and multi-stage tasks that demand contact, sequencing and recovery across longer horizons.',
+      'The demonstrations combine autonomous execution with teleoperated data collection to study how capable manipulation behaviours can be learned from physical interaction.',
+    ],
   },
   {
     id: '03',
@@ -67,7 +81,13 @@ export const researchProjects: ResearchProject[] = [
     type: 'Tri-manual learning',
     image: '/trimanpolicy-baseline-dats.png',
     hoverImage: '/triman-autonomous-hover.gif',
-    externalUrl: '/research/trimanpolicy/',
+    externalUrl: 'https://cheese-zj.github.io/trimanpolicy-site/',
+    externalLabel: 'Visit project site',
+    topics: ['Visuomotor imitation learning', 'Multi-arm manipulation', 'Robot learning'],
+    details: [
+      'TriManPolicy studies coordinated visuomotor policies for tasks involving three robotic arms, where perception and action must remain coupled across multiple manipulators.',
+      'The work explores how imitation learning can represent coordinated tri-manual behaviour for complex physical tasks.',
+    ],
     summary: 'Coordinated tri-manual visuomotor imitation learning for complex manipulation.',
     description: 'An in-progress project studying coordinated visuomotor policies across three robotic arms.',
   },
@@ -89,6 +109,11 @@ export const researchProjects: ResearchProject[] = [
     ],
     summary: 'A three-stage curriculum for learning coupled dual-robot collaboration policies.',
     description: 'A collaborative mobile manipulation demo spanning bed making, laundry collection, and household interaction tasks.',
+    topics: ['Collaborative robotics', 'Mobile manipulation', 'Robot learning'],
+    details: [
+      'SAI explores a three-stage learning curriculum for collaborative robots carrying out coupled household manipulation tasks.',
+      'The demonstrations span bed making, laundry collection and household interaction without requiring synchronised dual-operator demonstrations or explicit inter-robot communication.',
+    ],
   },
   {
     id: '05',
@@ -98,7 +123,13 @@ export const researchProjects: ResearchProject[] = [
     type: 'Robot intervention',
     image: '/autointervene-bag-poster.webp',
     hoverImage: '/autointervene-bag-hover.gif',
-    externalUrl: '/research/autointervene/',
+    externalUrl: 'https://123qwedsa123.github.io/AutoIntervene/',
+    externalLabel: 'Visit project site',
+    topics: ['Robot intervention', 'Imitation learning', 'Long-horizon manipulation'],
+    details: [
+      'AutoIntervene investigates calibrated intervention for action-chunking imitation learning policies operating across long-horizon manipulation tasks.',
+      'The project connects policy confidence with timely human support, aiming to make learned robot behaviour more practical to supervise in real environments.',
+    ],
     summary: 'Calibrated intervention for action-chunking imitation learning policies.',
     description: 'AutoIntervene monitors action-chunking policies and provides calibrated intervention across long-horizon manipulation tasks.',
   },
@@ -110,6 +141,12 @@ export const researchProjects: ResearchProject[] = [
     type: 'Robot safety',
     image: '/casf-overview.webp',
     externalUrl: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11610877',
+    externalLabel: 'Read the paper',
+    topics: ['Robot safety', 'Motion generation', 'Constraint-aware learning'],
+    details: [
+      'CASF adapts learned robot trajectory distributions after training by reshaping streaming-flow velocity fields with constraint-dependent metrics.',
+      'The method addresses collision avoidance, joint limits and feasible workspaces without retraining the underlying policy.',
+    ],
     summary: 'Constraint-aware post-training adaptation for safe, collision-free streaming flow policies.',
     description: 'CASF reshapes learned streaming-flow velocity fields with constraint-dependent metrics, enforcing collision avoidance, joint limits, and feasible workspaces without retraining.',
   },
