@@ -67,7 +67,7 @@ function breadcrumb(path: string, name: string, parent?: { path: string, name: s
 
 const staticPages: Record<string, Omit<SeoData, 'path'>> = {
   '/': {
-    title: 'Physical AI & Robot Learning Lab in Australia | PAIR Lab',
+    title: 'Robotics & Physical AI Lab in Australia | PAIR Lab',
     description: 'PAIR Lab at the University of Sydney researches physical AI, robot learning, imitation learning and dexterous robotic manipulation in Australia.',
     image: '/pairlab-humanoid.webp',
     type: 'website',
