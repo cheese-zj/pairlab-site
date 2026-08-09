@@ -23,7 +23,6 @@ npm run preview
 - `/research` — image-led research project catalogue
 - `/research/:slug` — pre-rendered individual research project pages
 - `/people` — lab members
-- `/publications` — selected papers, project sites and research outputs
 - `/join` — student and collaboration enquiries
 
 The production build statically pre-renders every public route, writes `sitemap.xml`, and generates a custom `404.html`. Cloudflare serves the generated HTML with `404-page` fallback handling while React hydrates the pages for client-side navigation.
@@ -43,7 +42,7 @@ Wrangler serves `dist/` as Worker static assets. The included GitHub Actions wor
 - Sitemap: `https://aus.bot/sitemap.xml`
 - Robots file: `https://aus.bot/robots.txt`
 
-After deployment, verify the domain in Google Search Console, submit the sitemap, and inspect the homepage plus the research and publications pages.
+After deployment, verify the domain in Google Search Console, submit the sitemap, and inspect the homepage plus the research pages.
 
 ## Content notes
 
