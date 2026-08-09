@@ -251,6 +251,3 @@ export const publications: Publication[] = [
     url: 'https://ieeexplore.ieee.org/abstract/document/8793508/',
   },
 ]
-
-export const williamScholarUrl = 'https://scholar.google.com/citations?hl=en&user=Y6MWNsQAAAAJ&view_op=list_works&sortby=pubdate'
-export const williamPublicationListUrl = 'https://www.weimingzhi.com/publication-list'
