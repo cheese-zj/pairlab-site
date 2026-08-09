@@ -1,8 +1,11 @@
 import type { CSSProperties } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { publications, williamPublicationListUrl, williamScholarUrl } from '../publications'
 import { researchProjects } from '../researchProjects'
 import type { ResearchProject } from '../researchProjects'
+
+const publicationYears = [...new Set(publications.map((publication) => publication.year))]
 
 type ProjectCardProps = {
   project: ResearchProject
@@ -49,7 +52,7 @@ function ResearchPage() {
     <main className="route-page research-page">
       <header className="page-title research-title">
         <h1>Research</h1>
-        <span className="research-tab" aria-label="Current research view">Projects</span>
+        <span className="research-tab" aria-label="Research page contents">Projects + publications</span>
       </header>
 
       <section className="research-intro" aria-labelledby="research-intro-title">
@@ -88,6 +91,94 @@ function ResearchPage() {
             <p>Monitoring, calibrated intervention and constraint-aware adaptation for learned robot policies.</p>
           </article>
         </div>
+      </section>
+
+      <section className="research-publications" id="publications" aria-labelledby="publications-title">
+        <header className="publication-section-title">
+          <div>
+            <span>Research record</span>
+            <p>Papers, project sites and physical demonstrations from PAIR Lab, together with the selected peer-reviewed publication record of lab lead William Zhi.</p>
+          </div>
+          <h2 id="publications-title">Publications</h2>
+        </header>
+
+        <section className="publication-lab-outputs" aria-labelledby="lab-outputs-title">
+          <header>
+            <span>PAIR Lab</span>
+            <div>
+              <h3 id="lab-outputs-title">Current lab outputs</h3>
+              <p>The papers and active research outputs already represented across this site.</p>
+            </div>
+          </header>
+          <div className="lab-output-list">
+            {researchProjects.map((project) => (
+              <article className="lab-output-item" key={project.slug}>
+                <span>{project.id}</span>
+                <div>
+                  <small>{project.type}</small>
+                  <h4>{project.title}</h4>
+                  {project.subtitle ? <p>{project.subtitle}</p> : null}
+                </div>
+                <div className="lab-output-actions">
+                  <Link to={`/research/${project.slug}`}>Project overview <ArrowUpRight size={16} /></Link>
+                  {project.externalUrl ? (
+                    <a href={project.externalUrl} target="_blank" rel="noreferrer">
+                      {project.externalLabel ?? 'Research output'} <ArrowUpRight size={16} />
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="publication-academic-archive" aria-labelledby="academic-publications-title">
+          <header>
+            <div>
+              <span>William Zhi · Lab lead</span>
+              <p>Selected peer-reviewed conference and journal publications in robotics and machine learning.</p>
+            </div>
+            <div>
+              <h3 id="academic-publications-title">Academic archive</h3>
+              <div className="publication-source-links">
+                <a href={williamScholarUrl} target="_blank" rel="noreferrer">Google Scholar <ArrowUpRight size={17} /></a>
+                <a href={williamPublicationListUrl} target="_blank" rel="noreferrer">Original list <ArrowUpRight size={17} /></a>
+              </div>
+            </div>
+          </header>
+
+          <div className="publication-year-list">
+            {publicationYears.map((year) => {
+              const yearPublications = publications.filter((publication) => publication.year === year)
+
+              return (
+                <section className="publication-year-group" aria-labelledby={`publication-year-${year}`} key={year}>
+                  <div className="publication-year-marker">
+                    <h4 id={`publication-year-${year}`}>{year}</h4>
+                    <span>{yearPublications.length} {yearPublications.length === 1 ? 'paper' : 'papers'}</span>
+                  </div>
+                  <div>
+                    {yearPublications.map((publication) => (
+                      <article className="publication-record" key={publication.id}>
+                        <span className="publication-record-id">{publication.id}</span>
+                        <div>
+                          <span className="publication-venue">{publication.venue}</span>
+                          <h5>{publication.title}</h5>
+                          <p>{publication.authors}</p>
+                        </div>
+                        {publication.url ? (
+                          <a href={publication.url} target="_blank" rel="noreferrer" aria-label={`Read ${publication.title}`}>
+                            <ArrowUpRight size={19} />
+                          </a>
+                        ) : <span className="publication-record-spacer" aria-hidden="true" />}
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )
+            })}
+          </div>
+        </section>
       </section>
     </main>
   )

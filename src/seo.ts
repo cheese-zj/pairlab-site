@@ -74,8 +74,8 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
     structuredData: [organisation],
   },
   '/research': {
-    title: 'Robot Learning & Manipulation Research | PAIR Lab Sydney',
-    description: 'Explore PAIR Lab research in physical intelligence, robot learning, imitation learning, dexterous manipulation and collaborative robotics.',
+    title: 'Robotics Research & Publications | PAIR Lab Sydney',
+    description: 'Explore PAIR Lab projects and publications in physical intelligence, robot learning, manipulation, motion generation and collaborative robotics.',
     image: '/pairlab-dual-arm.webp',
     type: 'website',
     structuredData: [
@@ -85,7 +85,7 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
         '@type': 'CollectionPage',
         name: 'PAIR Lab robotics research',
         url: `${siteUrl}/research`,
-        description: 'Research projects in physical AI, robot learning and robotic manipulation at the University of Sydney.',
+        description: 'Research projects and publications in physical AI, robot learning and robotic manipulation at the University of Sydney.',
         isPartOf: { '@id': `${siteUrl}/#organisation` },
       },
     ],
