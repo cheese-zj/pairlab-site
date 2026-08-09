@@ -71,12 +71,10 @@ function ResearchPage() {
 
         <section className="research-showcase" id="showcase" aria-labelledby="showcase-title">
           <h2 className="sr-only" id="showcase-title">Research showcase</h2>
-          <section className="research-intro" aria-labelledby="research-intro-title">
-            <p>Based at the University of Sydney, PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world.</p>
-            <div>
-              <h2 id="research-intro-title">From learned policies to capable physical behaviour.</h2>
-              <p>Our work spans imitation learning, dexterous and multi-arm manipulation, collaborative robotics, policy monitoring and constraint-aware motion. Each project is tested through physical demonstrations and practical tasks.</p>
-            </div>
+          <section className="research-intro" aria-label="Research overview">
+            <p>
+              Based at the University of Sydney, PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. <strong>From learned policies to capable physical behaviour.</strong> Our work spans imitation learning, dexterous and multi-arm manipulation, collaborative robotics, policy monitoring and constraint-aware motion. Each project is tested through physical demonstrations and practical tasks.
+            </p>
           </section>
 
           <section className="research-project-grid" aria-label="Showcase projects">
