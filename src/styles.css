@@ -51,6 +51,9 @@ button { font: inherit; }
 .route-header nav a { display: grid; height: 44px; min-width: 104px; place-items: center; padding: 0 20px; border-radius: var(--radius-small); font-size: 14px; font-weight: 600; }
 .route-header nav a:hover { background: #eeece7; }
 .route-header nav a.active { color: white; background: var(--ink); }
+.route-research-sections { display: flex; align-items: center; gap: 2px; margin: 0 4px; padding-left: 8px; border-left: 1px solid rgba(17, 18, 15, .12); }
+.route-header nav .route-research-sections a { min-width: auto; padding: 0 14px; color: rgba(17, 18, 15, .58); font-size: 12px; }
+.route-header nav .route-research-sections a.section-active { color: var(--ink); background: #eeece7; }
 .route-menu { display: none; width: 46px; height: 44px; place-items: center; color: var(--ink); border: 0; border-radius: var(--radius-small); background: transparent; cursor: pointer; }
 .route-header.collapsed nav { display: none; }
 .route-header.collapsed .route-brand { border-right: 0; }
@@ -120,17 +123,11 @@ button { font: inherit; }
 .page-tabs button.selected { color: white; background: var(--ink); }
 
 /* Research */
-.research-page { display: grid; grid-template-columns: minmax(0, 1fr) 96px; align-items: start; background: var(--cream); }
-.research-page-content { min-width: 0; grid-column: 1; grid-row: 1; }
-.research-jump-nav { position: sticky; z-index: 80; top: calc(50svh - 76px); display: flex; width: 82px; grid-column: 2; grid-row: 1; align-self: start; flex-direction: column; gap: 4px; margin: 18px 7px; padding: 4px; border: 1px solid rgba(17, 18, 15, .18); border-radius: var(--radius); background: rgba(255, 255, 255, .94); box-shadow: 0 10px 28px rgba(17, 18, 15, .1); backdrop-filter: blur(12px); }
-.research-jump-nav a { display: flex; min-height: 58px; flex-direction: column; justify-content: center; gap: 5px; padding: 8px 6px; color: rgba(17, 18, 15, .64); border-radius: var(--radius-small); font-size: 10px; font-weight: 640; line-height: 1.1; text-align: center; transition: color .2s ease, background .2s ease; }
-.research-jump-nav a span { font-size: 8px; font-weight: 590; letter-spacing: .08em; }
-.research-jump-nav a:hover { color: var(--ink); background: rgba(17, 18, 15, .07); }
-.research-jump-nav a.active { color: white; background: var(--ink); }
+.research-page { background: var(--cream); }
 .research-title { background: var(--cream); }
 .research-title h1 { font-size: clamp(58px, 7vw, 104px); line-height: .9; letter-spacing: -.012em; }
 .research-showcase,
-.research-publications { scroll-margin-top: 24px; }
+.research-publications { scroll-margin-top: 86px; }
 .research-intro { display: grid; width: min(100%, var(--content-max-width)); grid-template-columns: .72fr 1.28fr; gap: clamp(42px, 8vw, 140px); margin-inline: auto; padding: 34px var(--page-gutter) clamp(68px, 8vw, 118px); }
 .research-intro > p { max-width: 430px; margin: 0; color: rgba(17, 18, 15, .58); font-size: 15px; line-height: 1.55; }
 .research-intro div h2 { max-width: 830px; margin: 0 0 28px; font-size: clamp(34px, 4.7vw, 70px); font-weight: 520; font-stretch: 98%; line-height: .98; }
@@ -306,10 +303,6 @@ button { font: inherit; }
 }
 
 @media (max-width: 900px) {
-  .research-page { grid-template-columns: 1fr; }
-  .research-jump-nav { position: relative; top: auto; width: auto; grid-column: 1; grid-row: 1; justify-self: end; flex-direction: row; margin: 18px 18px 0; }
-  .research-page-content { grid-column: 1; grid-row: 2; }
-  .research-jump-nav a { min-width: 96px; min-height: 44px; flex-direction: row; align-items: center; gap: 7px; }
   .home-panel { width: 68%; }
   .research-project-card { min-height: 500px; }
   .people-lead { grid-template-columns: 1fr 1fr; }
@@ -340,6 +333,8 @@ button { font: inherit; }
   .route-header .route-menu { display: grid; border-left: 1px solid rgba(17, 18, 15, .12); }
   .route-header.open nav { top: 50px; display: grid; min-width: 150px; grid-template-columns: 1fr; }
   .route-header.open nav a { height: 36px; min-width: 84px; justify-items: start; padding: 0 16px; font-size: 13px; }
+  .route-research-sections { display: grid; grid-template-columns: repeat(2, 1fr); margin: 2px 0; padding: 4px 0; border-top: 1px solid rgba(17, 18, 15, .12); border-bottom: 1px solid rgba(17, 18, 15, .12); border-left: 0; }
+  .route-header.open nav .route-research-sections a { min-width: 112px; padding: 0 12px; font-size: 12px; }
   .site-footer-inner { grid-template-columns: 1fr 1fr; gap: 18px; padding: 22px 20px; }
   .site-footer-inner p { display: none; }
   .site-footer-links { gap: 14px; }

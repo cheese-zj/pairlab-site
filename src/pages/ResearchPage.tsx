@@ -48,7 +48,6 @@ function ProjectCard({ project, index }: ProjectCardProps) {
 }
 
 function ResearchPage() {
-  const [activeSection, setActiveSection] = useState('showcase')
   const [publicationItems, setPublicationItems] = useState<Publication[]>(publications)
   const publicationYears = [...new Set(publicationItems.map((publication) => publication.year))]
 
@@ -64,36 +63,11 @@ function ResearchPage() {
     return () => controller.abort()
   }, [])
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActiveSection(entry.target.id)
-      })
-    }, { rootMargin: '-35% 0px -55%', threshold: 0 })
-
-    const sections = ['showcase', 'publications']
-      .map((id) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section))
-
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <main className="route-page research-page">
-      <nav className="research-jump-nav" aria-label="Research page sections">
-        <a className={activeSection === 'showcase' ? 'active' : ''} href="#showcase" aria-current={activeSection === 'showcase' ? 'location' : undefined}>
-          <span>01</span> Showcase
-        </a>
-        <a className={activeSection === 'publications' ? 'active' : ''} href="#publications" aria-current={activeSection === 'publications' ? 'location' : undefined}>
-          <span>02</span> Publications
-        </a>
-      </nav>
-
-      <div className="research-page-content">
-        <header className="page-title research-title">
-          <h1>Research</h1>
-        </header>
+      <header className="page-title research-title">
+        <h1>Research</h1>
+      </header>
 
         <section className="research-showcase" id="showcase" aria-labelledby="showcase-title">
           <h2 className="sr-only" id="showcase-title">Research showcase</h2>
@@ -172,7 +146,6 @@ function ResearchPage() {
             })}
           </div>
         </section>
-      </div>
     </main>
   )
 }
