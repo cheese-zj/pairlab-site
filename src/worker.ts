@@ -15,6 +15,11 @@ const projectSites = [
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const requestUrl = new URL(request.url)
+    if (requestUrl.hostname === 'www.aus.bot') {
+      requestUrl.hostname = 'aus.bot'
+      return Response.redirect(requestUrl, 301)
+    }
+
     if (requestUrl.pathname === '/api/publications') {
       const sourceResponse = await fetch(publicationSourceUrl)
       if (!sourceResponse.ok) {
@@ -38,8 +43,28 @@ export default {
         return Response.redirect(requestUrl, 308)
       }
 
+      if (requestUrl.pathname === `${projectSite.path}/index.html`) {
+        requestUrl.pathname = `${projectSite.path}/`
+        return Response.redirect(requestUrl, 308)
+      }
+
       const projectUrl = new URL(requestUrl.pathname + requestUrl.search, projectSite.origin)
-      return fetch(new Request(projectUrl, request))
+      const projectResponse = await fetch(new Request(projectUrl, request))
+      if (!projectResponse.headers.get('Content-Type')?.includes('text/html')) return projectResponse
+
+      const canonical = `https://aus.bot${projectSite.path}/`
+      const html = (await projectResponse.text())
+        .replace(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi, '')
+        .replace(/<head([^>]*)>/i, `<head$1>\n    <link rel="canonical" href="${canonical}">`)
+      const headers = new Headers(projectResponse.headers)
+      headers.delete('Content-Encoding')
+      headers.delete('Content-Length')
+
+      return new Response(html, {
+        status: projectResponse.status,
+        statusText: projectResponse.statusText,
+        headers,
+      })
     }
 
     return env.ASSETS.fetch(request)

@@ -3,6 +3,16 @@ import { researchProjects } from './researchProjects'
 
 export const siteUrl = 'https://aus.bot'
 
+export function normalisePath(pathname: string) {
+  if (pathname.length > 1) return pathname.replace(/\/+$/, '')
+  return pathname
+}
+
+export function canonicalUrl(pathname: string) {
+  const path = normalisePath(pathname)
+  return path === '/' ? `${siteUrl}/` : `${siteUrl}${path}/`
+}
+
 export type SeoData = {
   title: string
   description: string
@@ -127,11 +137,6 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
   },
 }
 
-export function normalisePath(pathname: string) {
-  if (pathname.length > 1) return pathname.replace(/\/+$/, '')
-  return pathname
-}
-
 export function getSeoData(pathname: string): SeoData {
   const path = normalisePath(pathname)
   const staticPage = staticPages[path]
@@ -178,4 +183,11 @@ export const prerenderPaths = [
   ...researchProjects.map((project) => `/research/${project.slug}`),
   '/people',
   '/join',
+]
+
+export const sitemapPaths = [
+  ...prerenderPaths,
+  '/PATCH/',
+  '/trimanpolicy-site/',
+  '/AutoIntervene/',
 ]

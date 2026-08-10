@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { getSeoData, siteUrl } from '../seo'
+import { canonicalUrl, getSeoData, siteUrl } from '../seo'
 
 function upsertMeta(selector: string, attributes: Record<string, string>) {
   let element = document.head.querySelector<HTMLMetaElement>(selector)
@@ -16,7 +16,7 @@ function Seo() {
 
   useEffect(() => {
     const seo = getSeoData(pathname)
-    const canonicalUrl = `${siteUrl}${seo.path === '/' ? '' : seo.path}`
+    const canonicalHref = canonicalUrl(seo.path)
     const imageUrl = `${siteUrl}${seo.image ?? '/pairlab-emblem.png'}`
 
     document.title = seo.title
@@ -26,7 +26,7 @@ function Seo() {
     upsertMeta('meta[property="og:title"]', { property: 'og:title', content: seo.title })
     upsertMeta('meta[property="og:description"]', { property: 'og:description', content: seo.description })
     upsertMeta('meta[property="og:type"]', { property: 'og:type', content: seo.type ?? 'website' })
-    upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonicalUrl })
+    upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonicalHref })
     upsertMeta('meta[property="og:image"]', { property: 'og:image', content: imageUrl })
     upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' })
 
@@ -36,7 +36,7 @@ function Seo() {
       canonical.rel = 'canonical'
       document.head.appendChild(canonical)
     }
-    canonical.href = canonicalUrl
+    canonical.href = canonicalHref
 
     document.head.querySelectorAll('script[data-pairlab-schema]').forEach((element) => element.remove())
     seo.structuredData.forEach((entry) => {
