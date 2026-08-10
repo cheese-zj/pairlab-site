@@ -3,6 +3,16 @@ import { researchProjects } from './researchProjects'
 
 export const siteUrl = 'https://aus.bot'
 
+export function normalisePath(pathname: string) {
+  if (pathname.length > 1) return pathname.replace(/\/+$/, '')
+  return pathname
+}
+
+export function canonicalUrl(pathname: string) {
+  const path = normalisePath(pathname)
+  return path === '/' ? `${siteUrl}/` : `${siteUrl}${path}/`
+}
+
 export type SeoData = {
   title: string
   description: string
@@ -74,8 +84,8 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
     structuredData: [organisation],
   },
   '/research': {
-    title: 'Robot Learning & Manipulation Research | PAIR Lab Sydney',
-    description: 'Explore PAIR Lab research in physical intelligence, robot learning, imitation learning, dexterous manipulation and collaborative robotics.',
+    title: 'Robotics Research & Publications | PAIR Lab Sydney',
+    description: 'Explore PAIR Lab projects and publications in physical intelligence, robot learning, manipulation, motion generation and collaborative robotics.',
     image: '/pairlab-dual-arm.webp',
     type: 'website',
     structuredData: [
@@ -85,7 +95,7 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
         '@type': 'CollectionPage',
         name: 'PAIR Lab robotics research',
         url: `${siteUrl}/research`,
-        description: 'Research projects in physical AI, robot learning and robotic manipulation at the University of Sydney.',
+        description: 'Research projects and publications in physical AI, robot learning and robotic manipulation at the University of Sydney.',
         isPartOf: { '@id': `${siteUrl}/#organisation` },
       },
     ],
@@ -125,11 +135,6 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
     type: 'website',
     structuredData: [breadcrumb('/join', 'Join PAIR Lab')],
   },
-}
-
-export function normalisePath(pathname: string) {
-  if (pathname.length > 1) return pathname.replace(/\/+$/, '')
-  return pathname
 }
 
 export function getSeoData(pathname: string): SeoData {
@@ -178,4 +183,11 @@ export const prerenderPaths = [
   ...researchProjects.map((project) => `/research/${project.slug}`),
   '/people',
   '/join',
+]
+
+export const sitemapPaths = [
+  ...prerenderPaths,
+  '/PATCH/',
+  '/trimanpolicy-site/',
+  '/AutoIntervene/',
 ]

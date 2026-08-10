@@ -20,7 +20,7 @@ export const labLead: Person = {
   slug: 'weiming-zhi',
   name: 'Weiming (William) Zhi',
   surname: 'Zhi',
-  role: 'Lab lead · Lecturer',
+  role: 'Lab Lead • Faculty',
   image: '/weiming-zhi.webp',
   summary: 'Robotics and Embodied AI researcher developing robots that see and act in unstructured environments.',
   links: [

@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url'
 const projectRoot = process.cwd()
 const outputDirectory = join(projectRoot, 'dist')
 const serverBundle = join(projectRoot, '.prerender', 'entry-server.js')
-const { getSeoData, prerenderPaths, render, siteUrl } = await import(pathToFileURL(serverBundle).href)
+const { canonicalUrl, getSeoData, prerenderPaths, render, sitemapPaths, siteUrl } = await import(pathToFileURL(serverBundle).href)
 const template = await readFile(join(outputDirectory, 'index.html'), 'utf8')
 
 function escapeAttribute(value) {
@@ -14,7 +14,7 @@ function escapeAttribute(value) {
 
 function renderSeo(pathname) {
   const seo = getSeoData(pathname)
-  const canonical = `${siteUrl}${seo.path === '/' ? '' : seo.path}`
+  const canonical = canonicalUrl(seo.path)
   const image = `${siteUrl}${seo.image ?? '/pairlab-emblem.png'}`
   const tags = [
     `<title>${escapeAttribute(seo.title)}</title>`,
@@ -53,7 +53,7 @@ await writeFile(join(outputDirectory, '404.html'), renderDocument('/404'))
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...prerenderPaths.map((pathname) => `  <url><loc>${siteUrl}${pathname === '/' ? '/' : pathname}</loc></url>`),
+  ...sitemapPaths.map((pathname) => `  <url><loc>${canonicalUrl(pathname)}</loc></url>`),
   '</urlset>',
   '',
 ].join('\n')
