@@ -74,7 +74,7 @@ function ProjectPage() {
       ) : null}
 
       <nav className="project-navigation" aria-label="Project navigation">
-        <Link className="project-next" to={`/research/${nextProject.slug}`}>{nextContent}</Link>
+        <Link className="project-next" to={`/research/preview/${nextProject.slug}`}>{nextContent}</Link>
       </nav>
     </main>
   )

@@ -29,7 +29,7 @@ export const researchProjects: ResearchProject[] = [
     type: 'Robot monitoring',
     image: '/patch-method.webp',
     hoverImage: '/patch-towel-rollout.gif',
-    externalUrl: '/PATCH/#towel-demo',
+    externalUrl: '/research/patch/#towel-demo',
     externalLabel: 'Visit project site',
     topics: ['Robot monitoring', 'Imitation learning', 'Reliable autonomy'],
     details: [
@@ -81,7 +81,7 @@ export const researchProjects: ResearchProject[] = [
     type: 'Tri-manual learning',
     image: '/trimanpolicy-baseline-dats.png',
     hoverImage: '/triman-autonomous-hover.gif',
-    externalUrl: '/trimanpolicy-site/',
+    externalUrl: '/research/trimanpolicy/',
     externalLabel: 'Visit project site',
     topics: ['Visuomotor imitation learning', 'Multi-arm manipulation', 'Robot learning'],
     details: [
@@ -123,7 +123,7 @@ export const researchProjects: ResearchProject[] = [
     type: 'Robot intervention',
     image: '/autointervene-bag-poster.webp',
     hoverImage: '/autointervene-bag-hover.gif',
-    externalUrl: '/AutoIntervene/',
+    externalUrl: '/research/autointervene/',
     externalLabel: 'Visit project site',
     topics: ['Robot intervention', 'Imitation learning', 'Long-horizon manipulation'],
     details: [

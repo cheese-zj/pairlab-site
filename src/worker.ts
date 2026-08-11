@@ -7,9 +7,15 @@ type Env = {
 }
 
 const projectSites = [
-  { path: '/PATCH', origin: 'https://yananzhou5555.github.io' },
-  { path: '/trimanpolicy-site', origin: 'https://cheese-zj.github.io' },
-  { path: '/AutoIntervene', origin: 'https://123qwedsa123.github.io' },
+  { path: '/research/patch', sourcePath: '/PATCH', legacyPath: '/PATCH', origin: 'https://yananzhou5555.github.io' },
+  { path: '/research/trimanpolicy', sourcePath: '/trimanpolicy-site', legacyPath: '/trimanpolicy-site', origin: 'https://cheese-zj.github.io' },
+  { path: '/research/autointervene', sourcePath: '/AutoIntervene', legacyPath: '/AutoIntervene', origin: 'https://123qwedsa123.github.io' },
+]
+
+const movedPreviewSlugs = [
+  'motion-and-manipulation',
+  'sai-dual-robot-collaboration',
+  'constraint-aware-streaming-flow',
 ]
 
 export default {
@@ -48,7 +54,8 @@ export default {
         return Response.redirect(requestUrl, 308)
       }
 
-      const projectUrl = new URL(requestUrl.pathname + requestUrl.search, projectSite.origin)
+      const suffix = requestUrl.pathname.slice(projectSite.path.length)
+      const projectUrl = new URL(projectSite.sourcePath + suffix + requestUrl.search, projectSite.origin)
       const projectResponse = await fetch(new Request(projectUrl, request))
       if (!projectResponse.headers.get('Content-Type')?.includes('text/html')) return projectResponse
 
@@ -65,6 +72,27 @@ export default {
         statusText: projectResponse.statusText,
         headers,
       })
+    }
+
+    const legacyProjectSite = projectSites.find(({ legacyPath }) => requestUrl.pathname === legacyPath || requestUrl.pathname.startsWith(`${legacyPath}/`))
+    if (legacyProjectSite) {
+      const suffix = requestUrl.pathname.slice(legacyProjectSite.legacyPath.length)
+
+      if (legacyProjectSite.legacyPath === '/PATCH' && suffix !== '' && suffix !== '/' && suffix !== '/index.html') {
+        const projectUrl = new URL(requestUrl.pathname + requestUrl.search, legacyProjectSite.origin)
+        return fetch(new Request(projectUrl, request))
+      }
+
+      requestUrl.pathname = suffix === '/index.html'
+        ? `${legacyProjectSite.path}/`
+        : `${legacyProjectSite.path}${suffix || '/'}`
+      return Response.redirect(requestUrl, 301)
+    }
+
+    const movedPreviewSlug = movedPreviewSlugs.find((slug) => requestUrl.pathname === `/research/${slug}` || requestUrl.pathname === `/research/${slug}/`)
+    if (movedPreviewSlug) {
+      requestUrl.pathname = `/research/preview/${movedPreviewSlug}/`
+      return Response.redirect(requestUrl, 301)
     }
 
     return env.ASSETS.fetch(request)
