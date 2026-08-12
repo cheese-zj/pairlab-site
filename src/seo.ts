@@ -142,7 +142,7 @@ export function getSeoData(pathname: string): SeoData {
   const staticPage = staticPages[path]
   if (staticPage) return { ...staticPage, path }
 
-  const project = researchProjects.find((item) => `/research/${item.slug}` === path)
+  const project = researchProjects.find((item) => `/research/preview/${item.slug}` === path)
   if (project) {
     return {
       title: `${project.title}: ${project.topics[0]} | PAIR Lab`,
@@ -180,14 +180,14 @@ export function getSeoData(pathname: string): SeoData {
 export const prerenderPaths = [
   '/',
   '/research',
-  ...researchProjects.map((project) => `/research/${project.slug}`),
+  ...researchProjects.map((project) => `/research/preview/${project.slug}`),
   '/people',
   '/join',
 ]
 
 export const sitemapPaths = [
   ...prerenderPaths,
-  '/PATCH/',
-  '/trimanpolicy-site/',
-  '/AutoIntervene/',
+  '/research/patch/',
+  '/research/trimanpolicy/',
+  '/research/autointervene/',
 ]

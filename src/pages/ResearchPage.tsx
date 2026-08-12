@@ -41,7 +41,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   )
 
   return (
-    <Link className={className} to={`/research/${project.slug}`} style={style}>
+    <Link className={className} to={`/research/preview/${project.slug}`} style={style}>
       {content}
     </Link>
   )

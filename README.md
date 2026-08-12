@@ -21,7 +21,8 @@ npm run preview
 
 - `/` — homepage
 - `/research` — image-led research project catalogue
-- `/research/:slug` — pre-rendered individual research project pages
+- `/research/preview/:slug` — pre-rendered PAIR Lab project preview pages
+- `/research/patch`, `/research/trimanpolicy`, `/research/autointervene` — canonical externally published project sites served through `aus.bot`
 - `/people` — lab members
 - `/join` — student and collaboration enquiries
 

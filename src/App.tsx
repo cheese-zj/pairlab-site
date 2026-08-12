@@ -29,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/research" element={<ResearchPage />} />
-        <Route path="/research/:slug" element={<ProjectPage />} />
+        <Route path="/research/preview/:slug" element={<ProjectPage />} />
         <Route path="/people" element={<PeoplePage />} />
         <Route path="/publications" element={<Navigate to="/research" replace />} />
         <Route path="/join" element={<JoinPage />} />
