@@ -23,6 +23,8 @@ run_worker_first = [
   "/PATCH/*",
   "/trimanpolicy-site",
   "/trimanpolicy-site/*",
+  "/nestdex-site",
+  "/nestdex-site/*",
   "/AutoIntervene",
   "/AutoIntervene/*",
 ]

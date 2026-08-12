@@ -9,6 +9,7 @@ type Env = {
 const projectSites = [
   { path: '/research/patch', sourcePath: '/PATCH', legacyPath: '/PATCH', origin: 'https://yananzhou5555.github.io' },
   { path: '/research/trimanpolicy', sourcePath: '/trimanpolicy-site', legacyPath: '/trimanpolicy-site', origin: 'https://cheese-zj.github.io' },
+  { path: '/research/nestdex', sourcePath: '/nestdex-site', legacyPath: '/nestdex-site', origin: 'https://cheese-zj.github.io' },
   { path: '/research/autointervene', sourcePath: '/AutoIntervene', legacyPath: '/AutoIntervene', origin: 'https://123qwedsa123.github.io' },
 ]
 

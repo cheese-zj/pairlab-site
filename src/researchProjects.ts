@@ -93,6 +93,23 @@ export const researchProjects: ResearchProject[] = [
   },
   {
     id: '04',
+    slug: 'nestdex',
+    title: 'NestDex',
+    subtitle: 'Nested Policy Learning with Copilot Assisted Teleoperation for Dexterous Manipulation',
+    type: 'Dexterous manipulation',
+    image: '/nestdex-overview.webp',
+    externalUrl: '/research/nestdex/',
+    externalLabel: 'Visit project site',
+    topics: ['Dexterous manipulation', 'Shared autonomy', 'Imitation learning'],
+    details: [
+      'NestDex places learned, state-conditioned hand skills inside the demonstration-collection loop, allowing an operator to guide task-level arm motion while a copilot handles fine-grained finger coordination.',
+      'The resulting complete-task demonstrations train a separate visuomotor policy that controls the arm and dexterous hand independently at deployment.',
+    ],
+    summary: 'Copilot-assisted demonstration collection for autonomous dexterous manipulation.',
+    description: 'A nested policy-learning framework that turns reusable hand skills into reliable complete-task demonstrations and independent autonomous policies.',
+  },
+  {
+    id: '05',
     slug: 'sai-dual-robot-collaboration',
     title: 'SAI',
     subtitle: 'A three-stage curriculum for dual-robot collaboration',
@@ -116,7 +133,7 @@ export const researchProjects: ResearchProject[] = [
     ],
   },
   {
-    id: '05',
+    id: '06',
     slug: 'autointervene',
     title: 'AutoIntervene',
     subtitle: 'Calibrated Intervention for Action-Chunking Imitation Learning Policies',
@@ -134,7 +151,7 @@ export const researchProjects: ResearchProject[] = [
     description: 'AutoIntervene monitors action-chunking policies and provides calibrated intervention across long-horizon manipulation tasks.',
   },
   {
-    id: '06',
+    id: '07',
     slug: 'constraint-aware-streaming-flow',
     title: 'CASF',
     subtitle: 'Constraining Streaming Flow Models for Adapting Learned Robot Trajectory Distributions',
