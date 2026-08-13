@@ -135,6 +135,17 @@ export const labMembers: Person[] = ([
     ],
   },
   {
+    id: '16',
+    slug: 'ranpeng-qiu',
+    name: 'Ranpeng Qiu',
+    surname: 'Qiu',
+    role: 'Member',
+    image: '/people/linkedin-default-avatar.svg',
+    links: [
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ranpeng-qiu-6b304839a/', kind: 'linkedin' },
+    ],
+  },
+  {
     id: '08',
     slug: 'jinhe-tang',
     name: 'Jinhe Tang',
@@ -177,9 +188,8 @@ export const labMembers: Person[] = ([
     role: 'Member',
     image: '/people/yanan-zhou.webp',
     links: [
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/yanan-zhou-6420a0288/', kind: 'linkedin' },
+      { label: 'Profile', href: 'https://yananzhou.me/', kind: 'profile' },
       { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=5LHIpm4AAAAJ&hl=zh-CN', kind: 'scholar' },
-      { label: 'Email', href: 'mailto:yzho5556@uni.sydney.edu.au', kind: 'email' },
     ],
   },
 ] satisfies Person[]).sort((a, b) => a.name.localeCompare(b.name, 'en'))
