@@ -189,5 +189,6 @@ export const sitemapPaths = [
   ...prerenderPaths,
   '/research/patch/',
   '/research/trimanpolicy/',
+  '/research/nestdex/',
   '/research/autointervene/',
 ]
