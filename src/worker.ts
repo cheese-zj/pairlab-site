@@ -14,10 +14,16 @@ const projectSites = [
 ]
 
 const movedPreviewSlugs = [
-  'motion-and-manipulation',
   'sai-dual-robot-collaboration',
   'constraint-aware-streaming-flow',
 ]
+
+const mergedNestDexPaths = new Set([
+  '/research/motion-and-manipulation',
+  '/research/motion-and-manipulation/',
+  '/research/preview/motion-and-manipulation',
+  '/research/preview/motion-and-manipulation/',
+])
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -41,6 +47,11 @@ export default {
 
     if (requestUrl.pathname === '/publications' || requestUrl.pathname.startsWith('/publications/')) {
       return Response.redirect(new URL('/research', requestUrl), 301)
+    }
+
+    if (mergedNestDexPaths.has(requestUrl.pathname)) {
+      requestUrl.pathname = '/research/nestdex/'
+      return Response.redirect(requestUrl, 301)
     }
 
     const projectSite = projectSites.find(({ path }) => requestUrl.pathname === path || requestUrl.pathname.startsWith(`${path}/`))
