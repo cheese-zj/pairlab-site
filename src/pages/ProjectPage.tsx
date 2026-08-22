@@ -21,7 +21,7 @@ function ProjectPage() {
   )
 
   return (
-    <main className="route-page project-page">
+    <main className="route-page project-page" data-accent={project.theme}>
       <section className="project-hero" style={{ '--project-image': `url(${project.image})` } as CSSProperties}>
         <span className="project-hero-image" aria-hidden="true" />
         <div className="project-hero-topline">
@@ -34,7 +34,7 @@ function ProjectPage() {
         </div>
       </section>
 
-      <section className="project-body">
+      <section className="project-body plot-ground">
         <div className="project-body-intro">
           <p className="project-lede">{project.summary}</p>
           <div className="project-topics" aria-label="Research topics">

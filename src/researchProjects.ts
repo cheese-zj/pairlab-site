@@ -1,9 +1,20 @@
+/** The three research themes. Each owns an accent hue, so colour reads as navigation. */
+export type ResearchTheme = 'learning' | 'dexterous' | 'reliable'
+
 export type ResearchProject = {
   id: string
   slug: string
   title: string
   subtitle?: string
   type: string
+  theme: ResearchTheme
+  /**
+   * Set when the opening image is a light diagram rather than a dark photograph,
+   * so the site bar swaps its scrim for its own ground. Measured, not guessed:
+   * the strip behind the bar averages ~0.86 relative luminance on these two,
+   * against 0.20–0.46 for the photographic heroes.
+   */
+  heroTone?: 'bright'
   image: string
   hoverImage?: string
   externalUrl?: string
@@ -27,6 +38,8 @@ export const researchProjects: ResearchProject[] = [
     title: 'PATCH',
     subtitle: 'Action-Chunk-Conditioned Latent Patch Innovation Monitoring for Robot Manipulation',
     type: 'Robot monitoring',
+    theme: 'reliable',
+    heroTone: 'bright',
     image: '/patch-method.webp',
     hoverImage: '/patch-towel-rollout.gif',
     externalUrl: '/research/patch/#towel-demo',
@@ -45,6 +58,7 @@ export const researchProjects: ResearchProject[] = [
     title: 'NestDex',
     subtitle: 'Nested Policy Learning with Copilot Assisted Teleoperation for Dexterous Manipulation',
     type: 'Dexterous manipulation',
+    theme: 'dexterous',
     image: '/nestdex-overview.webp',
     externalUrl: '/research/nestdex/',
     externalLabel: 'Visit project site',
@@ -62,6 +76,7 @@ export const researchProjects: ResearchProject[] = [
     title: 'TriManPolicy',
     subtitle: 'Coordinated Tri-Manual Visuomotor Imitation Learning',
     type: 'Tri-manual learning',
+    theme: 'learning',
     image: '/trimanpolicy-baseline-dats.png',
     hoverImage: '/triman-autonomous-hover.gif',
     externalUrl: '/research/trimanpolicy/',
@@ -80,6 +95,7 @@ export const researchProjects: ResearchProject[] = [
     title: 'SAI',
     subtitle: 'A three-stage curriculum for dual-robot collaboration',
     type: 'Demo',
+    theme: 'learning',
     image: '/sai-dual-robot-poster.webp',
     hoverImage: '/sai-dual-robot.gif',
     videos: [
@@ -104,6 +120,7 @@ export const researchProjects: ResearchProject[] = [
     title: 'AutoIntervene',
     subtitle: 'Calibrated Intervention for Action-Chunking Imitation Learning Policies',
     type: 'Robot intervention',
+    theme: 'reliable',
     image: '/autointervene-bag-poster.webp',
     hoverImage: '/autointervene-bag-hover.gif',
     externalUrl: '/research/autointervene/',
@@ -122,6 +139,8 @@ export const researchProjects: ResearchProject[] = [
     title: 'CASF',
     subtitle: 'Constraining Streaming Flow Models for Adapting Learned Robot Trajectory Distributions',
     type: 'Robot safety',
+    theme: 'reliable',
+    heroTone: 'bright',
     image: '/casf-overview.webp',
     externalUrl: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11610877',
     externalLabel: 'Read the paper',

@@ -26,7 +26,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="home-intro" aria-labelledby="home-intro-title">
+      <section className="home-intro plot-ground" aria-labelledby="home-intro-title">
         <div className="home-intro-heading">
           <span>University of Sydney · Australia</span>
           <h2 id="home-intro-title">Robot learning for useful, reliable physical intelligence.</h2>
@@ -39,17 +39,17 @@ function HomePage() {
       </section>
 
       <section className="home-themes" aria-label="PAIR Lab research themes">
-        <article>
+        <article data-accent="learning">
           <span>01</span>
           <h3>Robot learning</h3>
           <p>Visuomotor and imitation-learning methods grounded in real robot experience.</p>
         </article>
-        <article>
+        <article data-accent="dexterous">
           <span>02</span>
           <h3>Physical intelligence</h3>
           <p>Systems that connect perception, action and contact in complex physical tasks.</p>
         </article>
-        <article>
+        <article data-accent="reliable">
           <span>03</span>
           <h3>Reliable manipulation</h3>
           <p>Monitoring, intervention and constraints for long-horizon robot behaviour.</p>
