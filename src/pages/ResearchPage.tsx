@@ -30,7 +30,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
       </span>
       <span className="project-card-copy">
         <span className="project-card-title">
-          <strong>{project.title}</strong>
+          <strong data-morph="project-title">{project.title}</strong>
           {project.subtitle ? <span>{project.subtitle}</span> : null}
         </span>
         <span className="project-card-action" aria-hidden="true">
@@ -41,7 +41,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
   )
 
   return (
-    <Link className={className} to={`/research/preview/${project.slug}`} style={style}>
+    <Link className={className} to={`/research/preview/${project.slug}`} style={style} data-accent={project.theme}>
       {content}
     </Link>
   )
@@ -83,23 +83,23 @@ function ResearchPage() {
             ))}
           </section>
 
-          <section className="research-areas" aria-labelledby="research-areas-title">
+          <section className="research-areas plot-ground" aria-labelledby="research-areas-title">
             <header>
               <span>Research focus</span>
               <h2 id="research-areas-title">How we approach physical intelligence</h2>
             </header>
             <div>
-              <article>
+              <article data-accent="learning">
                 <span>01</span>
                 <h3>Learning from demonstration</h3>
                 <p>Visuomotor and action-chunking policies for robots learning coordinated behaviour from physical examples.</p>
               </article>
-              <article>
+              <article data-accent="dexterous">
                 <span>02</span>
                 <h3>Dexterous manipulation</h3>
                 <p>Hands, tools and multiple robotic arms working through contact-rich, long-horizon tasks.</p>
               </article>
-              <article>
+              <article data-accent="reliable">
                 <span>03</span>
                 <h3>Reliable autonomy</h3>
                 <p>Monitoring, calibrated intervention and constraint-aware adaptation for learned robot policies.</p>

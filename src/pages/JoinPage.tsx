@@ -2,7 +2,7 @@ import { ArrowUpRight, Mail } from 'lucide-react'
 
 function JoinPage() {
   return (
-    <main className="route-page join-page">
+    <main className="route-page join-page plot-ground">
       <section className="join-heading">
         <p>03 / Join</p>
         <h1>Work with us.</h1>
