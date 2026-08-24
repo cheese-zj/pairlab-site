@@ -59,15 +59,19 @@ function MosaicFlow() {
     const draw = (time: number) => {
       context.clearRect(0, 0, width, height)
       const seconds = time / 1000
-      const columns = Math.ceil(width / TILE_PITCH)
-      const rows = Math.ceil(height / TILE_PITCH)
+      /* Whole cells only: a cropped row of tiles reads as a rendering bug, so
+         the grid floors to full rows/columns and centres the remainder. */
+      const columns = Math.max(1, Math.floor(width / TILE_PITCH))
+      const rows = Math.max(1, Math.floor(height / TILE_PITCH))
+      const offsetX = (width - columns * TILE_PITCH + TILE_PITCH - TILE_SIZE) / 2
+      const offsetY = (height - rows * TILE_PITCH + TILE_PITCH - TILE_SIZE) / 2
 
       for (let row = 0; row < rows; row += 1) {
-        const y = row * TILE_PITCH + 1
+        const y = offsetY + row * TILE_PITCH
         const rowDrift = Math.sin(row * 0.31) * 0.72 + (randomAt(0, row, 1) - 0.5) * 0.55
 
         for (let column = 0; column < columns; column += 1) {
-          const x = column * TILE_PITCH + 1
+          const x = offsetX + column * TILE_PITCH
           const broadFlow = (Math.sin(column * 0.17 + seconds * 0.82 + rowDrift) + 1) / 2
           const secondaryFlow = (Math.sin(column * 0.075 + seconds * 0.46 - row * 0.13) + 1) / 2
           const randomDepth = 0.78 + randomAt(column, row, 2) * 0.22
@@ -102,7 +106,13 @@ function MosaicFlow() {
       animationFrame = window.requestAnimationFrame(animate)
     }
 
-    const resizeObserver = new ResizeObserver(resize)
+    /* Resizing the backing store wipes the bitmap, and the observer's initial
+       callback always re-runs resize after mount — so repaint in the same step,
+       or a reduced-motion canvas (whose only draw was at mount) stays blank. */
+    const resizeObserver = new ResizeObserver(() => {
+      resize()
+      draw(lastFrame)
+    })
     const visibilityObserver = new IntersectionObserver(([entry]) => {
       isVisible = entry.isIntersecting && !document.hidden
     })

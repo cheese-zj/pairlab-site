@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import MosaicBand from '../components/MosaicBand'
+import PublicationRecord from '../components/PublicationRecord'
 import { usePublications } from '../usePublications'
 import { researchProjects } from '../researchProjects'
 import type { ResearchProject } from '../researchProjects'
@@ -49,20 +50,30 @@ function ProjectCard({ project, index }: ProjectCardProps) {
 function ResearchPage() {
   const publicationItems = usePublications()
   const publicationYears = [...new Set(publicationItems.map((publication) => publication.year))]
+  const firstYear = Math.min(...publicationYears)
+  const lastYear = Math.max(...publicationYears)
+  const projectCount = String(researchProjects.length).padStart(2, '0')
 
   return (
     <main className="route-page research-page">
       <header className="page-title research-title">
+        <p>{projectCount} projects · {publicationItems.length} publications · University of Sydney</p>
         <h1>Research</h1>
       </header>
 
         <section className="research-showcase" id="showcase" aria-labelledby="showcase-title">
           <h2 className="sr-only" id="showcase-title">Research showcase</h2>
           <section className="research-intro" aria-label="Research overview">
+            <h2>From learned policies to <strong>capable physical behaviour</strong>.</h2>
             <p>
-              Based at the University of Sydney, PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. <strong>From learned policies to capable physical behaviour.</strong> Our work spans imitation learning, dexterous and multi-arm manipulation, collaborative robotics, policy monitoring and constraint-aware motion. Each project is tested through physical demonstrations and practical tasks.
+              PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. Our work spans <mark className="hl-yellow">imitation learning</mark>, <mark className="hl-coral">dexterous and multi-arm manipulation</mark>, <mark className="hl-blue">collaborative robotics</mark>, <mark className="hl-green">policy monitoring</mark> and <mark className="hl-plum">constraint-aware motion</mark>.
             </p>
           </section>
+
+          <div className="section-strip" aria-hidden="true">
+            <span>Showcase</span>
+            <span>01–{projectCount}</span>
+          </div>
 
           <section className="research-project-grid" aria-label="Showcase projects">
             {researchProjects.map((project, index) => (
@@ -78,17 +89,17 @@ function ResearchPage() {
             <div>
               <article data-accent="learning">
                 <span>01</span>
-                <h3>Learning from demonstration</h3>
+                <h3><mark>Learning from demonstration</mark></h3>
                 <p>Visuomotor and action-chunking policies for robots learning coordinated behaviour from physical examples.</p>
               </article>
               <article data-accent="dexterous">
                 <span>02</span>
-                <h3>Dexterous manipulation</h3>
+                <h3><mark>Dexterous manipulation</mark></h3>
                 <p>Hands, tools and multiple robotic arms working through contact-rich, long-horizon tasks.</p>
               </article>
               <article data-accent="reliable">
                 <span>03</span>
-                <h3>Reliable autonomy</h3>
+                <h3><mark>Reliable autonomy</mark></h3>
                 <p>Monitoring, calibrated intervention and constraint-aware adaptation for learned robot policies.</p>
               </article>
             </div>
@@ -98,7 +109,16 @@ function ResearchPage() {
         <section className="research-publications" id="publications" aria-labelledby="publications-title">
           <MosaicBand />
           <header className="publication-section-title">
+            <span>Archive</span>
             <h2 id="publications-title">Publications</h2>
+            <div className="publication-section-meta">
+              <p>{publicationItems.length} records · {firstYear}–{lastYear}</p>
+              <nav aria-label="Jump to a publication year">
+                {publicationYears.map((year) => (
+                  <a key={year} href={`#publication-year-${year}`}>{year}</a>
+                ))}
+              </nav>
+            </div>
           </header>
 
           <div className="publication-year-list">
@@ -113,18 +133,7 @@ function ResearchPage() {
                   </div>
                   <div>
                     {yearPublications.map((publication) => (
-                      <article className="publication-record" key={publication.id}>
-                        <span className="publication-record-id">{publication.id}</span>
-                        <div>
-                          <span className="publication-venue">{publication.venue}</span>
-                          <p className="publication-citation">{publication.citation}</p>
-                        </div>
-                        {publication.url ? (
-                          <a href={publication.url} target="_blank" rel="noreferrer" aria-label={`Read ${publication.citation}`}>
-                            <ArrowUpRight size={19} />
-                          </a>
-                        ) : <span className="publication-record-spacer" aria-hidden="true" />}
-                      </article>
+                      <PublicationRecord publication={publication} key={publication.id} />
                     ))}
                   </div>
                 </section>

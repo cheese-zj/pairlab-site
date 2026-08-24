@@ -1,6 +1,7 @@
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import MosaicFlow from '../components/MosaicFlow'
+import PublicationRecord from '../components/PublicationRecord'
 import { usePublications } from '../usePublications'
 
 const LATEST_COUNT = 4
@@ -47,17 +48,17 @@ function HomePage() {
       <section className="home-themes" aria-label="PAIR Lab research themes">
         <article data-accent="learning">
           <span>01</span>
-          <h3>Robot learning</h3>
+          <h3><mark>Robot learning</mark></h3>
           <p>Visuomotor and imitation-learning methods grounded in real robot experience.</p>
         </article>
         <article data-accent="dexterous">
           <span>02</span>
-          <h3>Physical intelligence</h3>
+          <h3><mark>Physical intelligence</mark></h3>
           <p>Systems that connect perception, action and contact in complex physical tasks.</p>
         </article>
         <article data-accent="reliable">
           <span>03</span>
-          <h3>Reliable manipulation</h3>
+          <h3><mark>Reliable manipulation</mark></h3>
           <p>Monitoring, intervention and constraints for long-horizon robot behaviour.</p>
         </article>
       </section>
@@ -73,18 +74,7 @@ function HomePage() {
           </header>
           <div className="home-latest-list">
             {latestPublications.map((publication) => (
-              <article className="publication-record" key={publication.id}>
-                <span className="publication-record-id">{publication.id}</span>
-                <div>
-                  <span className="publication-venue">{publication.venue}</span>
-                  <p className="publication-citation">{publication.citation}</p>
-                </div>
-                {publication.url ? (
-                  <a href={publication.url} target="_blank" rel="noreferrer" aria-label={`Read ${publication.citation}`}>
-                    <ArrowUpRight size={19} />
-                  </a>
-                ) : <span className="publication-record-spacer" aria-hidden="true" />}
-              </article>
+              <PublicationRecord publication={publication} key={publication.id} />
             ))}
           </div>
         </div>

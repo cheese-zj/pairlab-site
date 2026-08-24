@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import { ArrowRight, Globe, GraduationCap, Mail } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import MosaicBand from '../components/MosaicBand'
 import { labLead, peopleSections } from '../people'
 import type { Person, PersonLink } from '../people'
 
@@ -32,7 +33,7 @@ function LinkIcon({ kind }: Pick<PersonLink, 'kind'>) {
   return <Globe size={15} />
 }
 
-function PersonCard({ person, showRole = false }: { person: Person, showRole?: boolean }) {
+function PersonCard({ person, ordinal, showRole = false }: { person: Person, ordinal: string, showRole?: boolean }) {
   return (
     <article className="people-card">
       <div
@@ -41,7 +42,10 @@ function PersonCard({ person, showRole = false }: { person: Person, showRole?: b
         role="img"
         aria-label={`${person.name} portrait`}
       />
-      <h3>{person.name}</h3>
+      <div className="people-card-head">
+        <span aria-hidden="true">{ordinal}</span>
+        <h3>{person.name}</h3>
+      </div>
       {showRole ? <p>{person.role}</p> : null}
       {person.links.length > 0 ? (
         <div className="people-card-links">
@@ -66,32 +70,49 @@ function PersonCard({ person, showRole = false }: { person: Person, showRole?: b
   )
 }
 
+/* One marker wash per level, so the roster's hierarchy reads in colour. */
+const sectionWash: Record<string, string> = {
+  phd: 'hl-coral',
+  mphil: 'hl-blue',
+  honours: 'hl-green',
+  undergrad: 'hl-plum',
+}
+
 function PeoplePage() {
+  const totalPeople = 1 + peopleSections.reduce((count, section) => count + section.people.length, 0)
+
   return (
     <main className="route-page people-page">
       <header className="page-title people-title">
+        <p>{totalPeople} researchers · faculty &amp; students · Sydney, Australia</p>
         <h1>People</h1>
-        <p>The people building adaptable, intelligent robots at Sydney.</p>
+        <p className="people-title-note">The people building adaptable, intelligent robots at Sydney.</p>
       </header>
+
+      <MosaicBand ground="light" />
 
       <section className="people-section" aria-labelledby="people-section-faculty">
         <header>
-          <h2 id="people-section-faculty">Faculty</h2>
+          <h2 id="people-section-faculty"><mark className="hl-yellow">Faculty</mark></h2>
           <span>01</span>
         </header>
         <div className="people-grid">
-          <PersonCard person={labLead} showRole />
+          <PersonCard person={labLead} ordinal="01" showRole />
         </div>
       </section>
 
       {peopleSections.map((section) => (
         <section className="people-section" key={section.id} aria-labelledby={`people-section-${section.id}`}>
           <header>
-            <h2 id={`people-section-${section.id}`}>{section.title}</h2>
+            <h2 id={`people-section-${section.id}`}>
+              <mark className={sectionWash[section.id] ?? 'hl-yellow'}>{section.title}</mark>
+            </h2>
             <span>{String(section.people.length).padStart(2, '0')}</span>
           </header>
           <div className="people-grid">
-            {section.people.map((person) => <PersonCard person={person} key={person.slug} />)}
+            {section.people.map((person, index) => (
+              <PersonCard person={person} ordinal={String(index + 1).padStart(2, '0')} key={person.slug} />
+            ))}
           </div>
         </section>
       ))}
