@@ -5,14 +5,23 @@ const TILE_PITCH = 21
 const TILE_SIZE = 18
 const FRAME_INTERVAL = 1000 / 12
 
-/* The three research accents carry the band, cream fills in as structure.
-   Shares are cumulative pick thresholds; alpha is a [min, max] range. */
-const TILE_MIX = [
-  { token: '--yellow', share: 0.45, alpha: [0.3, 0.85] },
-  { token: '--cream', share: 0.75, alpha: [0.12, 0.4] },
-  { token: '--coral', share: 0.88, alpha: [0.35, 0.8] },
-  { token: '--accent-reliable', share: 1, alpha: [0.4, 0.85] },
-]
+/* The three research accents carry the band; the ground's own counter-colour
+   fills in as structure. Shares are cumulative pick thresholds; alpha is a
+   [min, max] range, tuned per ground so tiles neither vanish nor shout. */
+const TILE_MIXES = {
+  dark: [
+    { token: '--yellow', share: 0.45, alpha: [0.3, 0.85] },
+    { token: '--cream', share: 0.75, alpha: [0.12, 0.4] },
+    { token: '--coral', share: 0.88, alpha: [0.35, 0.8] },
+    { token: '--accent-reliable', share: 1, alpha: [0.4, 0.85] },
+  ],
+  light: [
+    { token: '--yellow', share: 0.45, alpha: [0.5, 0.95] },
+    { token: '--ink', share: 0.75, alpha: [0.06, 0.16] },
+    { token: '--coral', share: 0.88, alpha: [0.45, 0.85] },
+    { token: '--accent-reliable', share: 1, alpha: [0.45, 0.85] },
+  ],
+}
 
 /* Canvas fill styles cannot read custom properties, so resolve each token
    against the live cascade at the band's own position in the tree. */
@@ -31,7 +40,7 @@ type TileSprite = {
   until: number
 }
 
-function MosaicBand() {
+function MosaicBand({ ground = 'dark' }: { ground?: 'dark' | 'light' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -40,6 +49,8 @@ function MosaicBand() {
 
     const context = canvas.getContext('2d', { alpha: true })
     if (!context) return
+
+    const tileMix = TILE_MIXES[ground]
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let width = 0
@@ -52,7 +63,7 @@ function MosaicBand() {
 
     const buildSprites = () => {
       const host = canvas.parentElement ?? document.body
-      sprites = TILE_MIX.map((tile) => {
+      sprites = tileMix.map((tile) => {
         const sprite = document.createElement('canvas')
         sprite.width = Math.ceil(TILE_SIZE * ratio)
         sprite.height = Math.ceil(TILE_SIZE * ratio)
@@ -83,14 +94,18 @@ function MosaicBand() {
       context.clearRect(0, 0, width, height)
       const seconds = time / 1000
       const drift = seconds * 0.5
-      const columns = Math.ceil(width / TILE_PITCH)
-      const rows = Math.ceil(height / TILE_PITCH)
+      /* Whole cells only: a cropped row of tiles reads as a rendering bug, so
+         the grid floors to full rows/columns and centres the remainder. */
+      const columns = Math.max(1, Math.floor(width / TILE_PITCH))
+      const rows = Math.max(1, Math.floor(height / TILE_PITCH))
+      const offsetX = (width - columns * TILE_PITCH + TILE_PITCH - TILE_SIZE) / 2
+      const offsetY = (height - rows * TILE_PITCH + TILE_PITCH - TILE_SIZE) / 2
 
       for (let row = 0; row < rows; row += 1) {
-        const y = row * TILE_PITCH + 1
+        const y = offsetY + row * TILE_PITCH
 
         for (let column = 0; column < columns; column += 1) {
-          const x = column * TILE_PITCH + 1
+          const x = offsetX + column * TILE_PITCH
           /* Clusters drift across the strip; a cell lights while one passes its gate. */
           const cluster = (Math.sin(column * 0.16 - drift + row * 0.42) + Math.sin(column * 0.047 - drift * 0.62 + row * 1.7)) / 2
           const density = 0.02 + Math.max(0, cluster) ** 2 * 0.5
@@ -118,7 +133,13 @@ function MosaicBand() {
       animationFrame = window.requestAnimationFrame(animate)
     }
 
-    const resizeObserver = new ResizeObserver(resize)
+    /* Resizing the backing store wipes the bitmap, and the observer's initial
+       callback always re-runs resize after mount — so repaint in the same step,
+       or a reduced-motion canvas (whose only draw was at mount) stays blank. */
+    const resizeObserver = new ResizeObserver(() => {
+      resize()
+      draw(lastFrame)
+    })
     const visibilityObserver = new IntersectionObserver(([entry]) => {
       isVisible = entry.isIntersecting && !document.hidden
     })
@@ -138,7 +159,7 @@ function MosaicBand() {
       visibilityObserver.disconnect()
       document.removeEventListener('visibilitychange', handleVisibility)
     }
-  }, [])
+  }, [ground])
 
   return <canvas ref={canvasRef} className="mosaic-band" aria-hidden="true" />
 }
