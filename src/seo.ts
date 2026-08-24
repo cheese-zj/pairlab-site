@@ -31,7 +31,7 @@ const organisation = {
   alternateName: 'Physical AI and Robotics Lab',
   url: siteUrl,
   logo: `${siteUrl}/pairlab-emblem.png`,
-  image: `${siteUrl}/pairlab-humanoid.webp`,
+  image: `${siteUrl}/pairlab-zeno-lab.jpg`,
   description: 'A University of Sydney research lab advancing physical AI, robot learning and robotic manipulation in Australia.',
   parentOrganization: {
     '@type': 'CollegeOrUniversity',
@@ -79,7 +79,7 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
   '/': {
     title: 'Robotics & Physical AI Lab in Australia | PAIR Lab',
     description: 'PAIR Lab at the University of Sydney researches physical AI, robot learning, imitation learning and dexterous robotic manipulation in Australia.',
-    image: '/pairlab-humanoid.webp',
+    image: '/pairlab-zeno-lab.jpg',
     type: 'website',
     structuredData: [organisation],
   },

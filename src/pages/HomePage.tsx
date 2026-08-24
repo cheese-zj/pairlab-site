@@ -7,9 +7,10 @@ function HomePage() {
     <main className="home-page">
       <section className="home-hero" aria-labelledby="home-heading">
         <div className="home-photo" role="img" aria-label="Robotics systems in the PAIR Lab at the University of Sydney">
-          <img className="home-photo-humanoid" src="/pairlab-humanoid.webp" alt="" aria-hidden="true" fetchPriority="high" />
-          <img className="home-photo-dual-arm" src="/pairlab-dual-arm.webp" alt="" aria-hidden="true" decoding="async" />
+          <img className="home-photo-humanoid" src="/pairlab-zeno-lab.jpg" alt="" aria-hidden="true" fetchPriority="high" />
+          <img className="home-photo-dual-arm" src="/pairlab-mobile-manipulator.jpg" alt="" aria-hidden="true" decoding="async" />
           <img className="home-photo-demo" src="/pairlab-demo.webp" alt="" aria-hidden="true" decoding="async" />
+          <img className="home-photo-harbor" src="/pairlab-harbor-grain.png" alt="" aria-hidden="true" decoding="async" />
           <img className="home-photo-quadrangle" src="/usyd-quadrangle.webp" alt="" aria-hidden="true" decoding="async" />
         </div>
         <div className="home-panel">
