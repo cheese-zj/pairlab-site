@@ -273,6 +273,10 @@ button { font: inherit; }
   content: "";
 }
 
+/* Mosaic band. The hero's tile field compressed into a strip — the same
+   data-flow motif marking the major dark-ground boundaries site-wide. */
+.mosaic-band { display: block; width: 100%; height: clamp(54px, 6.5vw, 90px); }
+
 /* Shared footer */
 .site-footer { color: white; background: var(--ink); }
 .site-footer-inner { display: grid; width: min(100%, var(--content-max-width)); min-height: 72px; grid-template-columns: .75fr 1.4fr 1fr auto; gap: 36px; align-items: center; margin-inline: auto; padding: var(--space-5) max(4vw, 34px); }
@@ -326,6 +330,17 @@ button { font: inherit; }
 .home-themes h3 { max-width: 360px; margin: 112px 0 var(--space-6); font-size: clamp(32px, 3.2vw, 50px); font-weight: var(--weight-medium); line-height: .98; }
 .home-themes p { max-width: 390px; margin: 0; color: var(--on-light-3); font-size: 15px; line-height: 1.5; }
 
+/* Home: the newest ledger entries, surfaced ahead of the archive on /research. */
+.home-latest { color: white; background: var(--blue); }
+.home-latest-inner { width: min(100%, var(--content-max-width)); margin-inline: auto; padding: clamp(64px, 8vw, 108px) var(--page-gutter) clamp(58px, 7vw, 92px); }
+.home-latest-inner > header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4) var(--space-6); align-items: end; padding-bottom: var(--space-7); }
+.home-latest-inner > header span { color: var(--on-dark-4); font-size: var(--text-micro); font-weight: var(--weight-label); letter-spacing: .09em; text-transform: uppercase; }
+.home-latest-inner > header h2 { margin: var(--space-5) 0 0; font-size: clamp(38px, 4.6vw, 66px); font-weight: var(--weight-medium); font-stretch: var(--width-display); line-height: .94; letter-spacing: -.01em; }
+.home-latest-inner > header > a { display: inline-flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2); padding-bottom: var(--space-2); border-bottom: 1px solid var(--on-dark-4); font-size: 13px; font-weight: var(--weight-strong); }
+.home-latest-inner > header > a svg { transition: transform var(--dur-1) ease; }
+.home-latest-inner > header > a:hover svg { transform: translateX(4px); }
+.home-latest-list { border-top: 1px solid var(--rule-dark); }
+
 /* Routed pages */
 .route-page { min-height: 100svh; }
 .page-title { position: relative; display: grid; width: min(100%, var(--content-max-width)); grid-template-columns: 1fr auto; align-items: end; gap: var(--space-8); margin-inline: auto; padding: 112px var(--page-gutter) var(--space-9); }
@@ -356,7 +371,16 @@ button { font: inherit; }
 .research-publications { scroll-margin-top: calc(var(--nav-h) + 12px); }
 .research-intro { width: min(100%, var(--content-max-width)); margin-inline: auto; padding: 34px var(--page-gutter) clamp(68px, 8vw, 118px); }
 .research-intro p { max-width: 1160px; margin: 0; color: var(--on-light-2); font-size: clamp(24px, 3.2vw, 48px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1.16; letter-spacing: -.006em; }
-.research-intro strong { color: var(--ink); font-weight: var(--weight-strong); }
+/* Marker-pen emphasis: the claim reads highlighted, not merely bolder. */
+.research-intro strong {
+  color: var(--ink);
+  font-weight: var(--weight-strong);
+  padding: 0 .08em;
+  margin-inline: -.04em;
+  background: color-mix(in oklab, var(--yellow) 42%, transparent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
 .research-project-grid { display: grid; width: min(100%, var(--content-max-width)); grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-inline: auto; padding: 1px; background: var(--ink); }
 .research-project-card { --project-image: none; position: relative; display: flex; min-height: clamp(390px, 33vw, 520px); flex-direction: column; justify-content: space-between; overflow: hidden; padding: var(--space-6); color: white; border: 0; background: var(--ink); isolation: isolate; text-align: left; cursor: pointer; }
 .project-card-image { position: absolute; z-index: -4; inset: 0; background-image: var(--project-image); background-position: center; background-size: cover; transform: scale(1.01); transition: transform var(--dur-4) var(--ease-out), filter var(--dur-4) ease; }
@@ -586,6 +610,10 @@ button { font: inherit; }
   .home-intro { gap: 38px; padding: 72px var(--space-5); }
   .home-intro-heading h2 { font-size: 50px; }
   .home-intro-copy p { font-size: 15px; }
+  .home-latest-inner { padding: 62px var(--space-5) 54px; }
+  .home-latest-inner > header { grid-template-columns: 1fr; padding-bottom: var(--space-6); }
+  .home-latest-inner > header h2 { font-size: 40px; }
+  .home-latest-inner > header > a { justify-self: start; margin-bottom: 0; }
   .home-themes article { padding: 34px var(--space-5); }
   .page-title { grid-template-columns: 1fr; padding: 88px var(--space-5) 34px; }
   .page-title::after { right: var(--space-5); bottom: 18px; left: var(--space-5); }
@@ -655,6 +683,7 @@ button { font: inherit; }
   @media (prefers-reduced-motion: no-preference) {
     .home-intro-heading,
     .home-intro-copy,
+    .home-latest-inner > header,
     .research-areas > header,
     .publication-section-title,
     .project-demos > header,
@@ -669,6 +698,7 @@ button { font: inherit; }
     /* Whole year groups rather than every record: one composited layer per
        year instead of forty, and the archive reads as blocks anyway. */
     .home-themes article,
+    .home-latest-list,
     .research-project-card,
     .research-areas article,
     .publication-year-group,

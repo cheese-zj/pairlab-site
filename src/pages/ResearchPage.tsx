@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { publications } from '../publications'
-import type { Publication } from '../publications'
+import MosaicBand from '../components/MosaicBand'
+import { usePublications } from '../usePublications'
 import { researchProjects } from '../researchProjects'
 import type { ResearchProject } from '../researchProjects'
 
@@ -48,20 +47,8 @@ function ProjectCard({ project, index }: ProjectCardProps) {
 }
 
 function ResearchPage() {
-  const [publicationItems, setPublicationItems] = useState<Publication[]>(publications)
+  const publicationItems = usePublications()
   const publicationYears = [...new Set(publicationItems.map((publication) => publication.year))]
-
-  useEffect(() => {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return
-
-    const controller = new AbortController()
-    fetch('/api/publications', { signal: controller.signal })
-      .then((response) => response.json() as Promise<Publication[]>)
-      .then((items) => setPublicationItems(items))
-      .catch(() => undefined)
-
-    return () => controller.abort()
-  }, [])
 
   return (
     <main className="route-page research-page">
@@ -109,6 +96,7 @@ function ResearchPage() {
         </section>
 
         <section className="research-publications" id="publications" aria-labelledby="publications-title">
+          <MosaicBand />
           <header className="publication-section-title">
             <h2 id="publications-title">Publications</h2>
           </header>

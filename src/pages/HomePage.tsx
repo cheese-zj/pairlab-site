@@ -1,8 +1,13 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import MosaicFlow from '../components/MosaicFlow'
+import { usePublications } from '../usePublications'
+
+const LATEST_COUNT = 4
 
 function HomePage() {
+  const latestPublications = usePublications().slice(0, LATEST_COUNT)
+
   return (
     <main className="home-page">
       <section className="home-hero" aria-labelledby="home-heading">
@@ -55,6 +60,34 @@ function HomePage() {
           <h3>Reliable manipulation</h3>
           <p>Monitoring, intervention and constraints for long-horizon robot behaviour.</p>
         </article>
+      </section>
+
+      <section className="home-latest" aria-labelledby="home-latest-title">
+        <div className="home-latest-inner">
+          <header>
+            <div>
+              <span>Latest</span>
+              <h2 id="home-latest-title">Recent publications</h2>
+            </div>
+            <Link to="/research#publications">All publications <ArrowRight size={18} /></Link>
+          </header>
+          <div className="home-latest-list">
+            {latestPublications.map((publication) => (
+              <article className="publication-record" key={publication.id}>
+                <span className="publication-record-id">{publication.id}</span>
+                <div>
+                  <span className="publication-venue">{publication.venue}</span>
+                  <p className="publication-citation">{publication.citation}</p>
+                </div>
+                {publication.url ? (
+                  <a href={publication.url} target="_blank" rel="noreferrer" aria-label={`Read ${publication.citation}`}>
+                    <ArrowUpRight size={19} />
+                  </a>
+                ) : <span className="publication-record-spacer" aria-hidden="true" />}
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
     </main>
   )
