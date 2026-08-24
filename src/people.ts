@@ -4,6 +4,8 @@ export type PersonLink = {
   kind: 'linkedin' | 'scholar' | 'email' | 'profile'
 }
 
+export type PersonCategory = 'phd' | 'mphil' | 'honours' | 'undergrad'
+
 export type Person = {
   id: string
   slug: string
@@ -12,6 +14,7 @@ export type Person = {
   role: string
   image: string
   summary?: string
+  category?: PersonCategory
   links: PersonLink[]
 }
 
@@ -20,12 +23,13 @@ export const labLead: Person = {
   slug: 'weiming-zhi',
   name: 'Weiming (William) Zhi',
   surname: 'Zhi',
-  role: 'Lab Lead • Faculty',
+  role: 'Lab Lead',
   image: '/weiming-zhi.webp',
   summary: 'Robotics and Embodied AI researcher developing robots that see and act in unstructured environments.',
   links: [
     { label: 'Profile', href: 'https://www.weimingzhi.com/', kind: 'profile' },
     { label: 'Google Scholar', href: 'https://scholar.google.com/citations?hl=en&user=Y6MWNsQAAAAJ&view_op=list_works&sortby=pubdate', kind: 'scholar' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/williamzhi/', kind: 'linkedin' },
     { label: 'Email', href: 'mailto:weiming.zhi@sydney.edu.au', kind: 'email' },
   ],
 }
@@ -36,7 +40,8 @@ export const labMembers: Person[] = ([
     slug: 'mingyuan-ba',
     name: 'Mingyuan Ba',
     surname: 'Ba',
-    role: 'Member',
+    role: 'Honours Student',
+    category: 'honours',
     image: '/people/mingyuan-ba.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mingyuan-ba-425258412/', kind: 'linkedin' },
@@ -47,7 +52,8 @@ export const labMembers: Person[] = ([
     slug: 'zara-cui',
     name: 'Zara Cui',
     surname: 'Cui',
-    role: 'Member',
+    role: 'Undergraduate',
+    category: 'undergrad',
     image: '/people/linkedin-default-avatar.svg',
     links: [],
   },
@@ -56,7 +62,8 @@ export const labMembers: Person[] = ([
     slug: 'rubin-dai',
     name: 'Rubin Dai',
     surname: 'Dai',
-    role: 'Member',
+    role: 'Honours Student',
+    category: 'honours',
     image: '/people/rubin-dai.webp',
     links: [
       { label: 'LinkedIn', href: 'https://au.linkedin.com/in/rubin-dai-a30477285', kind: 'linkedin' },
@@ -67,7 +74,8 @@ export const labMembers: Person[] = ([
     slug: 'isa-he',
     name: 'Isa He',
     surname: 'He',
-    role: 'Member',
+    role: 'Undergraduate',
+    category: 'undergrad',
     image: '/people/linkedin-default-avatar.svg',
     links: [],
   },
@@ -76,7 +84,8 @@ export const labMembers: Person[] = ([
     slug: 'zihao-li',
     name: 'Zihao Li',
     surname: 'Li',
-    role: 'Member',
+    role: 'PhD Student',
+    category: 'phd',
     image: '/people/zihao-li.webp',
     links: [
       { label: 'Profile', href: 'https://jeong-zju.github.io/', kind: 'profile' },
@@ -88,7 +97,8 @@ export const labMembers: Person[] = ([
     slug: 'jieting-long',
     name: 'Jieting (Monica) Long',
     surname: 'Long',
-    role: 'Member',
+    role: 'PhD Student',
+    category: 'phd',
     image: '/people/jieting-long.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jieting-long/', kind: 'linkedin' },
@@ -99,7 +109,8 @@ export const labMembers: Person[] = ([
     slug: 'yijie-lu',
     name: 'Yijie Lu',
     surname: 'Lu',
-    role: 'Member',
+    role: 'MPhil Student',
+    category: 'mphil',
     image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/yijie-lu-252318299/', kind: 'linkedin' },
@@ -110,7 +121,8 @@ export const labMembers: Person[] = ([
     slug: 'bill-nguyen',
     name: 'Bill Nguyen',
     surname: 'Nguyen',
-    role: 'Member',
+    role: 'Undergraduate',
+    category: 'undergrad',
     image: '/people/linkedin-default-avatar.svg',
     links: [],
   },
@@ -119,7 +131,8 @@ export const labMembers: Person[] = ([
     slug: 'dave-pu',
     name: 'Dave Pu',
     surname: 'Pu',
-    role: 'Member',
+    role: 'Undergraduate',
+    category: 'undergrad',
     image: '/people/linkedin-default-avatar.svg',
     links: [],
   },
@@ -128,7 +141,8 @@ export const labMembers: Person[] = ([
     slug: 'zhaoyan-qian',
     name: 'Zhaoyan Qian',
     surname: 'Qian',
-    role: 'Member',
+    role: 'MPhil Student',
+    category: 'mphil',
     image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/zhaoyan-qian-a531a2248/', kind: 'linkedin' },
@@ -139,7 +153,8 @@ export const labMembers: Person[] = ([
     slug: 'ranpeng-qiu',
     name: 'Ranpeng Qiu',
     surname: 'Qiu',
-    role: 'Member',
+    role: 'PhD Student',
+    category: 'phd',
     image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ranpeng-qiu-6b304839a/', kind: 'linkedin' },
@@ -150,7 +165,8 @@ export const labMembers: Person[] = ([
     slug: 'jinhe-tang',
     name: 'Jinhe Tang',
     surname: 'Tang',
-    role: 'Member',
+    role: 'MPhil Student',
+    category: 'mphil',
     image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jinhe-tang-199aaa407/', kind: 'linkedin' },
@@ -162,7 +178,8 @@ export const labMembers: Person[] = ([
     slug: 'ellen-wang',
     name: 'Ellen Wang',
     surname: 'Wang',
-    role: 'Member',
+    role: 'MPhil Student',
+    category: 'mphil',
     image: '/people/ellen-wang.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ellen-wang-8905bb15a/', kind: 'linkedin' },
@@ -173,7 +190,8 @@ export const labMembers: Person[] = ([
     slug: 'james-zhao',
     name: 'James Zhao',
     surname: 'Zhao',
-    role: 'Member',
+    role: 'Honours Student',
+    category: 'honours',
     image: '/people/james-zhao.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/james-zhao-4947a121a/', kind: 'linkedin' },
@@ -185,7 +203,8 @@ export const labMembers: Person[] = ([
     slug: 'yanan-zhou',
     name: 'Yanan Zhou',
     surname: 'Zhou',
-    role: 'Member',
+    role: 'PhD Student',
+    category: 'phd',
     image: '/people/yanan-zhou.webp',
     links: [
       { label: 'Profile', href: 'https://yananzhou.me/', kind: 'profile' },
@@ -193,3 +212,21 @@ export const labMembers: Person[] = ([
     ],
   },
 ] satisfies Person[]).sort((a, b) => a.name.localeCompare(b.name, 'en'))
+
+export type PeopleSection = {
+  id: PersonCategory
+  title: string
+  people: Person[]
+}
+
+const sectionOrder: { id: PersonCategory, title: string }[] = [
+  { id: 'phd', title: 'PhD Students' },
+  { id: 'mphil', title: 'MPhil Students' },
+  { id: 'honours', title: 'Honours Students' },
+  { id: 'undergrad', title: 'Undergraduate Students' },
+]
+
+export const peopleSections: PeopleSection[] = sectionOrder.map((section) => ({
+  ...section,
+  people: labMembers.filter((person) => person.category === section.id),
+}))
