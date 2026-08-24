@@ -40,7 +40,7 @@ type TileSprite = {
   until: number
 }
 
-function MosaicBand({ ground = 'dark' }: { ground?: 'dark' | 'light' }) {
+function MosaicBand({ ground = 'dark', field = false }: { ground?: 'dark' | 'light', field?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -51,6 +51,9 @@ function MosaicBand({ ground = 'dark' }: { ground?: 'dark' | 'light' }) {
     if (!context) return
 
     const tileMix = TILE_MIXES[ground]
+    /* As a page-wide field the tiles sit behind reading matter, so the whole
+       mix is damped hard rather than retuned per colour — a murmur, not a show. */
+    const alphaScale = field ? 0.18 : 1
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let width = 0
@@ -117,7 +120,7 @@ function MosaicBand({ ground = 'dark' }: { ground?: 'dark' | 'light' }) {
 
           const [alphaMin, alphaMax] = tile.alpha
           const flicker = 0.86 + Math.sin(seconds * (0.5 + randomAt(column, row, 23)) + randomAt(column, row, 24) * Math.PI * 2) * 0.14
-          context.globalAlpha = Math.min(1, (alphaMin + randomAt(column, row, 25) * (alphaMax - alphaMin)) * flicker)
+          context.globalAlpha = Math.min(1, (alphaMin + randomAt(column, row, 25) * (alphaMax - alphaMin)) * flicker) * alphaScale
           context.drawImage(tile.sprite, x, y, TILE_SIZE, TILE_SIZE)
         }
       }
@@ -159,9 +162,18 @@ function MosaicBand({ ground = 'dark' }: { ground?: 'dark' | 'light' }) {
       visibilityObserver.disconnect()
       document.removeEventListener('visibilitychange', handleVisibility)
     }
-  }, [ground])
+  }, [ground, field])
 
-  return <canvas ref={canvasRef} className="mosaic-band" aria-hidden="true" />
+  /* A field fills its section as a quiet animated ground; a band gets the
+     wrapper carrying the full-bleed dashed cut lines along both edges — the
+     canvas itself is a replaced element and cannot. */
+  if (field) return <canvas ref={canvasRef} className="mosaic-field" aria-hidden="true" />
+
+  return (
+    <div className={`mosaic-cut${ground === 'light' ? ' is-light' : ''}`} aria-hidden="true">
+      <canvas ref={canvasRef} className="mosaic-band" />
+    </div>
+  )
 }
 
 export default MosaicBand

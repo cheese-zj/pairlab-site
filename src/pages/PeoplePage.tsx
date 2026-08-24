@@ -79,14 +79,10 @@ const sectionWash: Record<string, string> = {
 }
 
 function PeoplePage() {
-  const totalPeople = 1 + peopleSections.reduce((count, section) => count + section.people.length, 0)
-
   return (
     <main className="route-page people-page">
       <header className="page-title people-title">
-        <p>{totalPeople} researchers · faculty &amp; students · Sydney, Australia</p>
         <h1>People</h1>
-        <p className="people-title-note">The people building adaptable, intelligent robots at Sydney.</p>
       </header>
 
       <MosaicBand ground="light" />
