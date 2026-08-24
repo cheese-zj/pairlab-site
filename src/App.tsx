@@ -16,11 +16,18 @@ import NotFoundPage from './pages/NotFoundPage'
 const useRouteLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
 
   useRouteLayoutEffect(() => {
+    if (hash) {
+      const target = document.getElementById(hash.slice(1))
+      if (target) {
+        target.scrollIntoView({ behavior: 'instant' })
+        return
+      }
+    }
     window.scrollTo(0, 0)
-  }, [pathname])
+  }, [pathname, hash])
 
   return null
 }

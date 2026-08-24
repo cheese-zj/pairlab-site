@@ -1,13 +1,9 @@
 import { useEffect, useRef } from 'react'
+import { randomAt } from './mosaic'
 
 const TILE_PITCH = 21
 const TILE_SIZE = 18
 const FRAME_INTERVAL = 1000 / 24
-
-function randomAt(column: number, row: number, salt: number) {
-  const value = Math.sin((column + 1) * 127.1 + (row + 1) * 311.7 + salt * 74.7) * 43758.5453
-  return value - Math.floor(value)
-}
 
 function MosaicFlow() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
