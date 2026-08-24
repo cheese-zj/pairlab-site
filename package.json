@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir .prerender --emptyOutDir && node scripts/prerender.mjs",
     "check:cloudflare": "node scripts/check-cloudflare-assets.mjs",
+    "sync:publications": "node scripts/sync-publications.mjs",
     "preview": "vite preview",
     "lint": "eslint ."
   },

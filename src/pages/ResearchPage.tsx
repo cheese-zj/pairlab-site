@@ -56,19 +56,14 @@ function ResearchPage() {
 
   return (
     <main className="route-page research-page">
-      <header className="page-title research-title">
-        <p>{projectCount} projects · {publicationItems.length} publications · University of Sydney</p>
-        <h1>Research</h1>
-      </header>
-
-        <section className="research-showcase" id="showcase" aria-labelledby="showcase-title">
-          <h2 className="sr-only" id="showcase-title">Research showcase</h2>
-          <section className="research-intro" aria-label="Research overview">
-            <h2>From learned policies to <strong>capable physical behaviour</strong>.</h2>
+        {/* The claim opens the page directly — no separate title block. */}
+        <section className="research-showcase" id="showcase" aria-labelledby="research-claim">
+          <header className="research-intro">
+            <h1 id="research-claim">From learned policies to <strong>capable physical behaviour</strong>.</h1>
             <p>
               PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. Our work spans <mark className="hl-yellow">imitation learning</mark>, <mark className="hl-coral">dexterous and multi-arm manipulation</mark>, <mark className="hl-blue">collaborative robotics</mark>, <mark className="hl-green">policy monitoring</mark> and <mark className="hl-plum">constraint-aware motion</mark>.
             </p>
-          </section>
+          </header>
 
           <div className="section-strip" aria-hidden="true">
             <span>Showcase</span>
@@ -83,7 +78,6 @@ function ResearchPage() {
 
           <section className="research-areas plot-ground" aria-labelledby="research-areas-title">
             <header>
-              <span>Research focus</span>
               <h2 id="research-areas-title">How we approach physical intelligence</h2>
             </header>
             <div>

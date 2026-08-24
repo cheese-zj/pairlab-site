@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, Copy, Mail } from 'lucide-react'
+import MosaicBand from '../components/MosaicBand'
 
 const CONTACT_EMAIL = 'weiming.zhi@sydney.edu.au'
 
@@ -23,9 +24,9 @@ function JoinPage() {
   }
 
   return (
-    <main className="route-page join-page plot-ground">
+    <main className="route-page join-page">
+      <MosaicBand ground="light" field />
       <section className="join-heading">
-        <p>03 / Join</p>
         <h1>Work with us.</h1>
         <p>We welcome enquiries from prospective researchers and collaborators.</p>
         <button className="join-contact" type="button" onClick={copyEmail} data-copied={copied || undefined}>

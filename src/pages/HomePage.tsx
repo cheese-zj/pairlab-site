@@ -45,22 +45,26 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="home-themes" aria-label="PAIR Lab research themes">
-        <article data-accent="learning">
-          <span>01</span>
-          <h3><mark>Robot learning</mark></h3>
-          <p>Visuomotor and imitation-learning methods grounded in real robot experience.</p>
-        </article>
-        <article data-accent="dexterous">
-          <span>02</span>
-          <h3><mark>Physical intelligence</mark></h3>
-          <p>Systems that connect perception, action and contact in complex physical tasks.</p>
-        </article>
-        <article data-accent="reliable">
-          <span>03</span>
-          <h3><mark>Reliable manipulation</mark></h3>
-          <p>Monitoring, intervention and constraints for long-horizon robot behaviour.</p>
-        </article>
+      {/* The band spans the sheet and carries the rails; the card grid sits
+          one lining inside them like the rest of the printed content. */}
+      <section className="home-themes-band" aria-label="PAIR Lab research themes">
+        <div className="home-themes">
+          <article data-accent="learning">
+            <span>01</span>
+            <h3><mark>Robot learning</mark></h3>
+            <p>Visuomotor and imitation-learning methods grounded in real robot experience.</p>
+          </article>
+          <article data-accent="dexterous">
+            <span>02</span>
+            <h3><mark>Physical intelligence</mark></h3>
+            <p>Systems that connect perception, action and contact in complex physical tasks.</p>
+          </article>
+          <article data-accent="reliable">
+            <span>03</span>
+            <h3><mark>Reliable manipulation</mark></h3>
+            <p>Monitoring, intervention and constraints for long-horizon robot behaviour.</p>
+          </article>
+        </div>
       </section>
 
       <section className="home-latest" aria-labelledby="home-latest-title">
