@@ -21,7 +21,7 @@ export type Person = {
 export const labLead: Person = {
   id: '01',
   slug: 'weiming-zhi',
-  name: 'Weiming (William) Zhi',
+  name: 'Weiming Zhi',
   surname: 'Zhi',
   role: 'Lab Lead',
   image: '/weiming-zhi.webp',
@@ -30,7 +30,7 @@ export const labLead: Person = {
     { label: 'Profile', href: 'https://www.weimingzhi.com/', kind: 'profile' },
     { label: 'Google Scholar', href: 'https://scholar.google.com/citations?hl=en&user=Y6MWNsQAAAAJ&view_op=list_works&sortby=pubdate', kind: 'scholar' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/williamzhi/', kind: 'linkedin' },
-    { label: 'Email', href: 'mailto:weiming.zhi@sydney.edu.au', kind: 'email' },
+    { label: 'Email', href: 'mailto:wmzhi001@gmail.com', kind: 'email' },
   ],
 }
 

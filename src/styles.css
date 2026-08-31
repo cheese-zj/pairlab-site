@@ -415,21 +415,11 @@ mark {
 .site-footer-links a { font-size: var(--text-label); }
 .site-footer-inner > span { color: var(--on-dark-4); font-size: var(--text-micro); }
 
-/* Home: a slow laboratory-photo crossfade behind one vibrant information panel. */
+/* Home: the University of Sydney Quadrangle behind one vibrant information panel. */
 .home-page { min-height: 100svh; background: var(--ink); }
 .home-hero { position: relative; min-height: 100svh; overflow: hidden; }
 .home-photo { position: absolute; inset: 0; min-height: 650px; overflow: hidden; background: var(--ink); isolation: isolate; }
-.home-photo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; animation: home-photo-cycle 20s ease-in-out infinite; will-change: opacity; }
-.home-photo-humanoid { z-index: 1; object-position: 48% center; }
-.home-photo .home-photo-dual-arm { object-position: 44% center; animation-delay: -4s; }
-.home-photo .home-photo-demo { object-position: 52% center; animation-delay: -8s; }
-.home-photo .home-photo-harbor { object-position: center; animation-delay: -12s; }
-.home-photo .home-photo-quadrangle { object-position: center; animation-delay: -16s; }
-@keyframes home-photo-cycle {
-  0%, 20% { opacity: 1; }
-  25%, 95% { opacity: 0; }
-  100% { opacity: 1; }
-}
+.home-photo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .home-panel { position: relative; z-index: 1; display: flex; width: 68%; min-height: 100svh; flex-direction: column; justify-content: center; margin-left: auto; padding: var(--space-12) clamp(34px, 5vw, 84px) var(--space-11) clamp(34px, 5vw, 84px); color: white; isolation: isolate; }
 .home-panel::before { position: absolute; z-index: -2; inset: 0 auto 0 -47.1%; width: 147.1%; background: #0a0c0a; content: ""; mask-image: linear-gradient(90deg, transparent 0%, transparent 24%, rgba(0, 0, 0, .08) 38%, rgba(0, 0, 0, .38) 50%, rgba(0, 0, 0, .76) 62%, rgba(0, 0, 0, .94) 72%, #000 82%); }
 .mosaic-flow { position: absolute; z-index: -1; inset: 0 auto 0 -47.1%; width: 137.1%; height: 100%; pointer-events: none; mask-image: linear-gradient(90deg, transparent 0%, transparent 48%, rgba(0, 0, 0, .08) 54%, rgba(0, 0, 0, .38) 64%, rgba(0, 0, 0, .82) 76%, rgba(0, 0, 0, .42) 88%, transparent 100%); }
@@ -749,10 +739,7 @@ mark {
     content: "";
     pointer-events: none;
   }
-  .home-photo-humanoid { object-position: 46% center; }
-  .home-photo .home-photo-dual-arm { object-position: 43% center; }
-  .home-photo .home-photo-demo { object-position: 54% center; }
-  .home-photo .home-photo-quadrangle { object-position: 52% center; }
+  .home-photo img { object-position: 52% center; }
   .home-panel { width: 100%; min-height: 100svh; padding: var(--space-11) var(--space-5) var(--space-9); }
   .home-panel::before { inset: 0; width: 100%; mask-image: linear-gradient(0deg, #000 0%, #000 38%, rgba(0, 0, 0, .82) 54%, rgba(0, 0, 0, .28) 72%, transparent 92%); }
   .mosaic-flow { inset: 15% 0 40%; width: 100%; height: 45%; mask-image: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, .65) 22%, #000 48%, rgba(0, 0, 0, .72) 76%, transparent 100%); }
@@ -884,8 +871,6 @@ mark {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
-  .home-photo img { animation: none; }
-  .home-photo img + img { opacity: 0; }
   .research-project-card.has-hover-media:hover .project-card-hover { opacity: 0; background-image: none; }
   ::view-transition-old(*),
   ::view-transition-new(*) { animation: none !important; }

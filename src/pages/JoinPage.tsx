@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Check, Copy, Mail } from 'lucide-react'
 import MosaicBand from '../components/MosaicBand'
 
-const CONTACT_EMAIL = 'weiming.zhi@sydney.edu.au'
+const CONTACT_EMAIL = 'wmzhi001@gmail.com'
 
 function JoinPage() {
   const [copied, setCopied] = useState(false)
