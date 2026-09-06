@@ -152,4 +152,22 @@ export const researchProjects: ResearchProject[] = [
     summary: 'Constraint-aware post-training adaptation for safe, collision-free streaming flow policies.',
     description: 'CASF reshapes learned streaming-flow velocity fields with constraint-dependent metrics, enforcing collision avoidance, joint limits, and feasible workspaces without retraining.',
   },
+  {
+    id: '07',
+    slug: 'stereopatch',
+    title: 'StereoPatch',
+    subtitle: 'Patch-Aligned RGB–Depth Fusion for Spatial Perception in Robot Manipulation',
+    type: 'Spatial perception',
+    theme: 'learning',
+    image: '/stereopatch-bowl.jpg',
+    externalUrl: '/research/stereopatch/',
+    externalLabel: 'Visit project site',
+    topics: ['Spatial perception', 'RGB–depth fusion', 'Imitation learning'],
+    details: [
+      'StereoPatch retrieves registered DeFM geometry into DINOv3 RGB patch addresses before action decoding, forming a shared visual representation for ACT or Diffusion Policy.',
+      'Real-robot experiments examine spatially demanding manipulation tasks, including bowl extraction, cup transfer and peg insertion.',
+    ],
+    summary: 'Patch-aligned RGB–depth fusion for spatially demanding robot manipulation.',
+    description: 'StereoPatch connects visual appearance with metric geometry at the patches a robot policy already uses to choose its actions.',
+  },
 ]

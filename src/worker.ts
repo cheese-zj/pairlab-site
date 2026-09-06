@@ -7,6 +7,7 @@ type Env = {
 }
 
 const projectSites = [
+  { path: '/research/stereopatch', sourcePath: '/stereopatch', legacyPath: '/stereopatch', origin: 'https://yananzhou.me' },
   { path: '/research/patch', sourcePath: '/PATCH', legacyPath: '/PATCH', origin: 'https://yananzhou.me' },
   { path: '/research/trimanpolicy', sourcePath: '/trimanpolicy-site', legacyPath: '/trimanpolicy-site', origin: 'https://cheese-zj.github.io' },
   { path: '/research/nestdex', sourcePath: '/nestdex-site', legacyPath: '/nestdex-site', origin: 'https://cheese-zj.github.io' },
@@ -73,6 +74,8 @@ export default {
 
       const canonical = `https://aus.bot${projectSite.path}/`
       const html = (await projectResponse.text())
+        .replaceAll(`"${projectSite.sourcePath}/`, `"${projectSite.path}/`)
+        .replaceAll(`'${projectSite.sourcePath}/`, `'${projectSite.path}/`)
         .replace(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi, '')
         .replace(/<head([^>]*)>/i, `<head$1>\n    <link rel="canonical" href="${canonical}">`)
       const headers = new Headers(projectResponse.headers)

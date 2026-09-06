@@ -27,4 +27,6 @@ run_worker_first = [
   "/nestdex-site/*",
   "/AutoIntervene",
   "/AutoIntervene/*",
+  "/stereopatch",
+  "/stereopatch/*",
 ]
