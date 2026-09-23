@@ -170,4 +170,22 @@ export const researchProjects: ResearchProject[] = [
     summary: 'Patch-aligned RGB–depth fusion for spatially demanding robot manipulation.',
     description: 'StereoPatch connects visual appearance with metric geometry at the patches a robot policy already uses to choose its actions.',
   },
+  {
+    id: '08',
+    slug: 'mavp',
+    title: 'MAVP',
+    subtitle: 'Map-Aware Visuomotor Policies for Mobile Manipulation',
+    type: 'Mobile manipulation',
+    theme: 'learning',
+    image: '/mavp-bag-packing.webp',
+    externalUrl: '/research/mavp/',
+    externalLabel: 'Visit project site',
+    topics: ['Mobile manipulation', 'Visuomotor learning', 'Map-based localisation'],
+    details: [
+      'MAVP reconstructs a static map from demonstrations, aligns base poses in a shared map frame, and predicts base-pose targets alongside arm and gripper actions.',
+      'Localisation feedback tracks these targets during execution. Real-world experiments span six mobile manipulation tasks, including drawer packing, conveyor picking and bag packing.',
+    ],
+    summary: 'Map-aware visuomotor policies that coordinate mobile base motion with manipulation.',
+    description: 'MAVP gives mobile manipulation policies a shared spatial reference through map-frame base-pose targets and localisation feedback.',
+  },
 ]

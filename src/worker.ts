@@ -12,6 +12,7 @@ const projectSites = [
   { path: '/research/trimanpolicy', sourcePath: '/trimanpolicy-site', legacyPath: '/trimanpolicy-site', origin: 'https://cheese-zj.github.io' },
   { path: '/research/nestdex', sourcePath: '/nestdex-site', legacyPath: '/nestdex-site', origin: 'https://cheese-zj.github.io' },
   { path: '/research/autointervene', sourcePath: '/AutoIntervene', legacyPath: '/AutoIntervene', origin: 'https://123qwedsa123.github.io' },
+  { path: '/research/mavp', sourcePath: '/mavp', legacyPath: '/mavp', origin: 'https://123qwedsa123.github.io' },
 ]
 
 const movedPreviewSlugs = [

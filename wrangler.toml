@@ -29,4 +29,6 @@ run_worker_first = [
   "/AutoIntervene/*",
   "/stereopatch",
   "/stereopatch/*",
+  "/mavp",
+  "/mavp/*",
 ]

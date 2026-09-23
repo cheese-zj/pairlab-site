@@ -192,4 +192,5 @@ export const sitemapPaths = [
   '/research/nestdex/',
   '/research/autointervene/',
   '/research/stereopatch/',
+  '/research/mavp/',
 ]
