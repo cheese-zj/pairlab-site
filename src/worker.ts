@@ -13,6 +13,7 @@ const projectSites = [
   { path: '/research/nestdex', sourcePath: '/nestdex-site', legacyPath: '/nestdex-site', origin: 'https://cheese-zj.github.io' },
   { path: '/research/autointervene', sourcePath: '/AutoIntervene', legacyPath: '/AutoIntervene', origin: 'https://123qwedsa123.github.io' },
   { path: '/research/mavp', sourcePath: '/mavp', legacyPath: '/mavp', origin: 'https://123qwedsa123.github.io' },
+  { path: '/research/saki', sourcePath: '/saki-site', legacyPath: '/saki-site', origin: 'https://cheese-zj.github.io' },
 ]
 
 const movedPreviewSlugs = [

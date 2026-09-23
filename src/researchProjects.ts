@@ -188,4 +188,22 @@ export const researchProjects: ResearchProject[] = [
     summary: 'Map-aware visuomotor policies that coordinate mobile base motion with manipulation.',
     description: 'MAVP gives mobile manipulation policies a shared spatial reference through map-frame base-pose targets and localisation feedback.',
   },
+  {
+    id: '09',
+    slug: 'saki',
+    title: 'SAKI',
+    subtitle: 'Skill Assembly and Kinematic Imitation from Human Videos for Long-Horizon Mobile Manipulation',
+    type: 'Mobile manipulation',
+    theme: 'learning',
+    image: '/saki-overview.webp',
+    externalUrl: '/research/saki/',
+    externalLabel: 'Visit project site',
+    topics: ['Mobile manipulation', 'Object-centric imitation', 'Skill composition'],
+    details: [
+      'SAKI prepares reusable interaction requirements from human videos, retaining contact, orientation and terminal relations while allowing robot motion to adapt to the current scene.',
+      'Object-role bindings and whole-body kinematic imitation coordinate base, arm and gripper motion. Retained scene estimates and the preceding robot configuration connect independently prepared skills into longer mobile tasks.',
+    ],
+    summary: 'Reusable interactions from human videos, assembled into longer mobile manipulation tasks.',
+    description: 'SAKI separates reusable interaction requirements from scene-dependent robot motion, connecting human demonstrations through object-role binding and whole-body kinematic imitation.',
+  },
 ]

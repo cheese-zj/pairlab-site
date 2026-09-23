@@ -14,6 +14,7 @@ try {
     ['nestdex', '/nestdex-site', 'https://cheese-zj.github.io'],
     ['autointervene', '/AutoIntervene', 'https://123qwedsa123.github.io'],
     ['mavp', '/mavp', 'https://123qwedsa123.github.io'],
+    ['saki', '/saki-site', 'https://cheese-zj.github.io'],
   ]) {
     const canonical = `https://aus.bot/research/${slug}/`
     const redirect = await worker.fetch(new Request(canonical.slice(0, -1)), env)
@@ -52,7 +53,19 @@ try {
   globalThis.fetch = async () => new Response('Not found', { status: 404 })
   assert.equal((await worker.fetch(new Request('https://aus.bot/research/mavp/missing.webp'), env)).status, 404)
   assert.equal(await (await worker.fetch(new Request('https://aus.bot/research/preview/mavp/'), env)).text(), 'asset fallback')
-  console.log('Project proxy checks passed for all six project sites, including MAVP video ranges and missing assets.')
+  globalThis.fetch = async (request) => {
+    assert.equal(request.url, 'https://cheese-zj.github.io/saki-site/assets/overview.mp4?v=1')
+    assert.equal(request.headers.get('Range'), 'bytes=100-199')
+    return new Response('SAKI video chunk', { status: 206, headers: { 'Content-Type': 'video/mp4', 'Content-Range': 'bytes 100-199/18495750' } })
+  }
+  const sakiVideo = await worker.fetch(new Request('https://aus.bot/research/saki/assets/overview.mp4?v=1', { headers: { Range: 'bytes=100-199' } }), env)
+  assert.equal(sakiVideo.status, 206)
+  assert.equal(sakiVideo.headers.get('Content-Range'), 'bytes 100-199/18495750')
+  assert.equal(await sakiVideo.text(), 'SAKI video chunk')
+  globalThis.fetch = async () => new Response('Not found', { status: 404 })
+  assert.equal((await worker.fetch(new Request('https://aus.bot/research/saki/missing.webp'), env)).status, 404)
+  assert.equal(await (await worker.fetch(new Request('https://aus.bot/research/preview/saki/'), env)).text(), 'asset fallback')
+  console.log('Project proxy checks passed for all seven project sites, including MAVP and SAKI video ranges and missing assets.')
 } finally {
   globalThis.fetch = originalFetch
 }

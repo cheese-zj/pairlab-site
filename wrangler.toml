@@ -31,4 +31,6 @@ run_worker_first = [
   "/stereopatch/*",
   "/mavp",
   "/mavp/*",
+  "/saki-site",
+  "/saki-site/*",
 ]

@@ -193,4 +193,5 @@ export const sitemapPaths = [
   '/research/autointervene/',
   '/research/stereopatch/',
   '/research/mavp/',
+  '/research/saki/',
 ]
