@@ -5,7 +5,7 @@ const TILE_PITCH = 21
 const TILE_SIZE = 18
 const FRAME_INTERVAL = 1000 / 24
 
-function MosaicFlow() {
+function MosaicFlow({ paused = false }: { paused?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -15,13 +15,12 @@ function MosaicFlow() {
     const context = canvas.getContext('2d', { alpha: true })
     if (!context) return
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let width = 0
     let height = 0
     let ratio = 1
     let animationFrame = 0
     let lastFrame = 0
-    let isVisible = true
+    let inViewport = false
     let darkTileSprite: HTMLCanvasElement
     let lightTileSprite: HTMLCanvasElement
 
@@ -84,7 +83,7 @@ function MosaicFlow() {
           context.drawImage(darkTileSprite, x, y, TILE_SIZE, TILE_SIZE)
 
           const canSparkle = randomAt(column, row, 5) > 0.988
-          if (canSparkle && !reduceMotion) {
+          if (canSparkle && !paused) {
             const sparkleSpeed = 0.55 + randomAt(column, row, 6) * 0.4
             const sparklePhase = randomAt(column, row, 7) * Math.PI * 2
             const sparkleWave = Math.sin(seconds * sparkleSpeed + sparklePhase)
@@ -99,11 +98,21 @@ function MosaicFlow() {
     }
 
     const animate = (time: number) => {
-      if (isVisible && time - lastFrame >= FRAME_INTERVAL) {
+      animationFrame = 0
+      if (paused || !inViewport || document.hidden) return
+      if (time - lastFrame >= FRAME_INTERVAL) {
         draw(time)
         lastFrame = time
       }
       animationFrame = window.requestAnimationFrame(animate)
+    }
+
+    const syncPlayback = () => {
+      window.cancelAnimationFrame(animationFrame)
+      animationFrame = 0
+      if (!paused && inViewport && !document.hidden) {
+        animationFrame = window.requestAnimationFrame(animate)
+      }
     }
 
     /* Resizing the backing store wipes the bitmap, and the observer's initial
@@ -114,25 +123,24 @@ function MosaicFlow() {
       draw(lastFrame)
     })
     const visibilityObserver = new IntersectionObserver(([entry]) => {
-      isVisible = entry.isIntersecting && !document.hidden
+      inViewport = entry.isIntersecting
+      syncPlayback()
     })
-    const handleVisibility = () => { isVisible = !document.hidden }
 
     resizeObserver.observe(canvas)
     visibilityObserver.observe(canvas)
-    document.addEventListener('visibilitychange', handleVisibility)
+    document.addEventListener('visibilitychange', syncPlayback)
     resize()
 
-    if (reduceMotion) draw(0)
-    else animationFrame = window.requestAnimationFrame(animate)
+    draw(0)
 
     return () => {
       window.cancelAnimationFrame(animationFrame)
       resizeObserver.disconnect()
       visibilityObserver.disconnect()
-      document.removeEventListener('visibilitychange', handleVisibility)
+      document.removeEventListener('visibilitychange', syncPlayback)
     }
-  }, [])
+  }, [paused])
 
   return <canvas ref={canvasRef} className="mosaic-flow" aria-hidden="true" />
 }

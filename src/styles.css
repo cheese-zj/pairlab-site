@@ -164,9 +164,6 @@ mark {
 /* Instrument readouts. Identifiers, counts, years and section kickers are set
    like panel telemetry — one metadata voice across every page. */
 .page-title > p,
-.home-intro-heading > span,
-.home-latest-inner > header span,
-.home-themes article > span,
 .research-areas article > span,
 .section-strip,
 .project-card-meta,
@@ -190,8 +187,6 @@ mark {
 
 /* Section kickers boxed as drafting stamps: a hairline chip in the ground's
    own grey, so every sheet opens with the same small stamped label. */
-.home-intro-heading > span,
-.home-latest-inner > header span,
 .project-demos > header span,
 .publication-section-title > span,
 .not-found-page > span {
@@ -231,9 +226,6 @@ mark {
    crosses the whole bench, while rules inside a component stay contained.
    On phones the sheet is the viewport, so rails clear and cuts just span.
    ========================================================================== */
-.home-intro,
-.home-themes-band,
-.home-latest-inner,
 .publication-section-title,
 .publication-year-group,
 .project-hero,
@@ -248,8 +240,7 @@ mark {
 .people-join { border-inline: 1px solid var(--rail-light); }
 
 /* Blocks that did not already span the sheet become carriers of it. */
-.research-showcase,
-.home-themes-band { width: var(--sheet-w); margin-inline: auto; }
+.research-showcase { width: var(--sheet-w); margin-inline: auto; }
 
 /* Single-ground pages centre their content in flexible whitespace, so the
    rails ride one full-height overlay instead of the sections themselves. */
@@ -272,11 +263,9 @@ mark {
 .section-strip,
 .research-areas > div,
 .people-section > header,
-.home-latest-list,
 .project-demos > header,
 .publication-year-group,
 .join-types { position: relative; }
-.home-latest-list,
 .project-demos > header,
 .publication-year-group { --cut: var(--rule-dark); }
 /* Join's furniture shares one softened ink so its cuts and cell walls match. */
@@ -284,7 +273,6 @@ mark {
 .section-strip::before,
 .research-areas > div::before,
 .people-section > header::before,
-.home-latest-list::before,
 .project-demos > header::before,
 .publication-year-group::after,
 .join-types::before,
@@ -299,7 +287,6 @@ mark {
 }
 .section-strip::before,
 .research-areas > div::before,
-.home-latest-list::before,
 .project-demos > header::before,
 .join-types::before { top: 0; }
 .people-section > header::before,
@@ -371,6 +358,12 @@ mark {
 .site-nav[data-ground='dark'] { color: var(--on-dark); border-bottom: 1px solid var(--rule-dark-soft); background: color-mix(in oklab, var(--ink) 94%, transparent); }
 .site-nav[data-ground='light'] { color: var(--on-light); border-bottom: 1px solid var(--rule-light); background: color-mix(in oklab, var(--cream) 94%, transparent); }
 .site-nav.is-pinned { box-shadow: var(--shadow-1); }
+.site-nav { transition: box-shadow var(--dur-2) ease, background-color var(--dur-3) ease, border-color var(--dur-3) ease; }
+/* Homepage at rest: the bar floats clear over the photograph. */
+.site-nav.is-overlay { border-bottom-color: transparent; background: transparent; backdrop-filter: none; }
+.site-nav.is-overlay nav a,
+.site-nav.is-overlay .site-nav-brand { text-shadow: 0 1px 10px rgb(var(--scrim) / .5); }
+.site-nav.is-overlay nav a { color: color-mix(in oklab, currentColor 84%, transparent); }
 
 .site-nav-brand { display: inline-flex; align-items: center; gap: 11px; font-size: 15px; font-weight: var(--weight-strong); letter-spacing: -.005em; }
 .site-nav-brand img { width: 19px; height: 23px; object-fit: contain; }
@@ -415,56 +408,91 @@ mark {
 .site-footer-links a { font-size: var(--text-label); }
 .site-footer-inner > span { color: var(--on-dark-4); font-size: var(--text-micro); }
 
-/* Home: the University of Sydney Quadrangle behind one vibrant information panel. */
-.home-page { min-height: 100svh; background: var(--ink); }
-.home-hero { position: relative; min-height: 100svh; overflow: hidden; }
-.home-photo { position: absolute; inset: 0; min-height: 650px; overflow: hidden; background: var(--ink); isolation: isolate; }
-.home-photo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-.home-panel { position: relative; z-index: 1; display: flex; width: 68%; min-height: 100svh; flex-direction: column; justify-content: center; margin-left: auto; padding: var(--space-12) clamp(34px, 5vw, 84px) var(--space-11) clamp(34px, 5vw, 84px); color: white; isolation: isolate; }
-.home-panel::before { position: absolute; z-index: -2; inset: 0 auto 0 -47.1%; width: 147.1%; background: #0a0c0a; content: ""; mask-image: linear-gradient(90deg, transparent 0%, transparent 24%, rgba(0, 0, 0, .08) 38%, rgba(0, 0, 0, .38) 50%, rgba(0, 0, 0, .76) 62%, rgba(0, 0, 0, .94) 72%, #000 82%); }
-.mosaic-flow { position: absolute; z-index: -1; inset: 0 auto 0 -47.1%; width: 137.1%; height: 100%; pointer-events: none; mask-image: linear-gradient(90deg, transparent 0%, transparent 48%, rgba(0, 0, 0, .08) 54%, rgba(0, 0, 0, .38) 64%, rgba(0, 0, 0, .82) 76%, rgba(0, 0, 0, .42) 88%, transparent 100%); }
-.home-copy { width: min(540px, 100%); margin-left: auto; }
-.hero-wordmark { position: relative; width: 100%; margin: 0; line-height: 0; }
-.hero-wordmark img { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 218; object-fit: contain; object-position: left center; }
-.home-copy h2 { margin: var(--space-7) 0 var(--space-4); font-size: clamp(25px, 2.15vw, 33px); font-weight: var(--weight-body); line-height: 1.08; letter-spacing: -.015em; }
-.home-summary { max-width: 470px; margin: 0 0 var(--space-7); color: var(--on-dark-2); font-size: 16px; font-weight: var(--weight-body); line-height: 1.55; letter-spacing: .005em; }
-.home-copy > a { display: flex; justify-content: space-between; align-items: center; width: min(420px, 100%); min-height: 60px; padding: 10px var(--space-3) 10px 19px; color: var(--ink); border: 1px solid white; border-radius: var(--radius); background: white; box-shadow: var(--shadow-2); font-size: 13px; font-weight: var(--weight-strong); letter-spacing: .015em; transition: background var(--dur-1) ease, border-color var(--dur-1) ease, box-shadow var(--dur-1) ease, transform var(--dur-1) ease; }
-.home-copy > a:hover { border-color: var(--cream); background: var(--cream); box-shadow: var(--shadow-3); transform: translateY(-2px); }
-.home-copy > a:active { box-shadow: var(--shadow-1); transform: translateY(0); }
-.home-copy > a:focus-visible { outline: 2px solid white; outline-offset: 3px; }
-.home-copy > a svg { width: 34px; height: 34px; padding: var(--space-2); color: white; border-radius: 50%; background: var(--ink); transition: transform var(--dur-1) ease; }
-.home-copy > a:hover svg { transform: translateX(2px) rotate(-4deg); }
-.home-intro { --plot-line: var(--plot-line-dark); display: grid; width: var(--sheet-w); grid-template-columns: minmax(0, 1.22fr) minmax(340px, .78fr); gap: clamp(48px, 8vw, 140px); margin-inline: auto; padding: clamp(72px, 8vw, 124px) var(--sheet-pad); color: white; background: var(--ink); }
-.home-intro-heading > span { color: var(--on-dark-4); font-size: var(--text-micro); font-weight: var(--weight-label); letter-spacing: .09em; text-transform: uppercase; }
-.home-intro-heading h2 { max-width: 760px; margin: var(--space-6) 0 0; font-size: clamp(34px, 3.4vw, 54px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1.02; letter-spacing: -.008em; }
-.home-intro-copy { align-self: end; }
-.home-intro-copy p { margin: 0 0 var(--space-6); color: var(--on-dark-3); font-size: 17px; line-height: 1.58; }
-.home-intro-copy a { display: inline-flex; align-items: center; gap: var(--space-3); margin-top: 18px; padding-bottom: var(--space-2); border-bottom: 1px solid var(--on-dark-4); font-size: 13px; font-weight: var(--weight-strong); }
-.home-intro-copy a svg { transition: transform var(--dur-1) ease; }
-.home-intro-copy a:hover svg { transform: translateX(4px); }
-/* Home runs one dark ground end to end, so the cards are dark panels barely
-   lifted off the ink — the band spans the sheet and carries the rails, and
-   the grid sits one lining inside them. */
-.home-themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-inline: var(--sheet-pad); padding: 1px; color: var(--white); background: var(--rule-dark-soft); }
-.home-themes article { position: relative; padding: clamp(26px, 3vw, 44px) clamp(28px, 4vw, 58px) clamp(32px, 3.5vw, 52px); background: #151713; }
-.home-themes article::before { position: absolute; top: 0; left: 0; width: 52px; height: 3px; background: var(--accent); content: ""; }
-.home-themes article > span { color: var(--accent-bright); font-size: var(--text-micro); font-weight: var(--weight-label); }
-.home-themes h3 { margin: 48px 0 var(--space-4); font-size: clamp(23px, 1.9vw, 30px); font-weight: var(--weight-medium); line-height: 1.06; }
-.home-themes p { max-width: 390px; margin: 0; color: var(--on-dark-3); font-size: 15px; line-height: 1.5; }
-/* Marker pen on a dark card: the card's own accent washes under white type
-   instead of the cream-tuned washes, which would drown ink-coloured text. */
-.home-themes mark { color: var(--white); background: color-mix(in oklab, var(--accent) 32%, transparent); }
+/* Home returns to its original dark, animated identity. News and the recent
+   work row share its ink ground and ride the same sheet rails as every other
+   route, so the page reads as one continuous sheet below the photograph. */
+.home-page { color: var(--white); background: var(--ink); }
+.home-hero { position: relative; isolation: isolate; overflow: hidden; }
+.home-photo { position: absolute; z-index: -3; inset: 0; background: var(--ink); }
+.home-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 35% center; }
+/* One vertical scrim over both image and tiles: clear at the top, ink at the
+   bottom. No sideways scrim or second overlay changes that direction. */
+.home-hero::before { position: absolute; z-index: -1; inset: 0; background: linear-gradient(to top, var(--ink) 0%, color-mix(in srgb, var(--ink) 99%, transparent) 25%, color-mix(in srgb, var(--ink) 84%, transparent) 48%, color-mix(in srgb, var(--ink) 30%, transparent) 72%, transparent 100%); content: ""; pointer-events: none; }
+.mosaic-flow { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; pointer-events: none; mask-image: linear-gradient(90deg, transparent 8%, #000 24%, #000 34%, transparent 45%); }
+.home-stage { position: relative; display: flex; align-items: center; justify-content: center; width: var(--sheet-w); min-height: clamp(520px, 70svh, 720px); margin-inline: auto; padding: calc(var(--nav-h) + var(--space-11)) var(--sheet-pad) var(--space-9); }
+.home-copy { width: min(620px, 100%); min-width: 0; text-align: center; }
+.hero-wordmark { margin: 0; line-height: 0; }
+.hero-wordmark img { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 218; }
+.home-copy h2 { margin: var(--space-7) 0 var(--space-5); font-size: clamp(28px, 2.6vw, 40px); font-weight: var(--weight-display); line-height: 1.1; letter-spacing: -.02em; }
+.home-summary { max-width: 46ch; margin: 0 auto; color: var(--on-dark-2); font-size: 18px; line-height: 1.65; text-wrap: pretty; }
 
-/* Home: the newest ledger entries, surfaced ahead of the archive on /research.
-   On the all-dark home the ledger stays on ink; blue belongs to the archive. */
-.home-latest { color: white; background: var(--ink); }
-.home-latest-inner { width: var(--sheet-w); margin-inline: auto; padding: clamp(64px, 8vw, 108px) var(--sheet-pad) clamp(58px, 7vw, 92px); }
-.home-latest-inner > header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4) var(--space-6); align-items: end; padding-bottom: var(--space-7); }
-.home-latest-inner > header span { color: var(--on-dark-4); font-size: var(--text-micro); font-weight: var(--weight-label); letter-spacing: .09em; text-transform: uppercase; }
-.home-latest-inner > header h2 { margin: var(--space-5) 0 0; font-size: clamp(28px, 2.6vw, 40px); font-weight: var(--weight-medium); font-stretch: var(--width-display); line-height: .98; letter-spacing: -.008em; }
-.home-latest-inner > header > a { display: inline-flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2); padding-bottom: var(--space-2); border-bottom: 1px solid var(--on-dark-4); font-size: 13px; font-weight: var(--weight-strong); }
-.home-latest-inner > header > a svg { transition: transform var(--dur-1) ease; }
-.home-latest-inner > header > a:hover svg { transform: translateX(4px); }
+/* The hero's foot: a telemetry row between two drafting cuts, where the
+   photograph has fully faded and the sheet takes over. */
+.home-foot { position: relative; display: flex; justify-content: space-between; align-items: center; gap: var(--space-3) var(--space-6); width: var(--sheet-w); min-height: 48px; margin-inline: auto; padding: 0 var(--sheet-pad); color: var(--on-dark-4); font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--track-label); text-transform: uppercase; }
+.home-motion-toggle { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; margin-inline-start: auto; padding: 0; border: 0; color: var(--on-dark-3); background: transparent; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; transition: color var(--dur-1) ease; }
+/* A small status lamp: sand while the field is running, hollow when paused. */
+.home-motion-toggle::before { width: 7px; height: 7px; border: 1px solid currentColor; border-radius: 50%; background: var(--yellow); border-color: var(--yellow); content: ""; }
+.home-motion-toggle[aria-pressed='true']::before { background: transparent; border-color: currentColor; }
+.home-motion-toggle:hover { color: var(--white); }
+.home-motion-toggle:focus-visible { outline: 2px solid var(--white); outline-offset: var(--space-1); border-radius: 2px; }
+
+/* Stamped section kicker, shared by News and the recent work row. */
+.home-kicker { display: inline-block; width: fit-content; padding: 6px 9px 5px; color: var(--on-dark-4); border: 1px solid color-mix(in oklab, currentColor 38%, transparent); border-radius: 3px; font-family: var(--font-mono); font-size: var(--text-micro); font-weight: var(--weight-label); letter-spacing: var(--track-label); text-transform: uppercase; }
+
+/* Rails and viewport-wide cuts carry through the homepage sections. */
+.home-stage,
+.home-foot,
+.home-news-inner,
+.home-work-inner { border-inline: 1px solid var(--rail-dark); }
+.home-foot::before,
+.home-news-inner::before,
+.home-work-inner::before { position: absolute; top: 0; left: 50%; width: 100vw; border-top: 1px dashed var(--rule-dark); content: ""; translate: -50% 0; pointer-events: none; }
+
+/* Recent projects: the research showcase in miniature. */
+.home-work { color: var(--white); background: var(--ink); }
+.home-work-inner { position: relative; width: var(--sheet-w); margin-inline: auto; padding: clamp(48px, 5.5vw, 80px) 0 clamp(56px, 6vw, 88px); }
+.home-work-header { display: flex; justify-content: space-between; align-items: end; gap: var(--space-5); margin: 0 var(--sheet-pad) var(--space-8); }
+.home-work-header h2,
+.home-news-header h2 { margin: var(--space-5) 0 0; font-size: clamp(30px, 3vw, 46px); font-weight: var(--weight-medium); font-stretch: var(--width-display); line-height: .96; letter-spacing: -.01em; }
+.home-work-all { display: inline-flex; flex: none; align-items: center; gap: var(--space-2); min-height: 44px; color: var(--on-dark-2); font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--track-label); text-transform: uppercase; transition: color var(--dur-1) ease; }
+.home-work-all svg { transition: transform var(--dur-2) var(--ease-out); }
+.home-work-all:hover { color: var(--white); }
+.home-work-all:hover svg { transform: translateX(3px); }
+.home-work-all:focus-visible { outline: 2px solid var(--white); outline-offset: var(--space-1); border-radius: 2px; }
+.home-work-grid { background: var(--rule-dark-soft); }
+.home-work-grid .research-project-card { min-height: clamp(320px, 27vw, 420px); }
+
+/* News: a ledger in the same voice as the publications archive. */
+.home-news { color: var(--white); background: var(--ink); scroll-margin-top: var(--nav-h); }
+.home-news-inner { position: relative; width: var(--sheet-w); margin-inline: auto; padding: clamp(48px, 5.5vw, 80px) var(--sheet-pad) clamp(64px, 7vw, 104px); }
+.home-news-header { display: flex; flex-direction: column; align-items: flex-start; }
+.home-news-header p { max-width: 40ch; margin: var(--space-4) 0 0; color: var(--on-dark-3); font-size: 17px; line-height: 1.5; }
+.home-news-list { margin: var(--space-8) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule-dark); }
+.home-news-list > li { border-bottom: 1px solid var(--rule-dark-soft); }
+.home-news-list > li:last-child { border-bottom: 0; }
+.home-news-item { position: relative; display: grid; grid-template-columns: 150px minmax(0, 1fr) 36px; gap: clamp(20px, 3vw, 48px); align-items: start; padding-block: var(--space-7); }
+.home-news-item time { padding-top: 7px; color: var(--on-dark-3); font-family: var(--font-mono); font-size: var(--text-micro); font-variant-numeric: tabular-nums; letter-spacing: var(--track-label); line-height: 1.5; text-transform: uppercase; }
+.home-news-copy { min-width: 0; max-width: 72ch; }
+.home-news-item h3 { margin: 0; font-size: clamp(19px, 1.6vw, 23px); font-weight: var(--weight-medium); line-height: 1.32; letter-spacing: -.006em; overflow-wrap: anywhere; text-wrap: pretty; }
+/* The latest announcement leads at a larger size; the rest stay a ledger. */
+.home-news-list > li:first-child h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.22; letter-spacing: -.012em; }
+.home-news-item p { margin: var(--space-3) 0 0; color: var(--on-dark-2); font-size: 16px; line-height: 1.62; overflow-wrap: anywhere; text-wrap: pretty; }
+.home-news a { color: var(--white); text-decoration: underline; text-decoration-color: var(--rule-dark); text-decoration-thickness: 1px; text-underline-offset: .22em; transition: text-decoration-color var(--dur-1) ease; }
+.home-news a:hover { text-decoration-color: currentColor; }
+.home-news a:focus-visible { outline: 2px solid var(--white); outline-offset: var(--space-1); border-radius: 2px; }
+/* A linked record is clickable across its whole row; the headline stays the
+   one real link, so there is a single tab stop and a single accessible name. */
+.home-news-item.is-linked h3 a::after { position: absolute; inset: 0; content: ""; }
+.home-news-item.is-linked:hover h3 a { text-decoration-color: currentColor; }
+.home-news-go { display: grid; width: 36px; height: 36px; place-items: center; color: var(--white); border: 1px solid var(--on-dark-4); border-radius: 50%; transition: color var(--dur-2) ease, background var(--dur-2) ease, border-color var(--dur-2) ease, transform var(--dur-2) ease; }
+.home-news-item.is-linked:hover .home-news-go { color: var(--ink); border-color: var(--yellow); background: var(--yellow); transform: rotate(5deg); }
+.home-news-empty { margin-top: var(--space-7); padding-top: var(--space-6); border-top: 1px solid var(--rule-dark); }
+.home-news-empty p { max-width: 60ch; margin: 0; color: var(--on-dark-2); font-size: 17px; line-height: 1.6; }
+/* With nothing to announce yet the bulletin folds into one compact row:
+   title on the left, an honest note and onward links on the right. */
+.home-news.is-empty .home-news-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--space-6) clamp(40px, 6vw, 96px); align-items: end; padding-block: clamp(44px, 5vw, 72px); }
+.home-news.is-empty .home-news-empty { margin: 0; padding: var(--space-1) 0 var(--space-1) clamp(24px, 3vw, 40px); border-top: 0; border-left: 1px dashed var(--rule-dark); }
+.home-news-empty a { display: inline-block; padding-block: 10px; margin-block: -10px; }
 
 /* Routed pages */
 .route-page { min-height: 100svh; }
@@ -648,6 +676,8 @@ mark {
 .people-card-head span { color: var(--on-light-4); font-size: var(--text-micro); }
 .people-card h3 { margin: 0; font-size: clamp(17px, 1.3vw, 20px); font-weight: var(--weight-medium); line-height: 1.18; letter-spacing: -.004em; }
 .people-card > p { margin: 5px 0 0 22px; color: var(--on-light-3); font-size: 13px; line-height: 1.35; }
+/* An admitted member who has not started yet: a small stamped tag under the name. */
+.people-card > .people-card-status { width: fit-content; padding: 3px 6px 2px; color: var(--on-light-3); border: 1px solid color-mix(in oklab, currentColor 38%, transparent); border-radius: 3px; font-family: var(--font-mono); font-size: 10px; letter-spacing: var(--track-label); line-height: 1.3; text-transform: uppercase; }
 .people-card-links { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: var(--space-1); margin: var(--space-1) 0 0 14px; }
 .people-card-links a { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; color: var(--on-light-3); border-radius: 50%; transition: color var(--dur-1) ease, background var(--dur-1) ease; }
 .people-card-links a:hover { color: var(--cream); background: var(--ink); }
@@ -688,16 +718,16 @@ mark {
 
 @media (max-width: 1040px) {
   .research-project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .home-intro { grid-template-columns: 1fr; }
-  .home-intro-copy { max-width: 720px; }
+  /* Three recent projects stay one row until there is room for only one. */
+  .home-work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .people-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
-  .home-panel { width: 68%; }
   .research-project-card { min-height: 420px; }
-  .home-themes { grid-template-columns: 1fr; margin-inline: 0; }
-  .home-themes h3 { margin-top: 36px; }
+  .home-work-grid .research-project-card { min-height: 340px; padding: var(--space-5); }
+  .home-work-grid .project-card-title strong { font-size: 28px; }
+  .home-work-grid .project-card-action { width: 44px; height: 44px; }
   .research-areas > div { grid-template-columns: 1fr; }
   .research-areas article,
   .research-areas article + article { padding: 28px 0 36px; border-bottom: 1px dashed var(--rule-light-soft); }
@@ -726,35 +756,26 @@ mark {
   .site-footer-inner { grid-template-columns: 1fr 1fr; gap: 18px; padding: 22px var(--space-5); }
   .site-footer-inner p { display: none; }
   .site-footer-links { gap: 14px; }
-  .home-photo { min-height: 100%; }
-  /* The panel's mask runs bottom-to-top here, so the bar would sit on bare
-     photograph. The image carries its own top gradient instead of the bar
-     wearing a band: three of the four photos measure 1.6-3.0:1 without it. */
-  .home-photo::after {
-    position: absolute;
-    z-index: 2;
-    inset: 0 0 auto;
-    height: 210px;
-    background: linear-gradient(to bottom, rgb(var(--scrim) / .76) 0%, rgb(var(--scrim) / .62) 30%, rgb(var(--scrim) / .22) 66%, transparent 100%);
-    content: "";
-    pointer-events: none;
-  }
-  .home-photo img { object-position: 52% center; }
-  .home-panel { width: 100%; min-height: 100svh; padding: var(--space-11) var(--space-5) var(--space-9); }
-  .home-panel::before { inset: 0; width: 100%; mask-image: linear-gradient(0deg, #000 0%, #000 38%, rgba(0, 0, 0, .82) 54%, rgba(0, 0, 0, .28) 72%, transparent 92%); }
-  .mosaic-flow { inset: 15% 0 40%; width: 100%; height: 45%; mask-image: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, .65) 22%, #000 48%, rgba(0, 0, 0, .72) 76%, transparent 100%); }
-  .home-copy { margin-left: 0; }
-  .home-copy h2 { margin: var(--space-6) 0 15px; font-size: 27px; }
-  .home-summary { margin-bottom: 25px; font-size: 15px; }
-  .home-copy > a { width: 100%; }
-  .home-intro { gap: 38px; padding: 64px var(--space-5); }
-  .home-intro-heading h2 { font-size: 34px; }
-  .home-intro-copy p { font-size: 15px; }
-  .home-latest-inner { padding: 62px var(--space-5) 54px; }
-  .home-latest-inner > header { grid-template-columns: 1fr; padding-bottom: var(--space-6); }
-  .home-latest-inner > header h2 { font-size: 30px; }
-  .home-latest-inner > header > a { justify-self: start; margin-bottom: 0; }
-  .home-themes article { padding: 34px var(--space-5); }
+  .home-stage { min-height: 600px; align-items: flex-end; padding-top: 260px; padding-bottom: var(--space-10); }
+  .home-copy { width: 100%; max-width: 520px; margin-inline: auto; }
+  .home-photo img { object-position: 30% top; }
+  .mosaic-flow { mask-image: linear-gradient(0deg, transparent 52%, #000 68%, #000 85%, transparent 100%); }
+  .home-copy h2 { margin-top: var(--space-6); }
+  .home-summary { font-size: 17px; }
+  .home-foot { min-height: 44px; }
+  .home-foot-lead { display: none; }
+  .home-work-inner { padding: var(--space-9) 0 var(--space-10); }
+  .home-work-header { margin: 0 var(--space-5) var(--space-6); }
+  .home-work-grid { grid-template-columns: 1fr; margin-inline: 0; }
+  .home-work-grid .research-project-card { min-height: 300px; }
+  .home-news-inner { padding: var(--space-9) var(--space-5) var(--space-10); }
+  .home-news-header p { font-size: 16px; }
+  .home-news.is-empty .home-news-inner { grid-template-columns: 1fr; padding-block: var(--space-9) var(--space-10); }
+  .home-news.is-empty .home-news-empty { padding: var(--space-5) 0 0; border-top: 1px solid var(--rule-dark); border-left: 0; }
+  .home-news-list { margin-top: var(--space-6); }
+  .home-news-item { grid-template-columns: minmax(0, 1fr) 36px; gap: var(--space-2) var(--space-4); padding-block: var(--space-6); }
+  .home-news-item time { grid-column: 1 / -1; padding-top: 0; }
+  .home-news-item p { font-size: 15px; }
   .page-title { padding: 88px var(--space-5) 34px; }
   .page-title h1,
   .join-heading h1 { font-size: 44px; }
@@ -818,9 +839,6 @@ mark {
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .home-intro-heading,
-    .home-intro-copy,
-    .home-latest-inner > header,
     .research-areas > header,
     .publication-section-title,
     .project-demos > header,
@@ -834,8 +852,6 @@ mark {
 
     /* Whole year groups rather than every record: one composited layer per
        year instead of forty, and the archive reads as blocks anyway. */
-    .home-themes article,
-    .home-latest-list,
     .research-project-card,
     .research-areas article,
     .publication-year-group,

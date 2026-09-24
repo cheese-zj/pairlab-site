@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import MosaicBand from './MosaicBand'
 
 function SiteFooter() {
+  const isHome = useLocation().pathname === '/'
+
   return (
     <footer className="site-footer">
-      <MosaicBand />
+      {!isHome && <MosaicBand />}
       <div className="site-footer-inner">
         <Link to="/">PAIR Lab</Link>
         <p>School of Computer Science · The University of Sydney</p>

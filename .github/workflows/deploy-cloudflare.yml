@@ -21,8 +21,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
-      - run: npm run check:cloudflare
+      - name: Verify site
+        run: npm run check
       - name: Deploy
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         uses: cloudflare/wrangler-action@v3
@@ -32,4 +32,4 @@ jobs:
           command: deploy
       - name: Cloudflare setup notice
         if: env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == ''
-        run: echo "Build passed; Cloudflare deploy skipped until repository secrets are configured."
+        run: echo "Site checks passed; Cloudflare deploy skipped until repository secrets are configured."

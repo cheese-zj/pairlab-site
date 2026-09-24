@@ -1,51 +1,8 @@
-import type { CSSProperties } from 'react'
-import { ArrowUpRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import MosaicBand from '../components/MosaicBand'
+import ProjectCard from '../components/ProjectCard'
 import PublicationRecord from '../components/PublicationRecord'
 import { usePublications } from '../usePublications'
 import { researchProjects } from '../researchProjects'
-import type { ResearchProject } from '../researchProjects'
-
-type ProjectCardProps = {
-  project: ResearchProject
-  index: number
-}
-
-function ProjectCard({ project, index }: ProjectCardProps) {
-  const className = `research-project-card project-card-${index + 1}${project.hoverImage ? ' has-hover-media' : ''}${project.videos ? ' is-demo' : ''}`
-  const style = {
-    '--project-image': `url(${project.image})`,
-    '--project-hover-image': project.hoverImage ? `url(${project.hoverImage})` : 'none',
-  } as CSSProperties
-
-  const content = (
-    <>
-      <span className="project-card-image" aria-hidden="true" />
-      {project.hoverImage ? <span className="project-card-hover" aria-hidden="true" /> : null}
-      <span className="project-card-shade" aria-hidden="true" />
-      <span className="project-card-meta">
-        <span>{project.id}</span>
-        <span>{project.type}</span>
-      </span>
-      <span className="project-card-copy">
-        <span className="project-card-title">
-          <strong data-morph="project-title">{project.title}</strong>
-          {project.subtitle ? <span>{project.subtitle}</span> : null}
-        </span>
-        <span className="project-card-action" aria-hidden="true">
-          <ArrowUpRight size={24} />
-        </span>
-      </span>
-    </>
-  )
-
-  return (
-    <Link className={className} to={`/research/preview/${project.slug}`} style={style} data-accent={project.theme}>
-      {content}
-    </Link>
-  )
-}
 
 function ResearchPage() {
   const publicationItems = usePublications()

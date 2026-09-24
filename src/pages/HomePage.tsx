@@ -1,84 +1,71 @@
-import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useState, useSyncExternalStore } from 'react'
+import HomeNews from '../components/HomeNews'
+import HomeRecentWork from '../components/HomeRecentWork'
 import MosaicFlow from '../components/MosaicFlow'
-import PublicationRecord from '../components/PublicationRecord'
-import { usePublications } from '../usePublications'
+import { newsItems } from '../news'
 
-const LATEST_COUNT = 4
+const motionQuery = '(prefers-reduced-motion: reduce)'
+function subscribeToMotion(onChange: () => void) {
+  const query = window.matchMedia(motionQuery)
+  query.addEventListener('change', onChange)
+  return () => query.removeEventListener('change', onChange)
+}
+const prefersReducedMotion = () => window.matchMedia(motionQuery).matches
+// Start still during SSR/hydration; only opt into motion in the browser.
+const serverReducedMotion = () => true
 
 function HomePage() {
-  const latestPublications = usePublications().slice(0, LATEST_COUNT)
+  const reducedMotion = useSyncExternalStore(subscribeToMotion, prefersReducedMotion, serverReducedMotion)
+  const [paused, setPaused] = useState(false)
+  const motionEnabled = !reducedMotion && !paused
 
   return (
     <main className="home-page">
       <section className="home-hero" aria-labelledby="home-heading">
-        <div className="home-photo" role="img" aria-label="The University of Sydney Quadrangle">
-          <img src="/usyd-quadrangle.webp" alt="" aria-hidden="true" fetchPriority="high" />
+        <div className="home-photo" aria-hidden="true">
+          <img src="/usyd-quadrangle.webp" alt="" fetchPriority="high" />
         </div>
-        <div className="home-panel">
-          <MosaicFlow />
+        <MosaicFlow paused={!motionEnabled} />
+        <div className="home-stage">
           <div className="home-copy">
             <h1 className="hero-wordmark" id="home-heading">
-              <img src="/hero-wordmark.webp" alt="" aria-hidden="true" />
+              <img
+                src={motionEnabled ? '/hero-wordmark.webp' : '/hero-wordmark-still.webp'}
+                width="1440"
+                height="218"
+                alt=""
+                aria-hidden="true"
+              />
               <span className="sr-only">PAIR Lab — Physical AI and Robot Learning Research in Australia</span>
             </h1>
             <h2>Physical AI &amp; Robotics</h2>
-            <p className="home-summary">Robots that perceive, learn and move in the real world.</p>
-            <Link to="/research">Explore research <ArrowRight /></Link>
+            <p className="home-summary">We study how robots perceive, learn and act in the real world. A robotics research group at the University of Sydney.</p>
           </div>
         </div>
-      </section>
-
-      <section className="home-intro plot-ground" aria-labelledby="home-intro-title">
-        <div className="home-intro-heading">
-          <span>University of Sydney · Australia</span>
-          <h2 id="home-intro-title">Robot learning for useful, reliable physical intelligence.</h2>
-        </div>
-        <div className="home-intro-copy">
-          <p>PAIR Lab is a robotics research group at the University of Sydney. We study how robots can perceive, learn and act in unstructured environments, with a focus on manipulation that works beyond controlled laboratory demonstrations.</p>
-          <p>Our research connects imitation learning, dexterous manipulation, multi-robot collaboration and intervention-aware autonomy. We build and test physical systems to understand how learned robot behaviour can become more adaptable, capable and reliable.</p>
-          <Link to="/people">Meet the researchers <ArrowRight size={18} /></Link>
+        {/* The hero's foot joins the sheet: a drafting cut and one telemetry row,
+            which also carries the motion control as a quiet utility. */}
+        <div className="home-foot">
+          <span><span className="home-foot-lead">Robot learning research · </span>Sydney, Australia</span>
+          {!reducedMotion && (
+            <button className="home-motion-toggle" type="button" onClick={() => setPaused(!paused)} aria-pressed={paused}>
+              {paused ? 'Resume animation' : 'Pause animation'}
+            </button>
+          )}
         </div>
       </section>
-
-      {/* The band spans the sheet and carries the rails; the card grid sits
-          one lining inside them like the rest of the printed content. */}
-      <section className="home-themes-band" aria-label="PAIR Lab research themes">
-        <div className="home-themes">
-          <article data-accent="learning">
-            <span>01</span>
-            <h3><mark>Robot learning</mark></h3>
-            <p>Visuomotor and imitation-learning methods grounded in real robot experience.</p>
-          </article>
-          <article data-accent="dexterous">
-            <span>02</span>
-            <h3><mark>Physical intelligence</mark></h3>
-            <p>Systems that connect perception, action and contact in complex physical tasks.</p>
-          </article>
-          <article data-accent="reliable">
-            <span>03</span>
-            <h3><mark>Reliable manipulation</mark></h3>
-            <p>Monitoring, intervention and constraints for long-horizon robot behaviour.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="home-latest" aria-labelledby="home-latest-title">
-        <div className="home-latest-inner">
-          <header>
-            <div>
-              <span>Latest</span>
-              <h2 id="home-latest-title">Recent publications</h2>
-            </div>
-            <Link to="/research#publications">All publications <ArrowRight size={18} /></Link>
-          </header>
-          <div className="home-latest-list">
-            {latestPublications.map((publication) => (
-              <PublicationRecord publication={publication} key={publication.id} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Announcements lead once there are any; until then real project work
+          opens the page and the bulletin follows as a modest note. */}
+      {newsItems.length > 0 ? (
+        <>
+          <HomeNews />
+          <HomeRecentWork />
+        </>
+      ) : (
+        <>
+          <HomeRecentWork />
+          <HomeNews />
+        </>
+      )}
     </main>
   )
 }

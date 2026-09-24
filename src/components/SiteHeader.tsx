@@ -24,6 +24,9 @@ function SiteHeader() {
   const [pinned, setPinned] = useState(false)
   const [publicationsInView, setPublicationsInView] = useState(false)
   const ground = barGroundFor(pathname)
+  /* On the homepage the bar floats clear over the campus photograph and only
+     takes its ink ground once the page starts to scroll. */
+  const overlay = pathname === '/' && !pinned
 
   useEffect(() => {
     const onScroll = () => setPinned(window.scrollY > 8)
@@ -54,7 +57,7 @@ function SiteHeader() {
 
   return (
     <header
-      className={`site-nav${pinned ? ' is-pinned' : ''}`}
+      className={`site-nav${pinned ? ' is-pinned' : ''}${overlay ? ' is-overlay' : ''}`}
       data-ground={ground}
     >
       <div className="site-nav-inner">

@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir .prerender --emptyOutDir && node scripts/prerender.mjs",
     "check:cloudflare": "node scripts/check-cloudflare-assets.mjs",
+    "check:project-proxy": "node scripts/check-project-proxy.mjs",
+    "check:news": "node scripts/check-news.mjs",
+    "check": "npm run lint && npm run check:project-proxy && npm run check:news && npm run build && npm run check:cloudflare",
     "sync:publications": "node scripts/sync-publications.mjs",
     "preview": "vite preview",
     "lint": "eslint ."

@@ -4,3 +4,8 @@ dist
 *.local
 *.tsbuildinfo
 .wrangler
+.prerender/
+
+# Local agent state and verification artifacts; keep .pi/skills tracked.
+.pi/artifacts/
+.pi/handoffs/
