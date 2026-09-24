@@ -47,6 +47,7 @@ function PersonCard({ person, ordinal, showRole = false }: { person: Person, ord
         <h3>{person.name}</h3>
       </div>
       {showRole ? <p>{person.role}</p> : null}
+      {person.incoming ? <p className="people-card-status">Incoming</p> : null}
       {person.links.length > 0 ? (
         <div className="people-card-links">
           {person.links.map((link) => {

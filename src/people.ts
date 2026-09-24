@@ -15,6 +15,8 @@ export type Person = {
   image: string
   summary?: string
   category?: PersonCategory
+  /** Admitted but not yet started; shown with an "Incoming" tag, after current members. */
+  incoming?: boolean
   links: PersonLink[]
 }
 
@@ -45,6 +47,18 @@ export const labMembers: Person[] = ([
     image: '/people/mingyuan-ba.webp',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mingyuan-ba-425258412/', kind: 'linkedin' },
+    ],
+  },
+  {
+    id: '17',
+    slug: 'yingjie-bai',
+    name: 'Yingjie Bai',
+    surname: 'Bai',
+    role: 'Honours Student',
+    category: 'honours',
+    image: '/people/linkedin-default-avatar.svg',
+    links: [
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/yingjie-bai-785927276/', kind: 'linkedin' },
     ],
   },
   {
@@ -153,8 +167,9 @@ export const labMembers: Person[] = ([
     slug: 'ranpeng-qiu',
     name: 'Ranpeng Qiu',
     surname: 'Qiu',
-    role: 'PhD Student',
+    role: 'Incoming PhD Student',
     category: 'phd',
+    incoming: true,
     image: '/people/linkedin-default-avatar.svg',
     links: [
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ranpeng-qiu-6b304839a/', kind: 'linkedin' },
@@ -211,7 +226,7 @@ export const labMembers: Person[] = ([
       { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=5LHIpm4AAAAJ&hl=zh-CN', kind: 'scholar' },
     ],
   },
-] satisfies Person[]).sort((a, b) => a.name.localeCompare(b.name, 'en'))
+] satisfies Person[]).sort((a, b) => Number(Boolean(a.incoming)) - Number(Boolean(b.incoming)) || a.name.localeCompare(b.name, 'en'))
 
 export type PeopleSection = {
   id: PersonCategory
