@@ -91,31 +91,6 @@ export const researchProjects: ResearchProject[] = [
   },
   {
     id: '04',
-    slug: 'sai-dual-robot-collaboration',
-    title: 'SAI',
-    subtitle: 'A three-stage curriculum for dual-robot collaboration',
-    type: 'Demo',
-    theme: 'learning',
-    image: '/sai-dual-robot-poster.webp',
-    hoverImage: '/sai-dual-robot.gif',
-    videos: [
-      {
-        title: 'Dual-robot collaborative manipulation',
-        src: '/sai-dual-robot.mp4',
-        poster: '/sai-dual-robot-poster.webp',
-        caption: 'Coupled policies for dual-robot collaboration without synchronised dual-operator demonstrations or explicit inter-robot communication.',
-      },
-    ],
-    summary: 'A three-stage curriculum for learning coupled dual-robot collaboration policies.',
-    description: 'A collaborative mobile manipulation demo spanning bed making, laundry collection, and household interaction tasks.',
-    topics: ['Collaborative robotics', 'Mobile manipulation', 'Robot learning'],
-    details: [
-      'SAI explores a three-stage learning curriculum for collaborative robots carrying out coupled household manipulation tasks.',
-      'The demonstrations span bed making, laundry collection and household interaction without requiring synchronised dual-operator demonstrations or explicit inter-robot communication.',
-    ],
-  },
-  {
-    id: '05',
     slug: 'autointervene',
     title: 'AutoIntervene',
     subtitle: 'Calibrated Intervention for Action-Chunking Imitation Learning Policies',
@@ -134,7 +109,7 @@ export const researchProjects: ResearchProject[] = [
     description: 'AutoIntervene monitors action-chunking policies and provides calibrated intervention across long-horizon manipulation tasks.',
   },
   {
-    id: '06',
+    id: '05',
     slug: 'constraint-aware-streaming-flow',
     title: 'CASF',
     subtitle: 'Constraining Streaming Flow Models for Adapting Learned Robot Trajectory Distributions',
@@ -153,7 +128,7 @@ export const researchProjects: ResearchProject[] = [
     description: 'CASF reshapes learned streaming-flow velocity fields with constraint-dependent metrics, enforcing collision avoidance, joint limits, and feasible workspaces without retraining.',
   },
   {
-    id: '07',
+    id: '06',
     slug: 'stereopatch',
     title: 'StereoPatch',
     subtitle: 'Patch-Aligned RGB–Depth Fusion for Spatial Perception in Robot Manipulation',
@@ -171,7 +146,7 @@ export const researchProjects: ResearchProject[] = [
     description: 'StereoPatch connects visual appearance with metric geometry at the patches a robot policy already uses to choose its actions.',
   },
   {
-    id: '08',
+    id: '07',
     slug: 'mavp',
     title: 'MAVP',
     subtitle: 'Map-Aware Visuomotor Policies for Mobile Manipulation',
@@ -189,7 +164,7 @@ export const researchProjects: ResearchProject[] = [
     description: 'MAVP gives mobile manipulation policies a shared spatial reference through map-frame base-pose targets and localisation feedback.',
   },
   {
-    id: '09',
+    id: '08',
     slug: 'saki',
     title: 'SAKI',
     subtitle: 'Skill Assembly and Kinematic Imitation from Human Videos for Long-Horizon Mobile Manipulation',
