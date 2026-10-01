@@ -13,12 +13,22 @@ two pages, and make the project plates show the robots working.
   and zero-padded counts, demo-video numbers and publication record ids were
   all removed. None of them was a real order. The `id` field left the
   research catalogue; publication ids stay in data only as React keys.
-- **Research is organised by theme.** The three themes and their summaries
-  (`researchThemes` in `src/researchProjects.ts`) were a disconnected strip
-  at the foot of the page; they now head the groups of projects, and each
-  theme's accent marks its rule, its heading's marker wash and its plates.
-  Grids fill evenly whatever a theme holds: one project spans the sheet,
-  pairs and fours sit two across, threes three across.
+- **Visitors choose the order.** Research opens newest first as one grid;
+  a row of pills offers Newest, Oldest, By theme and A–Z. The choice lives
+  in the URL (`?order=oldest|theme|title`, omitted for newest) so it can be
+  shared; the page is prerendered newest-first and applies the URL's choice
+  after hydration. Where the browser supports view transitions (and motion
+  is allowed) the plates glide to their new places. Outside the theme view
+  a legend names the hue on each plate's top edge.
+- **Newest is by date added.** Each project's `added` date is the first
+  commit that put it in the catalogue (`git log --reverse -S "slug: '<slug>'"`);
+  same-day ties fall back to catalogue position. Set it for every new
+  project. The homepage's recent projects use the same order.
+- **By theme** groups projects under the three themes (`researchThemes` in
+  `src/researchProjects.ts`), newest first within each; each theme's accent
+  marks its rule, its heading's marker wash and its plates. Grids fill
+  evenly whatever a theme holds: one project spans the sheet, pairs and
+  fours sit two across, threes three across.
 - **Project plates.** The title sits centred on the project's still. Hover
   or keyboard focus plays the project's own demo loop, frames the plate in
   its theme's hue and moves the title down to the bottom edge, out of the

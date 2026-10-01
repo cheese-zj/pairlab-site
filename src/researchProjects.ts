@@ -7,6 +7,9 @@ export type ResearchProject = {
   subtitle?: string
   type: string
   theme: ResearchTheme
+  /** When the project joined the site (YYYY-MM-DD): the first commit that
+   *  added it to the catalogue. The research page sorts by it. */
+  added: string
   /**
    * Set when the opening image is a light diagram rather than a dark photograph,
    * so the site bar swaps its scrim for its own ground. Measured, not guessed:
@@ -57,6 +60,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Action-Chunk-Conditioned Latent Patch Innovation Monitoring for Robot Manipulation',
     type: 'Robot monitoring',
     theme: 'reliable',
+    added: '2026-07-12',
     heroTone: 'bright',
     image: '/patch-method.webp',
     hoverVideo: '/media/hover-patch.mp4',
@@ -76,6 +80,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Nested Policy Learning with Copilot Assisted Teleoperation for Dexterous Manipulation',
     type: 'Dexterous manipulation',
     theme: 'dexterous',
+    added: '2026-08-13',
     image: '/nestdex-overview.webp',
     hoverVideo: '/media/hover-nestdex.mp4',
     externalUrl: '/research/nestdex/',
@@ -94,6 +99,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Coordinated Tri-Manual Visuomotor Imitation Learning',
     type: 'Tri-manual learning',
     theme: 'learning',
+    added: '2026-07-12',
     image: '/trimanpolicy-baseline-dats.png',
     hoverVideo: '/media/hover-trimanpolicy.mp4',
     externalUrl: '/research/trimanpolicy/',
@@ -112,6 +118,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Calibrated Intervention for Action-Chunking Imitation Learning Policies',
     type: 'Robot intervention',
     theme: 'reliable',
+    added: '2026-07-13',
     image: '/autointervene-bag-poster.webp',
     hoverVideo: '/media/hover-autointervene.mp4',
     externalUrl: '/research/autointervene/',
@@ -130,6 +137,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Constraining Streaming Flow Models for Adapting Learned Robot Trajectory Distributions',
     type: 'Robot safety',
     theme: 'reliable',
+    added: '2026-08-07',
     heroTone: 'bright',
     image: '/casf-overview.webp',
     externalUrl: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11610877',
@@ -148,6 +156,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Patch-Aligned RGB–Depth Fusion for Spatial Perception in Robot Manipulation',
     type: 'Spatial perception',
     theme: 'learning',
+    added: '2026-09-06',
     image: '/stereopatch-bowl.jpg',
     externalUrl: '/research/stereopatch/',
     externalLabel: 'Visit project site',
@@ -165,6 +174,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Map-Aware Visuomotor Policies for Mobile Manipulation',
     type: 'Mobile manipulation',
     theme: 'learning',
+    added: '2026-09-23',
     image: '/mavp-bag-packing.webp',
     hoverVideo: '/media/hover-mavp.mp4',
     externalUrl: '/research/mavp/',
@@ -183,6 +193,7 @@ export const researchProjects: ResearchProject[] = [
     subtitle: 'Skill Assembly and Kinematic Imitation from Human Videos for Long-Horizon Mobile Manipulation',
     type: 'Mobile manipulation',
     theme: 'learning',
+    added: '2026-09-23',
     image: '/saki-overview.webp',
     hoverVideo: '/media/hover-saki.mp4',
     externalUrl: '/research/saki/',
@@ -196,3 +207,21 @@ export const researchProjects: ResearchProject[] = [
     description: 'SAKI separates reusable interaction requirements from scene-dependent robot motion, connecting human demonstrations through object-role binding and whole-body kinematic imitation.',
   },
 ]
+
+/* Orders a visitor can choose on the research page. Ties on the same day
+   fall back to catalogue position: later entries were added later. */
+export type ProjectOrder = 'newest' | 'oldest' | 'theme' | 'title'
+
+const cataloguePosition = new Map(researchProjects.map((project, index) => [project.slug, index]))
+const position = (project: ResearchProject) => cataloguePosition.get(project.slug) ?? 0
+
+export function newestFirst(left: ResearchProject, right: ResearchProject) {
+  return right.added.localeCompare(left.added) || position(right) - position(left)
+}
+
+export function sortProjects(projects: readonly ResearchProject[], order: Exclude<ProjectOrder, 'theme'>) {
+  const sorted = [...projects].sort(newestFirst)
+  if (order === 'oldest') return sorted.reverse()
+  if (order === 'title') return sorted.sort((left, right) => left.title.localeCompare(right.title, 'en', { sensitivity: 'base' }))
+  return sorted
+}

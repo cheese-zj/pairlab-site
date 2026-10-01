@@ -443,7 +443,26 @@ html[data-intro='play'] .intro-splash.is-opening { background: transparent; poin
 .research-intro p mark { font-weight: var(--weight-medium); }
 
 .research-theme { width: var(--sheet-w); margin-inline: auto; padding-top: clamp(48px, 6vw, 96px); }
-.research-intro + .research-theme { padding-top: var(--space-4); }
+
+/* Visitors choose the order: newest first by default, oldest, grouped by
+   theme, or by name. The choice is a row of pills; outside the theme view a
+   legend names the hue on each plate's top edge. */
+.research-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4) var(--space-6); width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad); }
+.research-order { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+.research-order > span { margin-right: var(--space-2); color: var(--on-light-3); font-size: var(--text-label); font-weight: var(--weight-label); }
+.research-order label { position: relative; cursor: pointer; }
+.research-order input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.research-order label > span { display: inline-block; padding: 7px var(--space-4); color: var(--on-light-2); border: 1px solid var(--rule-light); border-radius: var(--radius-pill); font-size: var(--text-label); font-weight: var(--weight-medium); transition: color var(--dur-1) ease, background-color var(--dur-2) ease, border-color var(--dur-2) ease; }
+.research-order label:hover > span { border-color: var(--ink); }
+.research-order input:checked + span { color: var(--cream); border-color: var(--ink); background: var(--ink); }
+.research-order input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
+.research-legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; color: var(--on-light-2); font-size: var(--text-micro); list-style: none; }
+.research-catalogue { width: var(--sheet-w); margin-inline: auto; padding-top: var(--space-6); }
+.research-toolbar + .research-theme { padding-top: var(--space-6); }
+/* While the order changes, each plate is its own view-transition layer and
+   glides from its old place to its new one. */
+.is-reordering .research-project-card { view-transition-name: var(--card-transition, none); }
+html.is-reordering::view-transition-group(*) { animation-duration: var(--dur-3); animation-timing-function: var(--ease-out); }
 /* A theme opens on a hairline, its hue marking where the rule begins. */
 .research-theme-header { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4) clamp(32px, 6vw, 96px); align-items: end; margin: 0 var(--sheet-pad) var(--space-7); padding-top: var(--space-6); border-top: 1px solid var(--rule-light); }
 .research-theme-header::before { position: absolute; top: -2px; left: 0; width: 52px; height: 3px; background: var(--accent-mid); content: ""; }
@@ -691,7 +710,9 @@ html[data-intro='play'] .intro-splash.is-opening { background: transparent; poin
   .page-title { padding: 88px var(--space-5) 34px; }
   .page-title h1,
   .join-heading h1 { font-size: 48px; }
-  .research-intro { padding: 92px var(--space-5) var(--space-4); }
+  .research-intro { padding: 92px var(--space-5) var(--space-6); }
+  .research-order > span { margin-right: var(--space-1); }
+  .research-order label > span { padding: 6px var(--space-3); font-size: 13px; }
   .research-project-grid,
   .research-project-grid[data-columns] { grid-template-columns: 1fr; margin-inline: var(--space-3); }
   .research-project-grid[data-columns] .research-project-card { --card-pad: var(--space-5); height: 360px; }

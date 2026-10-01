@@ -14,11 +14,12 @@ function demoAllowed() {
 
 /* One project plate, shared by the research page and the homepage's recent
    work so both open the same preview with the same title morph. At rest the
-   title sits centred on a dimmed still; hovering or focusing the plate plays
-   the project's own demo loop and the title steps down out of its way. */
+   title sits centred on the project's still; hovering or focusing the plate
+   plays the project's own demo loop and the title steps down out of its way. */
 export default function ProjectCard({ project }: { project: ResearchProject }) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const style = { '--project-image': `url(${project.image})` } as CSSProperties
+  // The transition name only takes effect while the research page reorders.
+  const style = { '--project-image': `url(${project.image})`, '--card-transition': `project-${project.slug}` } as CSSProperties
 
   const playDemo = () => {
     const video = videoRef.current
