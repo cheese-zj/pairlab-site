@@ -84,8 +84,8 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
     structuredData: [organisation],
   },
   '/research': {
-    title: 'Robotics Research & Publications | PAIR Lab Sydney',
-    description: 'Explore PAIR Lab projects and publications in physical intelligence, robot learning, manipulation, motion generation and collaborative robotics.',
+    title: 'Robotics Research Projects | PAIR Lab Sydney',
+    description: 'Explore PAIR Lab projects in learning from demonstration, dexterous manipulation and reliable autonomy for physical robots.',
     image: '/pairlab-dual-arm.webp',
     type: 'website',
     structuredData: [
@@ -95,7 +95,22 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
         '@type': 'CollectionPage',
         name: 'PAIR Lab robotics research',
         url: `${siteUrl}/research`,
-        description: 'Research projects and publications in physical AI, robot learning and robotic manipulation at the University of Sydney.',
+        description: 'Research projects in physical AI, robot learning and robotic manipulation at the University of Sydney.',
+        isPartOf: { '@id': `${siteUrl}/#organisation` },
+      },
+    ],
+  },
+  '/publications': {
+    title: 'Robotics Publications | PAIR Lab Sydney',
+    description: 'The PAIR Lab publication list: papers on robot learning, imitation learning, manipulation, motion generation and robot perception, by year.',
+    type: 'website',
+    structuredData: [
+      breadcrumb('/publications', 'Publications'),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'PAIR Lab publications',
+        url: `${siteUrl}/publications`,
         isPartOf: { '@id': `${siteUrl}/#organisation` },
       },
     ],
@@ -181,6 +196,7 @@ export const prerenderPaths = [
   '/',
   '/research',
   ...researchProjects.map((project) => `/research/preview/${project.slug}`),
+  '/publications',
   '/people',
   '/join',
 ]

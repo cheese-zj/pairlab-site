@@ -20,8 +20,8 @@ function HomeRecentWork() {
           </Link>
         </header>
         <div className="research-project-grid home-work-grid">
-          {recent.map((project, index) => (
-            <ProjectCard project={project} index={index} key={project.slug} />
+          {recent.map((project) => (
+            <ProjectCard project={project} key={project.slug} />
           ))}
         </div>
       </div>

@@ -67,6 +67,13 @@ try {
   assert.equal(await (await worker.fetch(new Request('https://aus.bot/research/preview/saki/'), env)).text(), 'asset fallback')
   console.log('Project proxy checks passed for all seven project sites, including MAVP and SAKI video ranges and missing assets.')
 
+  // Publications is its own page again: the old 301 to /research is gone.
+  for (const path of ['/publications', '/publications/']) {
+    const page = await worker.fetch(new Request(`https://aus.bot${path}`), env)
+    assert.equal(page.status, 200, `${path} reaches the static page`)
+    assert.equal(await page.text(), 'asset fallback')
+  }
+
   // Homepage film: the Worker answers byte ranges that static assets ignore.
   const film = '0123456789'
   const assetRequests = []

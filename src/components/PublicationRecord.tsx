@@ -9,7 +9,6 @@ function PublicationRecord({ publication }: { publication: Publication }) {
 
   return (
     <article className="publication-record">
-      <span className="publication-record-id">{publication.id}</span>
       <div>
         <span className="publication-venue">
           {venueText}
@@ -21,7 +20,7 @@ function PublicationRecord({ publication }: { publication: Publication }) {
         <a href={publication.url} target="_blank" rel="noreferrer" aria-label={`Read ${publication.citation}`}>
           <ArrowUpRight size={19} />
         </a>
-      ) : <span className="publication-record-spacer" aria-hidden="true" />}
+      ) : null}
     </article>
   )
 }

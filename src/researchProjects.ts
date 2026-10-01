@@ -2,7 +2,6 @@
 export type ResearchTheme = 'learning' | 'dexterous' | 'reliable'
 
 export type ResearchProject = {
-  id: string
   slug: string
   title: string
   subtitle?: string
@@ -16,7 +15,8 @@ export type ResearchProject = {
    */
   heroTone?: 'bright'
   image: string
-  hoverImage?: string
+  /** A short muted loop (public/media/hover-*.mp4) shown while a card is hovered or focused. */
+  hoverVideo?: string
   externalUrl?: string
   externalLabel?: string
   topics: string[]
@@ -31,9 +31,27 @@ export type ResearchProject = {
   description: string
 }
 
+/** The lab's three research themes, in the order the research page presents them. */
+export const researchThemes: Array<{ id: ResearchTheme, title: string, summary: string }> = [
+  {
+    id: 'learning',
+    title: 'Learning from demonstration',
+    summary: 'Visuomotor and action-chunking policies for robots learning coordinated behaviour from physical examples.',
+  },
+  {
+    id: 'dexterous',
+    title: 'Dexterous manipulation',
+    summary: 'Hands, tools and multiple robotic arms working through contact-rich, long-horizon tasks.',
+  },
+  {
+    id: 'reliable',
+    title: 'Reliable autonomy',
+    summary: 'Monitoring, calibrated intervention and constraint-aware adaptation for learned robot policies.',
+  },
+]
+
 export const researchProjects: ResearchProject[] = [
   {
-    id: '01',
     slug: 'patch',
     title: 'PATCH',
     subtitle: 'Action-Chunk-Conditioned Latent Patch Innovation Monitoring for Robot Manipulation',
@@ -41,7 +59,7 @@ export const researchProjects: ResearchProject[] = [
     theme: 'reliable',
     heroTone: 'bright',
     image: '/patch-method.webp',
-    hoverImage: '/patch-towel-rollout.gif',
+    hoverVideo: '/media/hover-patch.mp4',
     externalUrl: '/research/patch/#towel-demo',
     externalLabel: 'Visit project site',
     topics: ['Robot monitoring', 'Imitation learning', 'Reliable autonomy'],
@@ -53,13 +71,13 @@ export const researchProjects: ResearchProject[] = [
     description: 'PATCH monitors robot behaviour through action-conditioned perception and routes structured intervention when execution needs support.',
   },
   {
-    id: '02',
     slug: 'nestdex',
     title: 'NestDex',
     subtitle: 'Nested Policy Learning with Copilot Assisted Teleoperation for Dexterous Manipulation',
     type: 'Dexterous manipulation',
     theme: 'dexterous',
     image: '/nestdex-overview.webp',
+    hoverVideo: '/media/hover-nestdex.mp4',
     externalUrl: '/research/nestdex/',
     externalLabel: 'Visit project site',
     topics: ['Dexterous manipulation', 'Shared autonomy', 'Imitation learning'],
@@ -71,14 +89,13 @@ export const researchProjects: ResearchProject[] = [
     description: 'A nested policy-learning framework that turns reusable hand skills into reliable complete-task demonstrations and independent autonomous policies.',
   },
   {
-    id: '03',
     slug: 'trimanpolicy',
     title: 'TriManPolicy',
     subtitle: 'Coordinated Tri-Manual Visuomotor Imitation Learning',
     type: 'Tri-manual learning',
     theme: 'learning',
     image: '/trimanpolicy-baseline-dats.png',
-    hoverImage: '/triman-autonomous-hover.gif',
+    hoverVideo: '/media/hover-trimanpolicy.mp4',
     externalUrl: '/research/trimanpolicy/',
     externalLabel: 'Visit project site',
     topics: ['Visuomotor imitation learning', 'Multi-arm manipulation', 'Robot learning'],
@@ -90,14 +107,13 @@ export const researchProjects: ResearchProject[] = [
     description: 'An in-progress project studying coordinated visuomotor policies across three robotic arms.',
   },
   {
-    id: '04',
     slug: 'autointervene',
     title: 'AutoIntervene',
     subtitle: 'Calibrated Intervention for Action-Chunking Imitation Learning Policies',
     type: 'Robot intervention',
     theme: 'reliable',
     image: '/autointervene-bag-poster.webp',
-    hoverImage: '/autointervene-bag-hover.gif',
+    hoverVideo: '/media/hover-autointervene.mp4',
     externalUrl: '/research/autointervene/',
     externalLabel: 'Visit project site',
     topics: ['Robot intervention', 'Imitation learning', 'Long-horizon manipulation'],
@@ -109,7 +125,6 @@ export const researchProjects: ResearchProject[] = [
     description: 'AutoIntervene monitors action-chunking policies and provides calibrated intervention across long-horizon manipulation tasks.',
   },
   {
-    id: '05',
     slug: 'constraint-aware-streaming-flow',
     title: 'CASF',
     subtitle: 'Constraining Streaming Flow Models for Adapting Learned Robot Trajectory Distributions',
@@ -128,7 +143,6 @@ export const researchProjects: ResearchProject[] = [
     description: 'CASF reshapes learned streaming-flow velocity fields with constraint-dependent metrics, enforcing collision avoidance, joint limits, and feasible workspaces without retraining.',
   },
   {
-    id: '06',
     slug: 'stereopatch',
     title: 'StereoPatch',
     subtitle: 'Patch-Aligned RGB–Depth Fusion for Spatial Perception in Robot Manipulation',
@@ -146,13 +160,13 @@ export const researchProjects: ResearchProject[] = [
     description: 'StereoPatch connects visual appearance with metric geometry at the patches a robot policy already uses to choose its actions.',
   },
   {
-    id: '07',
     slug: 'mavp',
     title: 'MAVP',
     subtitle: 'Map-Aware Visuomotor Policies for Mobile Manipulation',
     type: 'Mobile manipulation',
     theme: 'learning',
     image: '/mavp-bag-packing.webp',
+    hoverVideo: '/media/hover-mavp.mp4',
     externalUrl: '/research/mavp/',
     externalLabel: 'Visit project site',
     topics: ['Mobile manipulation', 'Visuomotor learning', 'Map-based localisation'],
@@ -164,13 +178,13 @@ export const researchProjects: ResearchProject[] = [
     description: 'MAVP gives mobile manipulation policies a shared spatial reference through map-frame base-pose targets and localisation feedback.',
   },
   {
-    id: '08',
     slug: 'saki',
     title: 'SAKI',
     subtitle: 'Skill Assembly and Kinematic Imitation from Human Videos for Long-Horizon Mobile Manipulation',
     type: 'Mobile manipulation',
     theme: 'learning',
     image: '/saki-overview.webp',
+    hoverVideo: '/media/hover-saki.mp4',
     externalUrl: '/research/saki/',
     externalLabel: 'Visit project site',
     topics: ['Mobile manipulation', 'Object-centric imitation', 'Skill composition'],

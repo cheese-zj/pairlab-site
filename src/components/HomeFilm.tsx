@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { MouseEvent } from 'react'
 import { Pause, Play, X } from 'lucide-react'
 
@@ -15,6 +15,22 @@ const film = {
   poster: '/pairlab-film-poster.webp',
   duration: '1:00',
 }
+
+/* On wide screens the frame rests scaled down so the whole picture fits under
+   the intro on the first screen, then grows to full bleed as the page
+   scrolls (see .home-film in styles.css). The resting scale depends on where
+   the frame starts, so it is measured: once by an inline script before first
+   paint, so nothing jumps at hydration, and again after resizes and webfont
+   swaps. Self-contained on purpose: its source is inlined into the page. */
+function fitFilmFrame() {
+  const frame = document.querySelector<HTMLElement>('.home-film')
+  if (!frame) return
+  const top = frame.getBoundingClientRect().top + window.scrollY
+  const scale = (window.innerHeight - top - 24) / frame.offsetHeight
+  document.documentElement.style.setProperty('--film-rest-scale', String(Math.min(1, Math.max(0.5, scale)).toFixed(3)))
+}
+const fitFilmFrameScript = `(${fitFilmFrame.toString()})()`
+const useClientLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 // A hidden tab never plays the reel, and a returning one picks it back up.
 function subscribeToVisibility(onChange: () => void) {
@@ -45,6 +61,21 @@ function HomeFilm({ motionEnabled, onToggleMotion }: HomeFilmProps) {
   const [filmOpen, setFilmOpen] = useState(false)
   const pageVisible = useSyncExternalStore(subscribeToVisibility, pageIsVisible, serverPageIsVisible)
   const shouldPlay = motionEnabled && onScreen && pageVisible && !filmOpen
+
+  useClientLayoutEffect(() => {
+    fitFilmFrame()
+    let resizeFrame = 0
+    const onResize = () => {
+      window.cancelAnimationFrame(resizeFrame)
+      resizeFrame = window.requestAnimationFrame(fitFilmFrame)
+    }
+    window.addEventListener('resize', onResize)
+    document.fonts?.ready.then(fitFilmFrame).catch(() => {})
+    return () => {
+      window.cancelAnimationFrame(resizeFrame)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [])
 
   useEffect(() => {
     const frame = frameRef.current
@@ -126,6 +157,7 @@ function HomeFilm({ motionEnabled, onToggleMotion }: HomeFilmProps) {
           ) : null}
         </div>
       </div>
+      <script dangerouslySetInnerHTML={{ __html: fitFilmFrameScript }} />
 
       <dialog className="film-dialog" ref={dialogRef} aria-label="PAIR Lab film" onClose={onFilmClosed} onClick={onDialogClick}>
         <button className="film-dialog-close" type="button" onClick={closeFilm} aria-label="Close film" autoFocus>

@@ -1,97 +1,63 @@
-import MosaicBand from '../components/MosaicBand'
+import { useEffect } from 'react'
+import { ArrowRight } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ProjectCard from '../components/ProjectCard'
-import PublicationRecord from '../components/PublicationRecord'
-import { usePublications } from '../usePublications'
-import { researchProjects } from '../researchProjects'
+import { researchProjects, researchThemes } from '../researchProjects'
+
+/* Rows fill evenly whatever a theme holds: one project spans the sheet, pairs
+   and fours sit two across, threes and everything else three across. */
+function columnsFor(count: number) {
+  if (count === 1) return 1
+  if (count % 3 === 0) return 3
+  if (count % 2 === 0) return 2
+  return 3
+}
 
 function ResearchPage() {
-  const publicationItems = usePublications()
-  const publicationYears = [...new Set(publicationItems.map((publication) => publication.year))]
-  const firstYear = Math.min(...publicationYears)
-  const lastYear = Math.max(...publicationYears)
-  const projectCount = String(researchProjects.length).padStart(2, '0')
+  const { hash } = useLocation()
+  const navigate = useNavigate()
+
+  /* Publications used to live further down this page. Fragments never reach
+     the Worker, so old /research#publications links are forwarded here. */
+  useEffect(() => {
+    if (hash === '#publications') navigate('/publications', { replace: true })
+    else if (hash.startsWith('#publication-year-')) navigate(`/publications${hash}`, { replace: true })
+  }, [hash, navigate])
 
   return (
     <main className="route-page research-page">
-        {/* The claim opens the page directly — no separate title block. */}
-        <section className="research-showcase" id="showcase" aria-labelledby="research-claim">
-          <header className="research-intro">
-            <h1 id="research-claim">From learned policies to <strong>capable physical behaviour</strong>.</h1>
-            <p>
-              PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. Our work spans <mark className="hl-yellow">imitation learning</mark>, <mark className="hl-coral">dexterous and multi-arm manipulation</mark>, <mark className="hl-blue">collaborative robotics</mark>, <mark className="hl-green">policy monitoring</mark> and <mark className="hl-plum">constraint-aware motion</mark>.
-            </p>
-          </header>
+      <header className="research-intro">
+        <h1>From learned policies to capable physical behaviour.</h1>
+        <p>
+          PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. Our work spans imitation learning, dexterous and multi-arm manipulation, collaborative robotics, policy monitoring and constraint-aware motion.
+        </p>
+      </header>
 
-          <div className="section-strip" aria-hidden="true">
-            <span>Showcase</span>
-            <span>01–{projectCount}</span>
-          </div>
+      {researchThemes.map((theme) => {
+        const projects = researchProjects.filter((project) => project.theme === theme.id)
+        if (projects.length === 0) return null
 
-          <section className="research-project-grid" aria-label="Showcase projects">
-            {researchProjects.map((project, index) => (
-              <ProjectCard project={project} index={index} key={project.slug} />
-            ))}
-          </section>
-
-          <section className="research-areas" aria-labelledby="research-areas-title">
-            <header>
-              <h2 id="research-areas-title">How we approach physical intelligence</h2>
+        return (
+          <section className="research-theme" data-accent={theme.id} aria-labelledby={`theme-${theme.id}`} key={theme.id}>
+            <header className="research-theme-header">
+              <h2 id={`theme-${theme.id}`}>{theme.title}</h2>
+              <p>{theme.summary}</p>
             </header>
-            <div>
-              <article data-accent="learning">
-                <span>01</span>
-                <h3><mark>Learning from demonstration</mark></h3>
-                <p>Visuomotor and action-chunking policies for robots learning coordinated behaviour from physical examples.</p>
-              </article>
-              <article data-accent="dexterous">
-                <span>02</span>
-                <h3><mark>Dexterous manipulation</mark></h3>
-                <p>Hands, tools and multiple robotic arms working through contact-rich, long-horizon tasks.</p>
-              </article>
-              <article data-accent="reliable">
-                <span>03</span>
-                <h3><mark>Reliable autonomy</mark></h3>
-                <p>Monitoring, calibrated intervention and constraint-aware adaptation for learned robot policies.</p>
-              </article>
+            <div className="research-project-grid" data-columns={columnsFor(projects.length)}>
+              {projects.map((project) => (
+                <ProjectCard project={project} key={project.slug} />
+              ))}
             </div>
           </section>
-        </section>
+        )
+      })}
 
-        <section className="research-publications" id="publications" aria-labelledby="publications-title">
-          <MosaicBand />
-          <header className="publication-section-title">
-            <span>Archive</span>
-            <h2 id="publications-title">Publications</h2>
-            <div className="publication-section-meta">
-              <p>{publicationItems.length} records · {firstYear}–{lastYear}</p>
-              <nav aria-label="Jump to a publication year">
-                {publicationYears.map((year) => (
-                  <a key={year} href={`#publication-year-${year}`}>{year}</a>
-                ))}
-              </nav>
-            </div>
-          </header>
-
-          <div className="publication-year-list">
-            {publicationYears.map((year) => {
-              const yearPublications = publicationItems.filter((publication) => publication.year === year)
-
-              return (
-                <section className="publication-year-group" aria-labelledby={`publication-year-${year}`} key={year}>
-                  <div className="publication-year-marker">
-                    <h3 id={`publication-year-${year}`}>{year}</h3>
-                    <span>{yearPublications.length} {yearPublications.length === 1 ? 'paper' : 'papers'}</span>
-                  </div>
-                  <div>
-                    {yearPublications.map((publication) => (
-                      <PublicationRecord publication={publication} key={publication.id} />
-                    ))}
-                  </div>
-                </section>
-              )
-            })}
-          </div>
-        </section>
+      <aside className="page-onward">
+        <Link to="/publications">
+          <span>Papers and venues, year by year</span>
+          <strong>Publications <ArrowRight size={18} aria-hidden="true" /></strong>
+        </Link>
+      </aside>
     </main>
   )
 }
