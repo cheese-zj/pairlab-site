@@ -428,14 +428,26 @@ html[data-intro='play'] .intro-splash.is-opening { background: transparent; poin
 .research-page { background: var(--cream); }
 .research-intro { padding: clamp(128px, 15vh, 168px) var(--sheet-pad) clamp(40px, 5vw, 72px); text-align: center; }
 .research-intro h1 { max-width: 1040px; margin: 0 auto; font-size: clamp(38px, 4.6vw, 74px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1.02; letter-spacing: var(--track-display); text-wrap: balance; }
-.research-intro p { max-width: 640px; margin: clamp(20px, 2.2vw, 30px) auto 0; color: var(--on-light-2); font-size: clamp(16px, 1.3vw, 19px); line-height: 1.62; text-wrap: pretty; }
+.research-intro p { max-width: 660px; margin: clamp(20px, 2.2vw, 30px) auto 0; color: var(--on-light-2); font-size: clamp(16px, 1.3vw, 19px); line-height: 1.62; }
+/* Marker-pen emphasis: the claim reads highlighted, not merely bolder. */
+.research-intro strong {
+  color: var(--ink);
+  font-weight: var(--weight-strong);
+  padding: 0 .08em;
+  margin-inline: -.04em;
+  background: color-mix(in oklab, var(--yellow) 42%, transparent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+/* In running text the marked themes also firm up in weight. */
+.research-intro p mark { font-weight: var(--weight-medium); }
 
 .research-theme { width: var(--sheet-w); margin-inline: auto; padding-top: clamp(48px, 6vw, 96px); }
 .research-intro + .research-theme { padding-top: var(--space-4); }
 /* A theme opens on a hairline, its hue marking where the rule begins. */
 .research-theme-header { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4) clamp(32px, 6vw, 96px); align-items: end; margin: 0 var(--sheet-pad) var(--space-7); padding-top: var(--space-6); border-top: 1px solid var(--rule-light); }
 .research-theme-header::before { position: absolute; top: -2px; left: 0; width: 52px; height: 3px; background: var(--accent-mid); content: ""; }
-.research-theme-header h2 { margin: 0; font-size: clamp(28px, 2.8vw, 46px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1; letter-spacing: var(--track-heading); }
+.research-theme-header h2 { margin: 0; font-size: clamp(28px, 2.8vw, 46px); font-weight: var(--weight-medium); font-stretch: var(--width-display); line-height: 1; letter-spacing: var(--track-heading); }
 .research-theme-header p { justify-self: end; max-width: 46ch; margin: 0; color: var(--on-light-3); font-size: 16px; line-height: 1.55; text-wrap: pretty; }
 
 /* Project plates stand apart on the ground, each a rounded media frame. */
@@ -443,32 +455,40 @@ html[data-intro='play'] .intro-splash.is-opening { background: transparent; poin
 .research-project-grid[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .research-project-grid[data-columns='1'] { grid-template-columns: minmax(0, 1fr); }
 
-/* At rest the title sits centred on a dimmed still. Hovering or focusing the
-   plate plays the project's demo loop at full strength and the title steps
-   down to the bottom edge, out of the footage's way. The plate is its own
-   size container, so the title travels exactly to its padding line. */
+/* At rest the title sits centred on the project's still, in its own colour;
+   only light diagrams are dimmed to carry white type. Hovering or focusing
+   the plate plays the project's demo loop, frames it in the theme's hue and
+   moves the title down to the bottom edge, out of the footage's way. The
+   plate is its own size container, so the title travels exactly to its
+   padding line. */
 .research-project-card { --project-image: none; --card-pad: var(--space-6); position: relative; display: flex; height: clamp(360px, 30vw, 460px); flex-direction: column; justify-content: center; overflow: hidden; padding: var(--card-pad); color: var(--white); border-radius: var(--radius-media); background: var(--ink); container-type: size; isolation: isolate; text-align: center; }
 .research-project-grid[data-columns='2'] .research-project-card { height: clamp(380px, 34vw, 520px); }
 .research-project-grid[data-columns='1'] .research-project-card { height: clamp(380px, 38vw, 580px); }
-.project-card-image { position: absolute; z-index: -3; inset: 0; background: var(--project-image) center / cover no-repeat; filter: brightness(.46) saturate(.7); transform: scale(1.01); transition: filter var(--dur-3) ease, transform var(--dur-4) var(--ease-out); }
-.project-card-video { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; opacity: 0; object-fit: cover; transition: opacity var(--dur-3) ease; }
+.project-card-image { position: absolute; z-index: -4; inset: 0; background: var(--project-image) center / cover no-repeat; transform: scale(1.01); transition: transform var(--dur-4) var(--ease-out), filter var(--dur-4) ease; }
+.research-project-card.is-bright .project-card-image { filter: brightness(.44) saturate(.68) contrast(1.08); }
+.project-card-video { position: absolute; z-index: -3; inset: 0; width: 100%; height: 100%; opacity: 0; object-fit: cover; transition: opacity var(--dur-3) ease; }
 .project-card-video[data-playing] { opacity: 1; }
 /* Two scrims trade places: a soft pool behind the centred title at rest, and
-   a floor gradient once the title has moved down over moving footage. */
-.project-card-shade { position: absolute; z-index: -1; inset: 0; background: radial-gradient(closest-side, rgb(var(--scrim) / .5), transparent); transition: opacity var(--dur-3) ease; }
-.research-project-card::after { position: absolute; z-index: -1; inset: 0; opacity: 0; background: linear-gradient(180deg, transparent 45%, rgb(var(--scrim) / .82) 100%); content: ""; transition: opacity var(--dur-3) ease; }
-/* Light diagrams need a deeper dim than photographs to carry white type. */
-.research-project-card.is-bright .project-card-image { filter: brightness(.3) saturate(.55); }
-/* The theme's hue sits on the card edge, where no photograph can wash it out. */
+   a floor gradient once the title has moved down. */
+.project-card-shade { position: absolute; z-index: -2; inset: 0; }
+.project-card-shade::before,
+.project-card-shade::after { position: absolute; inset: 0; content: ""; transition: opacity var(--dur-3) ease; }
+.project-card-shade::before { background: radial-gradient(closest-side, rgb(var(--scrim) / .58), rgb(var(--scrim) / .12)); }
+.project-card-shade::after { opacity: 0; background: linear-gradient(180deg, transparent 42%, rgb(var(--scrim) / .86) 100%); }
+/* The theme's hue sits on the card edge, where no photograph can wash it out,
+   and frames the whole plate on hover. */
 .research-project-card::before { position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--accent); content: ""; }
-.project-card-copy { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); text-shadow: 0 1px 12px rgb(var(--scrim) / .5); transition: transform var(--dur-4) var(--ease-out); }
+.research-project-card::after { position: absolute; z-index: -1; inset: 0; border: 0 solid var(--accent-bright); border-radius: inherit; content: ""; transition: border-width var(--dur-3) var(--ease-out); }
+.project-card-copy { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); text-shadow: 0 1px 12px rgb(var(--scrim) / .55); transition: transform var(--dur-4) var(--ease-out); }
 .project-card-copy strong { max-width: 18ch; font-size: clamp(30px, 3vw, 48px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1; letter-spacing: var(--track-heading); }
 .research-project-grid[data-columns='1'] .project-card-copy strong { font-size: clamp(40px, 5vw, 76px); }
 .project-card-copy > span { max-width: 36ch; color: var(--on-dark-2); font-size: var(--text-label); font-weight: var(--weight-label); line-height: 1.35; text-wrap: balance; }
-.research-project-card:is(:hover, :focus-visible) .project-card-image { filter: brightness(.82) saturate(1); transform: scale(1.04); }
-.research-project-card:is(:hover, :focus-visible) .project-card-shade { opacity: 0; }
-.research-project-card:is(:hover, :focus-visible)::after { opacity: 1; }
-.research-project-card:focus-visible { z-index: 1; outline: 3px solid var(--accent-mid); outline-offset: 3px; }
+.research-project-card:is(:hover, :focus-visible) .project-card-image { transform: scale(1.055); }
+.research-project-card:not(.is-bright):is(:hover, :focus-visible) .project-card-image { filter: saturate(1.12); }
+.research-project-card:is(:hover, :focus-visible) .project-card-shade::before { opacity: 0; }
+.research-project-card:is(:hover, :focus-visible) .project-card-shade::after { opacity: 1; }
+.research-project-card:hover::after { border-width: 6px; }
+.research-project-card:focus-visible { z-index: 1; outline: 3px solid var(--accent-bright); outline-offset: 3px; }
 @media (prefers-reduced-motion: no-preference) {
   .research-project-card:focus-visible .project-card-copy { transform: translateY(calc(50cqh - 50%)); }
 }
@@ -487,29 +507,31 @@ html[data-intro='play'] .intro-splash.is-opening { background: transparent; poin
 .page-onward svg { transition: transform var(--dur-3) var(--ease-out); }
 .page-onward a:hover svg { transform: translateX(3px); }
 
-/* Publications. A year-by-year ledger on the same cream as Research and
-   People; each year stays pinned beside its records while they scroll. */
-.publications-page { background: var(--cream); }
-.publication-index { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3) var(--space-6); width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad) var(--space-6); }
-.publication-index p { margin: 0; color: var(--on-light-3); font-size: var(--text-label); }
+/* Publications. The archive keeps its own ground: ink for the title and
+   index, the lab's blue for the year-by-year ledger, running full-bleed while
+   the records stay on the sheet. Each year stays pinned beside its records
+   while they scroll. */
+.publications-page { color: var(--white); background: var(--ink); }
+.publication-index { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3) var(--space-6); width: var(--sheet-w); margin-inline: auto; padding: var(--space-6) var(--sheet-pad) var(--space-7); }
+.publication-index p { margin: 0; color: var(--on-dark-4); font-size: var(--text-label); }
 .publication-index nav { display: flex; flex-wrap: wrap; gap: var(--space-1); }
-.publication-index a { padding: 6px var(--space-3); color: var(--on-light-2); border-radius: var(--radius-pill); font-size: var(--text-label); font-weight: var(--weight-medium); transition: color var(--dur-1) ease, background var(--dur-1) ease; }
-.publication-index a:hover { color: var(--ink); background: var(--rule-light-soft); }
-.publication-index a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.publication-year-list { width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad) clamp(72px, 8vw, 120px); }
-.publication-year-group { display: grid; grid-template-columns: minmax(120px, .35fr) 1.65fr; gap: clamp(38px, 6vw, 96px); scroll-margin-top: calc(var(--nav-h) + var(--space-4)); }
-.publication-year-group > * { border-top: 1px solid var(--rule-light); }
-.publication-year-marker { position: sticky; top: calc(var(--nav-h) + var(--space-4)); align-self: start; padding: var(--space-6) 0; }
+.publication-index a { padding: 6px var(--space-3); color: var(--on-dark-3); border-radius: var(--radius-pill); font-size: var(--text-label); font-weight: var(--weight-medium); transition: color var(--dur-1) ease, background var(--dur-1) ease; }
+.publication-index a:hover { color: var(--on-dark); background: color-mix(in oklab, var(--white) 8%, transparent); }
+.publication-index a:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+.publication-year-list { border-top: 1px solid var(--rule-dark); background: var(--blue); }
+.publication-year-group { display: grid; width: var(--sheet-w); grid-template-columns: minmax(120px, .35fr) 1.65fr; gap: clamp(38px, 6vw, 96px); margin-inline: auto; padding: 0 var(--sheet-pad); scroll-margin-top: calc(var(--nav-h) + var(--space-4)); }
+.publication-year-group + .publication-year-group > * { border-top: 1px solid var(--rule-dark); }
+.publication-year-marker { position: sticky; top: calc(var(--nav-h) + var(--space-4)); align-self: start; padding: var(--space-7) 0; }
 .publication-year-marker h2 { margin: 0; font-size: clamp(32px, 3.4vw, 52px); font-weight: var(--weight-display); line-height: .9; letter-spacing: var(--track-heading); }
-.publication-year-marker span { display: block; margin-top: 14px; color: var(--on-light-4); font-size: var(--text-micro); }
-.publication-record { display: grid; grid-template-columns: minmax(0, 1fr) 36px; gap: 22px; align-items: start; padding: 22px 0 24px; border-bottom: 1px solid var(--rule-light-soft); }
+.publication-year-marker span { display: block; margin-top: 14px; color: var(--on-dark-4); font-size: var(--text-micro); }
+.publication-record { display: grid; grid-template-columns: minmax(0, 1fr) 38px; gap: 22px; align-items: start; padding: 22px 0 24px; border-bottom: 1px solid var(--rule-dark-soft); }
 .publication-record:last-child { border-bottom: 0; }
-.publication-venue { color: var(--on-light-3); font-size: var(--text-micro); font-weight: var(--weight-label); line-height: 1.35; }
+.publication-venue { color: var(--on-dark-2); font-size: var(--text-micro); font-weight: var(--weight-label); line-height: 1.35; }
 .publication-award { display: inline-block; margin-left: 10px; padding: 2px 8px; color: var(--ink); border-radius: var(--radius-pill); background: var(--yellow); font-size: 12px; font-style: normal; }
-.publication-record .publication-citation { max-width: 72ch; margin: 8px 0 0; color: var(--ink); font-size: clamp(16px, 1.25vw, 18px); line-height: 1.45; text-wrap: pretty; }
-.publication-record > a { display: grid; width: 36px; height: 36px; place-items: center; color: var(--ink); border: 1px solid var(--rule-light); border-radius: 50%; transition: color var(--dur-2) ease, background var(--dur-2) ease, border-color var(--dur-2) ease; }
-.publication-record > a:hover { color: var(--cream); border-color: var(--ink); background: var(--ink); }
-.publication-record > a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.publication-record .publication-citation { max-width: 820px; margin: 8px 0 0; color: var(--white); font-size: clamp(16px, 1.3vw, 19px); font-weight: var(--weight-medium); line-height: 1.35; letter-spacing: -.002em; }
+.publication-record > a { display: grid; width: 36px; height: 36px; place-items: center; color: var(--ink); border-radius: 50%; background: var(--white); transition: transform var(--dur-3) var(--ease-out); }
+.publication-record > a:hover { transform: rotate(45deg); }
+.publication-record > a:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
 
 /* Individual research project */
 .project-page { color: white; background: var(--ink); }
@@ -687,9 +709,9 @@ html[data-intro='play'] .intro-splash.is-opening { background: transparent; poin
   .publication-index { padding-bottom: var(--space-5); }
   .publication-index nav { margin-left: calc(-1 * var(--space-3)); }
   .publication-year-group { grid-template-columns: 1fr; gap: 0; }
-  .publication-year-group > :last-child { border-top: 0; }
+  .publication-year-group + .publication-year-group > :last-child { border-top: 0; }
   /* Phones stack the year over its records rather than pinning it aside. */
-  .publication-year-marker { position: static; display: flex; justify-content: space-between; align-items: end; padding: 34px 0 var(--space-5); border-bottom: 1px solid var(--rule-light-soft); }
+  .publication-year-marker { position: static; display: flex; justify-content: space-between; align-items: end; padding: 34px 0 var(--space-5); border-bottom: 1px solid var(--rule-dark-soft); }
   .publication-year-marker h2 { font-size: 34px; }
   .publication-year-marker span { margin: 0 0 2px; }
   .publication-record { gap: 14px; padding: var(--space-6) 0 26px; }

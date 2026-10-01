@@ -1,3 +1,4 @@
+import MosaicBand from '../components/MosaicBand'
 import PublicationRecord from '../components/PublicationRecord'
 import { usePublications } from '../usePublications'
 
@@ -12,6 +13,8 @@ function PublicationsPage() {
       <header className="page-title">
         <h1>Publications</h1>
       </header>
+
+      <MosaicBand />
 
       {/* The archive's index: what it holds on the left, year jumps on the right. */}
       <div className="publication-index">

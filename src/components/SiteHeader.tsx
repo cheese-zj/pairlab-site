@@ -8,7 +8,7 @@ const navLinks = [
   { to: '/join', label: 'Join' },
 ]
 
-const lightGroundRoutes = new Set(['/research', '/publications', '/people', '/join'])
+const lightGroundRoutes = new Set(['/research', '/people', '/join'])
 
 /* The bar always stands on its own ground; routes only pick which one —
    light routes open on cream, everything else on ink. */

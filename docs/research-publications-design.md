@@ -16,22 +16,27 @@ two pages, and make the project plates show the robots working.
 - **Research is organised by theme.** The three themes and their summaries
   (`researchThemes` in `src/researchProjects.ts`) were a disconnected strip
   at the foot of the page; they now head the groups of projects, and each
-  theme's accent marks its rule and its plates. Grids fill evenly whatever a
-  theme holds: one project spans the sheet, pairs and fours sit two across,
-  threes three across. The claim headline and its paragraph lost their
-  marker highlights (the one-phrase accent was the commonest tell).
-- **Project plates.** The title sits centred on a dimmed still. Hover or
-  keyboard focus plays the project's own demo loop and the title steps down
-  to the bottom edge, out of the footage's way. Loops are short muted MP4s
+  theme's accent marks its rule, its heading's marker wash and its plates.
+  Grids fill evenly whatever a theme holds: one project spans the sheet,
+  pairs and fours sit two across, threes three across.
+- **Project plates.** The title sits centred on the project's still. Hover
+  or keyboard focus plays the project's own demo loop, frames the plate in
+  its theme's hue and moves the title down to the bottom edge, out of the
+  footage's way. Loops are short muted MP4s
   in `public/media/hover-*.mp4` (128–440 KB, made by
   `scripts/encode-hover-clips.sh` from the reel's labelled segments and the
   former hover GIFs, which weighed up to 6 MB). Nothing downloads until the
   first hover; touch, reduced motion and Save-Data never load them. CASF and
   StereoPatch keep a still until footage of their own is approved.
-- **Publications has its own page** at `/publications`: the same cream
-  ground as Research and People, a year index, and a ledger in which each
-  year stays pinned beside its records while they scroll (stacked on
-  phones). Research ends with a link to it.
+- **Publications has its own page** at `/publications`, keeping the
+  archive's own colouring: ink title and year index over the mosaic band,
+  then the year-by-year ledger on the lab's blue, each year pinned beside its
+  records while they scroll (stacked on phones). Research ends with a link
+  to it.
+- **Colour is kept, not traded away.** The claim's highlight, the five
+  marker washes, theme headings marked in their wash, photographs in their
+  own colour and the theme-coloured hover frame are all part of the system;
+  only light diagrams are dimmed, to carry white type.
 
 ## Routing and compatibility
 

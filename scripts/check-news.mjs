@@ -68,7 +68,7 @@ assert.equal((home.match(/class="research-project-card/g) ?? []).length, 3, 'Hom
 assert.doesNotMatch(home, /home-actions|home-research-image|triman-cloth|home-themes|home-latest|home-foot|mosaic-flow|usyd-quadrangle/)
 assert.doesNotMatch(home, /project-card-meta|project-card-action|<video[^>]*class="project-card-video"[^>]*\ssrc=/, 'Project plates carry no ordinals and load no demo until hovered')
 assert.match(home, /<script>\(function fitFilmFrame/, 'The resting film scale is measured before first paint')
-for (const [path, ground] of [['/', 'dark'], ['/research', 'light'], ['/publications', 'light'], ['/people', 'light'], ['/join', 'light'], ['/research/preview/patch', 'dark'], ['/not-found', 'dark']]) {
+for (const [path, ground] of [['/', 'dark'], ['/research', 'light'], ['/publications', 'dark'], ['/people', 'light'], ['/join', 'light'], ['/research/preview/patch', 'dark'], ['/not-found', 'dark']]) {
   const chrome = renderChrome(path)
   assert.match(chrome, new RegExp(`data-ground="${ground}"`))
   assert.equal(chrome.includes('<canvas'), path !== '/', `Only homepage drops footer mosaic: ${path}`)

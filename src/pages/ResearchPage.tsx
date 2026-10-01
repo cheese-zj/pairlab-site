@@ -27,9 +27,9 @@ function ResearchPage() {
   return (
     <main className="route-page research-page">
       <header className="research-intro">
-        <h1>From learned policies to capable physical behaviour.</h1>
+        <h1>From learned policies to <strong>capable physical behaviour</strong>.</h1>
         <p>
-          PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. Our work spans imitation learning, dexterous and multi-arm manipulation, collaborative robotics, policy monitoring and constraint-aware motion.
+          PAIR Lab develops robot-learning methods for physical systems that must perceive, coordinate and adapt in the real world. Our work spans <mark className="hl-yellow">imitation learning</mark>, <mark className="hl-coral">dexterous and multi-arm manipulation</mark>, <mark className="hl-blue">collaborative robotics</mark>, <mark className="hl-green">policy monitoring</mark> and <mark className="hl-plum">constraint-aware motion</mark>.
         </p>
       </header>
 
@@ -40,7 +40,7 @@ function ResearchPage() {
         return (
           <section className="research-theme" data-accent={theme.id} aria-labelledby={`theme-${theme.id}`} key={theme.id}>
             <header className="research-theme-header">
-              <h2 id={`theme-${theme.id}`}>{theme.title}</h2>
+              <h2 id={`theme-${theme.id}`}><mark>{theme.title}</mark></h2>
               <p>{theme.summary}</p>
             </header>
             <div className="research-project-grid" data-columns={columnsFor(projects.length)}>
