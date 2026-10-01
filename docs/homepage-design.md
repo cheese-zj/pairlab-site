@@ -1,46 +1,89 @@
-# Homepage design: dark identity restored
+# Homepage design: film-first, dark identity kept
 
 ## User direction
 
-The cream redesign was rejected: it lost the original site's character. Prioritize the original black ground, animated striped wordmark and mosaic field rather than a small robotics image, video panel or prominent action buttons. News should belong to the same dark page.
+October 2026: put the lab's one-minute film on the homepage, learning from
+sunday.ai, and refresh the site so it feels fashionable, cool and smooth.
+Earlier direction still holds: the cream homepage redesign was rejected, so the
+original black ground, the animated striped wordmark and the sand accent stay.
+The film replaces the campus photograph and the drifting mosaic canvas as the
+hero's atmosphere; the mosaic survives as the band above footers and on Join.
 
-## Plan and critique before implementation
+## What we took from sunday.ai, and what we did not
 
-- Ink `#11120f`: continuous header, hero, News and footer ground.
-- Near-black `#0a0c0a`: photographic scrim and mosaic cells, inherited from the original animation.
-- White `#ffffff`: wordmark, headings, links and focus.
-- Sand `#cdb98b`: existing palette, naturally echoed by Sydney's sandstone; no new decorative accent.
-- Existing Google Sans Flex: 28–40px supporting hero heading, 17–18px concise lab copy, 32–44px News, 14px dates. The original animated wordmark, not oversized marketing copy, is the hero.
+Taken: a headline over an inset, rounded media frame that opens out to full
+bleed as the page scrolls; a muted ambient loop with the full film one press
+away; large, light, tightly tracked display type; a floating capsule nav;
+pill-shaped controls; generous space instead of rules.
+
+Not taken: their white ground, their sticky headline over the video (our
+wordmark would fight the film's own captions), HLS streaming, and smooth-scroll
+libraries (native scrolling keeps keyboard and assistive-technology behaviour).
+
+## Plan
+
+- Ink `#11120f` ground; Night `#090a08` behind the film and its dialog.
+- White for type; Sand `#cdb98b` is the only accent (the play disc).
+- Google Sans Flex only. Display weight 440, tracking −0.032em; labels in
+  sentence case at 13–14px, no monospace or all-caps telemetry.
+- Radius follows scale: 20px media frames (16px on phones), 12px photographs,
+  full pills for anything pressed.
+- Motion: one easing, `cubic-bezier(.16, 1, .3, 1)`.
 
 ```text
-Dark navigation
-┌──────────────────────────────────────────────────────────────┐
-│               Animated Sydney / PAIR Lab                     │
-│                  Physical AI & Robotics                       │
-│              Concise lab + university intro                   │
-│                                               Pause animation│
-└──────────────────────────────────────────────────────────────┘
-News                        Research, people and life at PAIR Lab.
-Date                        White linked headline + short summary
-Compact dark footer
+            ( ◆ PAIR Lab   Research  Publications  People  Join )
+
+                      [ animated striped wordmark ]
+                          Physical AI & Robotics
+               We study how robots perceive, learn and act…
+
+  ╭───────────────────────────────────────────────────────────────────╮
+  │                    muted reel (footage only)                      │  ← inset, rounded;
+  │                                                                   │    opens to full
+  │                               ( ▶ Watch the film  1:00 ) ( ❚❚ )   │    bleed on scroll
+  ╰───────────────────────────────────────────────────────────────────╯
+  News                                   Research, people and life at PAIR Lab.
+  Recent projects                                          ( All 8 projects → )
+  Footer
 ```
 
-Restore the full-size campus image as atmosphere, not a small content card. Per the user's refinement, use one vertical black fade: fully transparent at the top, solid ink at the bottom, blending directly into News. Apply the same direction on desktop and mobile; place both photo and mosaic below the scrim so neither interrupts the solid-black endpoint. Give the hero presence without requiring a full screen before News; preserve text contrast through the middle/lower gradient. Let navigation handle exploration, with no hero call-to-action buttons.
-
-The animated wordmark and supporting text are horizontally centered as one group over the vertical fade, on desktop and mobile. News retains its left-aligned reading layout.
-
-The memorable element is the original striped wordmark and drifting tiles. Do not introduce a new neon palette, card grid, video carousel, counters or animation on News rows. One small, text-like pause/resume control is an accessibility utility, not a promotional CTA. Keep the compact footer without another moving band on the homepage.
+The controls sit bottom right: the film's own captions use the other corners.
 
 ## Motion contract
 
-- The original `hero-wordmark.webp` has56 frames alternating Sydney and PAIR Lab. Use it only when motion is enabled.
-- `hero-wordmark-still.webp` is a lossless frame0 derivative of that asset. Use it for reduced motion and manual pause, including safe SSR output.
-- Both wordmark and canvas respond to live OS reduced-motion changes and the same pause control.
-- Canvas schedules no frames when paused, offscreen or in a hidden document; resize still paints a stable frame. Clean up observers/listeners/RAF on unmount.
-- Do not claim a CSS animation check validates animated WebP or canvas; test image source selection and canvas pixels over time.
+- The frame's `clip-path` and the intro's fade run on the intro's view timeline
+  (`exit 0%` → `exit 100%`), so the frame is fully open exactly when it reaches
+  the top of the viewport. Browsers without scroll-driven animations, and
+  reduced-motion visitors, keep the static inset frame.
+- The reel's source is chosen on first play (1080p at ≥1100px wide, otherwise
+  720p). It loads and plays only while motion is allowed, the frame is on
+  screen, the tab is visible and the film dialog is closed.
+- Reduced motion or Save-Data: the poster stays, nothing downloads, and the
+  pause control is not offered. "Watch the film" always works.
+- One pause control stops both the reel and the animated wordmark (WCAG 2.2.2).
+- The film opens in a native modal `<dialog>`: focus moves to Close, Escape or a
+  backdrop click closes it, focus returns to "Watch the film", page scroll is
+  locked, and closing pauses and rewinds the film.
 
-## Content and verification
+## Media pipeline and hosting
 
-Use only the existing lab affiliation and research focus. No invented news; retain `src/news.ts` and list sorting/date semantics. Other route designs and navigation destinations stay unchanged.
+`scripts/encode-home-film.sh <master.mp4> [loop-start] [loop-end]` writes
+`public/media/pairlab-film.mp4` (full cut with sound, ~19.5 MB),
+`pairlab-reel-1080.mp4` (~12 MB) and `pairlab-reel-720.mp4` (~6 MB), plus
+the two posters. Defaults match the v7 cut, whose footage runs 6.0–55.0 s
+between the cream title and end cards; pass new bounds when the cut changes.
 
-Verify desktop/tablet/mobile down to320px, keyboard/skip navigation, pause/resume, live reduced motion, dark-surface contrast, empty and long populated News fixtures, generated SEO and `npm run check`. Record existing cross-route hydration warnings separately; no deployment/push.
+Cloudflare's static assets ignore `Range` and always answer 200 with the whole
+file, and Safari will not play `<video>` without byte ranges. `/media/*` is
+therefore routed through the Worker (`run_worker_first`), which answers ranges
+itself. Everything is under the 25 MiB per-file limit. If the film grows or
+traffic rises, Cloudflare Stream or R2 (both support ranges and, for Stream,
+adaptive bitrate) is the next step; that needs account changes.
+
+## Verification
+
+Desktop/tablet/mobile down to 320px, no horizontal overflow, capsule fits at
+320px, keyboard path through the film controls and dialog, live reduced motion,
+pause/resume, generated SEO and `npm run check` (which includes the Worker's
+range cases). Vite dev/preview do not run the Worker; check ranges with
+`wrangler dev` before release. No deployment or push.

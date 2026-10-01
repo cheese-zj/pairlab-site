@@ -1,7 +1,7 @@
 import { useState, useSyncExternalStore } from 'react'
+import HomeFilm from '../components/HomeFilm'
 import HomeNews from '../components/HomeNews'
 import HomeRecentWork from '../components/HomeRecentWork'
-import MosaicFlow from '../components/MosaicFlow'
 import { newsItems } from '../news'
 
 const motionQuery = '(prefers-reduced-motion: reduce)'
@@ -14,19 +14,25 @@ const prefersReducedMotion = () => window.matchMedia(motionQuery).matches
 // Start still during SSR/hydration; only opt into motion in the browser.
 const serverReducedMotion = () => true
 
+// Save-Data visitors keep the poster rather than streaming a background reel.
+type SaveDataNavigator = Navigator & { connection?: { saveData?: boolean } }
+const subscribeToSaveData = () => () => {}
+const prefersSavingData = () => Boolean((navigator as SaveDataNavigator).connection?.saveData)
+const serverSaveData = () => true
+
 function HomePage() {
   const reducedMotion = useSyncExternalStore(subscribeToMotion, prefersReducedMotion, serverReducedMotion)
+  const saveData = useSyncExternalStore(subscribeToSaveData, prefersSavingData, serverSaveData)
   const [paused, setPaused] = useState(false)
-  const motionEnabled = !reducedMotion && !paused
+  const motionAllowed = !reducedMotion && !saveData
+  const motionEnabled = motionAllowed && !paused
 
   return (
     <main className="home-page">
+      {/* The intro scrolls away while the film frame below opens out to full
+          bleed; the hero declares the intro's timeline so the frame can use it. */}
       <section className="home-hero" aria-labelledby="home-heading">
-        <div className="home-photo" aria-hidden="true">
-          <img src="/usyd-quadrangle.webp" alt="" fetchPriority="high" />
-        </div>
-        <MosaicFlow paused={!motionEnabled} />
-        <div className="home-stage">
+        <div className="home-intro">
           <div className="home-copy">
             <h1 className="hero-wordmark" id="home-heading">
               <img
@@ -35,6 +41,7 @@ function HomePage() {
                 height="218"
                 alt=""
                 aria-hidden="true"
+                fetchPriority="high"
               />
               <span className="sr-only">PAIR Lab — Physical AI and Robot Learning Research in Australia</span>
             </h1>
@@ -42,16 +49,7 @@ function HomePage() {
             <p className="home-summary">We study how robots perceive, learn and act in the real world. A robotics research group at the University of Sydney.</p>
           </div>
         </div>
-        {/* The hero's foot joins the sheet: a drafting cut and one telemetry row,
-            which also carries the motion control as a quiet utility. */}
-        <div className="home-foot">
-          <span><span className="home-foot-lead">Robot learning research · </span>Sydney, Australia</span>
-          {!reducedMotion && (
-            <button className="home-motion-toggle" type="button" onClick={() => setPaused(!paused)} aria-pressed={paused}>
-              {paused ? 'Resume animation' : 'Pause animation'}
-            </button>
-          )}
-        </div>
+        <HomeFilm motionEnabled={motionEnabled} onToggleMotion={motionAllowed ? () => setPaused(!paused) : undefined} />
       </section>
       {/* Announcements lead once there are any; until then real project work
           opens the page and the bulletin follows as a modest note. */}

@@ -15,8 +15,8 @@ React + TypeScript + Vite, with static prerendering and a Cloudflare Worker. Pro
 | Layout and interaction | `src/pages/`, `src/components/`, `src/App.tsx` |
 | Design system | Tokens at the top of `src/styles.css`; consume existing spacing, colour, type, and motion tokens |
 | SEO and generated routes | `src/seo.ts`, `src/components/Seo.tsx`, `src/entry-server.tsx`, `scripts/prerender.mjs` |
-| Redirects, project proxies, publications API | `src/worker.ts`, `wrangler.toml`; proxy checks in `scripts/check-project-proxy.mjs` |
-| Public assets / deployment | `public/`, `public/_headers`, `.github/workflows/deploy-cloudflare.yml` |
+| Redirects, project proxies, publications API, media byte ranges | `src/worker.ts`, `wrangler.toml`; proxy and `/media/*` range checks in `scripts/check-project-proxy.mjs` |
+| Public assets / deployment | `public/`, `public/_headers`, `.github/workflows/deploy-cloudflare.yml`; homepage film encodes via `scripts/encode-home-film.sh` into `public/media/` |
 
 Do not edit generated `dist/` or `.prerender/` output. Do not silently refresh publications or upgrade dependencies during unrelated work. Preserve existing user changes, including local `.claude/` files.
 
@@ -50,7 +50,7 @@ Run from the repository root. Use a current Node 22 release to match CI; check `
 
 ## Workflows and model adaptation
 
-- Visual design/redesign tasks: load `.pi/skills/frontend-design/SKILL.md` and the relevant design brief. For the homepage, see `docs/homepage-design.md` for the unified hero/News design and `docs/news-design.md` for list behavior. Upstream creative framing is not lab fact; never invent content or change unrelated pages to satisfy a style suggestion.
+- Visual design/redesign tasks: load `.pi/skills/frontend-design/SKILL.md` and the relevant design brief. For the homepage, see `docs/homepage-design.md` for the film-first hero and site-wide visual system, and `docs/news-design.md` for list behavior. Upstream creative framing is not lab fact; never invent content or change unrelated pages to satisfy a style suggestion.
 - Content tasks: load `.pi/skills/pairlab-content-update/SKILL.md`.
 - Completion/release validation: load `.pi/skills/pairlab-release-check/SKILL.md`.
 - Adapt task size and scaffolding, not the acceptance criteria. Narrow edits need a short impact checklist; unfamiliar models, small context, cross-layer changes, or observed mistakes need explicit file scope, smaller steps, and checkpoints.

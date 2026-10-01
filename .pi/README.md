@@ -12,7 +12,7 @@ No `.pi/settings.json` is necessary yet: there are no project-specific packages 
 
 `skills/frontend-design/` vendors Anthropic's official skill at commit `34040c9c568585f6929bedeaad110ad08f079624`, unchanged with its Apache-2.0 license. Source details and checksums are in `skills/frontend-design/UPSTREAM.md`. It adds no runtime, hooks, dependencies, model override, or global installation.
 
-Use `/skill:frontend-design` for visual design work. Read `../AGENTS.md` and any relevant brief first; the project truth/content rules still apply. The homepage design brief is `../docs/homepage-design.md`: the original dark, animated identity leads into News on the same black surface, with a shared pause/reduced-motion treatment and no promotional hero buttons. The user rejected the cream robotics-photo redesign.
+Use `/skill:frontend-design` for visual design work. Read `../AGENTS.md` and any relevant brief first; the project truth/content rules still apply. The homepage design brief is `../docs/homepage-design.md`: the animated wordmark over an inset film frame that opens to full bleed, then News on the same black surface, with a shared pause/reduced-motion treatment. The user rejected the cream robotics-photo redesign and later asked for the film and a sunday.ai-inspired refresh.
 
 Workflow: brief and subject matter → compact visual plan → critique against the brief → implement the chosen direction → browser review and `pairlab-release-check`. Do not load another competing art-direction skill by default. Vercel's review skill and the larger Impeccable/UI UX Pro Max suites were not installed.
 

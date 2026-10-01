@@ -17,6 +17,7 @@ run_worker_first = [
   "/join",
   "/join/*",
   "/api/*",
+  "/media/*",
   "/publications",
   "/publications/*",
   "/PATCH",

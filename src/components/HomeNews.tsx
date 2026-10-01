@@ -3,8 +3,8 @@ import { formatNewsDate, newsItems } from '../news'
 import type { NewsItem } from '../news'
 
 /* The homepage bulletin. It reads like the publications ledger on the research
-   page — stamped kicker, telemetry dates, hairline records — so News belongs to
-   the same printed sheet as the rest of the site rather than sitting on it. */
+   page — a large heading, quiet dates and hairline records — so News belongs to
+   the same page as the rest of the site rather than sitting on it as cards. */
 function HomeNews({ items = newsItems }: { items?: readonly NewsItem[] }) {
   const sortedItems = [...items].sort((left, right) => right.date.localeCompare(left.date))
   const count = sortedItems.length
@@ -13,7 +13,6 @@ function HomeNews({ items = newsItems }: { items?: readonly NewsItem[] }) {
     <section className={`home-news${count > 0 ? '' : ' is-empty'}`} id="news" aria-labelledby="home-news-title">
       <div className="home-news-inner">
         <header className="home-news-header">
-          <span className="home-kicker">Lab bulletin</span>
           <h2 id="home-news-title">News</h2>
           <p>Research, people and life at PAIR Lab.</p>
         </header>

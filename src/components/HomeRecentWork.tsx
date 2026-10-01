@@ -14,10 +14,7 @@ function HomeRecentWork() {
     <section className="home-work" aria-labelledby="home-work-title">
       <div className="home-work-inner">
         <header className="home-work-header">
-          <div>
-            <span className="home-kicker">Showcase</span>
-            <h2 id="home-work-title">Recent projects</h2>
-          </div>
+          <h2 id="home-work-title">Recent projects</h2>
           <Link className="home-work-all" to="/research">
             All {researchProjects.length} projects <ArrowRight size={16} aria-hidden="true" />
           </Link>

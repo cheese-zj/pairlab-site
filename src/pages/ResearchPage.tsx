@@ -33,7 +33,7 @@ function ResearchPage() {
             ))}
           </section>
 
-          <section className="research-areas plot-ground" aria-labelledby="research-areas-title">
+          <section className="research-areas" aria-labelledby="research-areas-title">
             <header>
               <h2 id="research-areas-title">How we approach physical intelligence</h2>
             </header>

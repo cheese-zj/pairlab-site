@@ -34,7 +34,7 @@ function ProjectPage() {
         </div>
       </section>
 
-      <section className="project-body plot-ground">
+      <section className="project-body">
         <div className="project-body-intro">
           <p className="project-lede">{project.summary}</p>
           <div className="project-topics" aria-label="Research topics">

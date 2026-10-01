@@ -170,7 +170,7 @@ function MosaicBand({ ground = 'dark', field = false }: { ground?: 'dark' | 'lig
   if (field) return <canvas ref={canvasRef} className="mosaic-field" aria-hidden="true" />
 
   return (
-    <div className={`mosaic-cut${ground === 'light' ? ' is-light' : ''}`} aria-hidden="true">
+    <div aria-hidden="true">
       <canvas ref={canvasRef} className="mosaic-band" />
     </div>
   )
