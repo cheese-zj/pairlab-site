@@ -6,14 +6,14 @@ import { Pause, Play, X } from 'lucide-react'
    footage without its title cards, muted and looped; the film is the full cut
    with sound. Both stream from /media/, where the Worker answers byte ranges. */
 const reel = {
-  wide: '/media/pairlab-reel-1080.mp4',
-  narrow: '/media/pairlab-reel-720.mp4',
+  wide: '/media/pairlab-reel-wide.mp4',
+  narrow: '/media/pairlab-reel-narrow.mp4',
   poster: '/pairlab-reel-poster.webp',
 }
 const film = {
   src: '/media/pairlab-film.mp4',
   poster: '/pairlab-film-poster.webp',
-  duration: '1:00',
+  duration: '1:06',
 }
 
 // A hidden tab never plays the reel, and a returning one picks it back up.

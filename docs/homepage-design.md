@@ -2,7 +2,7 @@
 
 ## User direction
 
-October 2026: put the lab's one-minute film on the homepage, learning from
+October 2026: put the lab's film on the homepage, learning from
 sunday.ai, and refresh the site so it feels fashionable, cool and smooth.
 Earlier direction still holds: the cream homepage redesign was rejected, so the
 original black ground, the animated striped wordmark and the sand accent stay.
@@ -40,7 +40,7 @@ libraries (native scrolling keeps keyboard and assistive-technology behaviour).
   ╭───────────────────────────────────────────────────────────────────╮
   │                    muted reel (footage only)                      │  ← inset, rounded;
   │                                                                   │    opens to full
-  │                               ( ▶ Watch the film  1:00 ) ( ❚❚ )   │    bleed on scroll
+  │                               ( ▶ Watch the film  1:06 ) ( ❚❚ )   │    bleed on scroll
   ╰───────────────────────────────────────────────────────────────────╯
   News                                   Research, people and life at PAIR Lab.
   Recent projects                                          ( All 8 projects → )
@@ -55,8 +55,8 @@ The controls sit bottom right: the film's own captions use the other corners.
   (`exit 0%` → `exit 100%`), so the frame is fully open exactly when it reaches
   the top of the viewport. Browsers without scroll-driven animations, and
   reduced-motion visitors, keep the static inset frame.
-- The reel's source is chosen on first play (1080p at ≥1100px wide, otherwise
-  720p). It loads and plays only while motion is allowed, the frame is on
+- The reel's source is chosen on first play (the wide encode at ≥1100px,
+  otherwise the lighter narrow one). It loads and plays only while motion is allowed, the frame is on
   screen, the tab is visible and the film dialog is closed.
 - Reduced motion or Save-Data: the poster stays, nothing downloads, and the
   pause control is not offered. "Watch the film" always works.
@@ -67,16 +67,21 @@ The controls sit bottom right: the film's own captions use the other corners.
 
 ## Media pipeline and hosting
 
-`scripts/encode-home-film.sh <master.mp4> [loop-start] [loop-end]` writes
-`public/media/pairlab-film.mp4` (full cut with sound, ~19.5 MB),
-`pairlab-reel-1080.mp4` (~12 MB) and `pairlab-reel-720.mp4` (~6 MB), plus
-the two posters. Defaults match the v7 cut, whose footage runs 6.0–55.0 s
-between the cream title and end cards; pass new bounds when the cut changes.
+`scripts/encode-home-film.sh <master.mp4> [loop-start] [loop-end] [title-frame]`
+writes `public/media/pairlab-film.mp4` (the full cut with sound),
+`pairlab-reel-wide.mp4` and `pairlab-reel-narrow.mp4`, plus the two posters.
+It never upscales, and an H.264/AAC master is only remuxed for the film, not
+re-encoded. Defaults match the current 66 s, 720p cut, whose footage runs
+3.5–62.5 s between the title and the cream end card (film 12.3 MB, reels 9.7
+and 6.4 MB); pass new bounds when the cut changes, and update the duration in
+`src/components/HomeFilm.tsx`.
 
 Cloudflare's static assets ignore `Range` and always answer 200 with the whole
 file, and Safari will not play `<video>` without byte ranges. `/media/*` is
 therefore routed through the Worker (`run_worker_first`), which answers ranges
-itself. Everything is under the 25 MiB per-file limit. If the film grows or
+itself. Media keeps the assets' revalidating `Cache-Control`, so swapping a
+cut under the same file name is safe. Everything is under the 25 MiB per-file
+limit. If the film grows or
 traffic rises, Cloudflare Stream or R2 (both support ranges and, for Stream,
 adaptive bitrate) is the next step; that needs account changes.
 

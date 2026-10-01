@@ -91,8 +91,9 @@ async function serveMedia(request: Request, env: Env) {
   if (asset.status !== 200) return asset
 
   const headers = new Headers(asset.headers)
+  // Assets keep their own revalidating Cache-Control: film files keep their
+  // names across cuts, so a browser must never splice ranges from two versions.
   headers.set('Accept-Ranges', 'bytes')
-  headers.set('Cache-Control', 'public, max-age=86400')
   if (!range) return new Response(asset.body, { status: 200, headers })
 
   const sizeKey = `${request.url} ${asset.headers.get('ETag') ?? ''}`
