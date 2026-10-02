@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { REPLAY_INTRO_EVENT } from '../introReplay'
 
 /* The flat mark is the source of truth for the logo's shape: it is sampled
    into a tile grid rather than redrawn by hand. Its ring (the bowl of the P)
@@ -69,14 +70,34 @@ function sampleTiles(image: HTMLImageElement): Tile[] {
 
 function HomeIntro() {
   const [phase, setPhase] = useState<'pending' | 'running' | 'opening' | 'gone'>('pending')
+  // Each replay is a fresh run; run 0 is the page load.
+  const [run, setRun] = useState(0)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const nameRef = useRef<HTMLParagraphElement>(null)
+
+  useEffect(() => {
+    const onReplay = () => {
+      // Reduced motion: the logo simply returns to the top of the page.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.scrollTo({ top: 0, behavior: 'instant' })
+        return
+      }
+      document.documentElement.dataset.intro = 'play'
+      setPhase('pending')
+      setRun((current) => current + 1)
+    }
+    window.addEventListener(REPLAY_INTRO_EVENT, onReplay)
+    return () => window.removeEventListener(REPLAY_INTRO_EVENT, onReplay)
+  }, [])
 
   useEffect(() => {
     const root = document.documentElement
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
-    if (root.dataset.intro !== 'play' || !canvas || !context || performance.now() > LATE_START_MS) {
+    // Only the page-load run can be too late: the stylesheet's failsafe timer
+    // starts with the overlay, and a replay mounts a fresh one.
+    const late = run === 0 && performance.now() > LATE_START_MS
+    if (root.dataset.intro !== 'play' || !canvas || !context || late) {
       if (root.dataset.intro === 'play') root.dataset.intro = 'skip'
       setPhase('gone')
       return
@@ -235,7 +256,9 @@ function HomeIntro() {
     image.decode()
       .then(() => {
         if (cancelled) return
-        if (performance.now() > LATE_START_MS) throw new Error('Too late to start')
+        if (run === 0 && performance.now() > LATE_START_MS) throw new Error('Too late to start')
+        // A replay starts from the top of the page, moved there behind the ink.
+        if (run > 0) window.scrollTo({ top: 0, behavior: 'instant' })
         tiles = sampleTiles(image)
         if (tiles.length === 0) throw new Error('Mark could not be sampled')
         try { window.localStorage.setItem(STORAGE_KEY, new Date().toISOString()) } catch { /* Private modes may refuse storage. */ }
@@ -266,7 +289,7 @@ function HomeIntro() {
       window.removeEventListener('wheel', skip)
       window.removeEventListener('touchmove', skip)
     }
-  }, [])
+  }, [run])
 
   if (phase === 'gone') return null
 

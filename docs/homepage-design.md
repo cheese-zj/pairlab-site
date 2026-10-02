@@ -81,7 +81,10 @@ in the lab's colours, then hand over to the film.
   the homepage, with the reel already playing, appears inside the logo.
   About 2.8 s in all.
 - Plays once per browser (`localStorage` `pairlab:intro-seen`); `/?intro`
-  replays it. Any key, click, wheel or touch scroll skips straight to the
+  replays it, and so does pressing the PAIR Lab logo in the site bar while
+  on the homepage (`src/introReplay.ts`): the page returns to the top behind
+  the ink and the intro runs again. Under reduced motion the logo only
+  returns to the top; on every other page it is an ordinary link home. Any key, click, wheel or touch scroll skips straight to the
   hand-over. Never plays under reduced motion or Save-Data.
 - `index.html` decides before first paint (`html[data-intro]`), so the overlay
   never flashes in or out. Without a script it never shows; if the script

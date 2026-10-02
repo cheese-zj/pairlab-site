@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { replayIntro } from '../introReplay'
 
 const navLinks = [
   { to: '/research', label: 'Research' },
@@ -38,7 +39,13 @@ function SiteHeader() {
       data-ground={ground}
     >
       <div className="site-nav-inner">
-        <Link className="site-nav-brand" to="/" aria-label="PAIR Lab home">
+        <Link
+          className="site-nav-brand"
+          to="/"
+          aria-label="PAIR Lab home"
+          /* Already home: the logo replays the intro instead of a no-op reload. */
+          onClick={pathname === '/' ? (event) => { event.preventDefault(); replayIntro() } : undefined}
+        >
           <img src="/pairlab-mark-flat.png" alt="" aria-hidden="true" />
           <span>PAIR Lab</span>
         </Link>
