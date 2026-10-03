@@ -181,4 +181,22 @@ export const researchProjects: ResearchProject[] = [
     summary: 'Reusable interactions from human videos, assembled into longer mobile manipulation tasks.',
     description: 'SAKI separates reusable interaction requirements from scene-dependent robot motion, connecting human demonstrations through object-role binding and whole-body kinematic imitation.',
   },
+  {
+    id: '09',
+    slug: 'core',
+    title: 'CoRE',
+    subtitle: 'Learning Collaboration-Role Experts for Decentralized Collaborative Manipulation with One Policy',
+    type: 'Collaborative manipulation',
+    theme: 'learning',
+    image: '/core-box-assembly.webp',
+    externalUrl: '/research/core/',
+    externalLabel: 'Visit project site',
+    topics: ['Collaborative manipulation', 'Multi-robot learning', 'Mixture of experts'],
+    details: [
+      'CoRE studies single-policy decentralised collaboration: every robot runs a copy of the same policy from its own visual observations and proprioception, without task prompts, identity labels or inter-robot messages.',
+      'Query-conditioned experts, combined by a local router and supervised by an action–expert alignment loss without role labels, let shared parameters express complementary team behaviours. Experiments span 13 simulated tasks across three benchmarks and five real-robot tasks with two independent arms.',
+    ],
+    summary: 'One shared policy that lets independent robots take complementary roles in collaborative manipulation.',
+    description: 'CoRE learns collaboration-role experts from pooled multi-task, multi-robot demonstrations, so robots running copies of one policy can collaborate from local observations alone.',
+  },
 ]

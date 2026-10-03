@@ -15,6 +15,7 @@ try {
     ['autointervene', '/AutoIntervene', 'https://123qwedsa123.github.io'],
     ['mavp', '/mavp', 'https://123qwedsa123.github.io'],
     ['saki', '/saki-site', 'https://cheese-zj.github.io'],
+    ['core', '/core', 'https://yananzhou.me'],
   ]) {
     const canonical = `https://aus.bot/research/${slug}/`
     const redirect = await worker.fetch(new Request(canonical.slice(0, -1)), env)
@@ -65,7 +66,19 @@ try {
   globalThis.fetch = async () => new Response('Not found', { status: 404 })
   assert.equal((await worker.fetch(new Request('https://aus.bot/research/saki/missing.webp'), env)).status, 404)
   assert.equal(await (await worker.fetch(new Request('https://aus.bot/research/preview/saki/'), env)).text(), 'asset fallback')
-  console.log('Project proxy checks passed for all seven project sites, including MAVP and SAKI video ranges and missing assets.')
+  globalThis.fetch = async (request) => {
+    assert.equal(request.url, 'https://yananzhou.me/core/assets/media/box.mp4')
+    assert.equal(request.headers.get('Range'), 'bytes=100-199')
+    return new Response('CoRE video chunk', { status: 206, headers: { 'Content-Type': 'video/mp4', 'Content-Range': 'bytes 100-199/5000000' } })
+  }
+  const coreVideo = await worker.fetch(new Request('https://aus.bot/research/core/assets/media/box.mp4', { headers: { Range: 'bytes=100-199' } }), env)
+  assert.equal(coreVideo.status, 206)
+  assert.equal(coreVideo.headers.get('Content-Range'), 'bytes 100-199/5000000')
+  assert.equal(await coreVideo.text(), 'CoRE video chunk')
+  globalThis.fetch = async () => new Response('Not found', { status: 404 })
+  assert.equal((await worker.fetch(new Request('https://aus.bot/research/core/missing.webp'), env)).status, 404)
+  assert.equal(await (await worker.fetch(new Request('https://aus.bot/research/preview/core/'), env)).text(), 'asset fallback')
+  console.log('Project proxy checks passed for all eight project sites, including MAVP, SAKI and CoRE video ranges and missing assets.')
 
   // Homepage film: the Worker answers byte ranges that static assets ignore.
   const film = '0123456789'

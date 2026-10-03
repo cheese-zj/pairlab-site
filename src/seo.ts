@@ -194,4 +194,5 @@ export const sitemapPaths = [
   '/research/stereopatch/',
   '/research/mavp/',
   '/research/saki/',
+  '/research/core/',
 ]

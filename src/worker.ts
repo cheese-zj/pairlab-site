@@ -14,6 +14,7 @@ const projectSites = [
   { path: '/research/autointervene', sourcePath: '/AutoIntervene', legacyPath: '/AutoIntervene', origin: 'https://123qwedsa123.github.io' },
   { path: '/research/mavp', sourcePath: '/mavp', legacyPath: '/mavp', origin: 'https://123qwedsa123.github.io' },
   { path: '/research/saki', sourcePath: '/saki-site', legacyPath: '/saki-site', origin: 'https://cheese-zj.github.io' },
+  { path: '/research/core', sourcePath: '/core', legacyPath: '/core', origin: 'https://yananzhou.me' },
 ]
 
 const movedPreviewSlugs = [
