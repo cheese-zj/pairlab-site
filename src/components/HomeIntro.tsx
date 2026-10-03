@@ -21,6 +21,9 @@ const TIMING = {
   iris: 0.95,
   skippedIris: 0.55,
 }
+/* The whole sequence runs on one clock, slowed by this factor (1 = the
+   times above). The splash name's fade-in in styles.css follows it. */
+const PACE = 1.25
 const STORAGE_KEY = 'pairlab:intro-seen'
 /* Past this point the stylesheet's failsafe has already hidden the overlay
    (a slow or failed script must never leave the page covered). */
@@ -149,7 +152,7 @@ function HomeIntro() {
 
     const draw = (now: number) => {
       if (cancelled) return
-      const time = (now - start) / 1000
+      const time = (now - start) / 1000 / PACE
       const { markHeight, markWidth, left, top, pitch } = layout()
       context.clearRect(0, 0, width, height)
 
@@ -245,9 +248,10 @@ function HomeIntro() {
     // Any intent to use the page hands over to it straight away.
     const skip = () => {
       if (!start || opening) return
-      const time = (performance.now() - start) / 1000
+      const time = (performance.now() - start) / 1000 / PACE
       irisStart = Math.min(irisStart, time)
-      irisLength = TIMING.skippedIris
+      // A skip keeps its own brisk pace.
+      irisLength = TIMING.skippedIris / PACE
     }
 
     resize()

@@ -361,7 +361,8 @@ html[data-intro='play'] .intro-splash:is(.is-running, .is-opening) { animation: 
 html[data-intro='play'] .intro-splash.is-opening { background: transparent; pointer-events: none; }
 .intro-splash canvas { display: block; width: 100%; height: 100%; }
 .intro-splash-name { position: absolute; top: var(--intro-name-top, 70%); right: 0; left: 0; margin: 0; color: var(--white); opacity: 0; font-size: clamp(22px, 2.2vw, 32px); font-weight: var(--weight-display); font-stretch: var(--width-display); letter-spacing: var(--track-heading); text-align: center; }
-.intro-splash.is-running .intro-splash-name { animation: intro-name-in var(--dur-4) var(--ease-out) .95s both; }
+/* .95s and --dur-4, scaled by PACE in HomeIntro.tsx. */
+.intro-splash.is-running .intro-splash-name { animation: intro-name-in calc(var(--dur-4) * 1.25) var(--ease-out) 1.19s both; }
 .intro-splash.is-opening .intro-splash-name { animation: intro-name-out var(--dur-1) ease both; }
 @keyframes intro-name-in { from { opacity: 0; transform: translateY(10px); font-stretch: var(--width-display-wide); } to { opacity: 1; transform: none; } }
 @keyframes intro-name-out { from { opacity: 1; } to { opacity: 0; transform: translateY(-6px); } }
