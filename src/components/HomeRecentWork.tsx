@@ -1,14 +1,14 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
-import { researchProjects } from '../researchProjects'
+import { researchProjects, sortProjects } from '../researchProjects'
 
 const RECENT_COUNT = 3
 
-/* The newest showcase entries, taken from the end of the catalogue, so the
-   homepage always has real work to show without a separate list to maintain. */
+/* The newest projects, by the date each joined the catalogue, so the homepage
+   always has real work to show without a separate list to maintain. */
 function HomeRecentWork() {
-  const recent = researchProjects.slice(-RECENT_COUNT).reverse()
+  const recent = sortProjects(researchProjects, 'newest').slice(0, RECENT_COUNT)
 
   return (
     <section className="home-work" aria-labelledby="home-work-title">
@@ -20,8 +20,8 @@ function HomeRecentWork() {
           </Link>
         </header>
         <div className="research-project-grid home-work-grid">
-          {recent.map((project, index) => (
-            <ProjectCard project={project} index={index} key={project.slug} />
+          {recent.map((project) => (
+            <ProjectCard project={project} key={project.slug} />
           ))}
         </div>
       </div>

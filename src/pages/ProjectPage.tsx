@@ -26,7 +26,7 @@ function ProjectPage() {
         <span className="project-hero-image" aria-hidden="true" />
         <div className="project-hero-topline">
           <Link to="/research"><ArrowLeft size={16} /> All projects</Link>
-          <span>{project.id} / {project.type}</span>
+          <span>{project.type}</span>
         </div>
         <div>
           <h1>{project.title}</h1>
@@ -55,15 +55,13 @@ function ProjectPage() {
       {project.videos ? (
         <section className="project-demos" aria-labelledby="project-demos-title">
           <header>
-            <span>Physical demonstrations</span>
             <h2 id="project-demos-title">Watch the robots work.</h2>
           </header>
           <div className="project-demo-grid">
-            {project.videos.map((video, index) => (
+            {project.videos.map((video) => (
               <article className="project-demo-card" key={video.src}>
                 <video controls playsInline preload="none" src={video.src} poster={video.poster} aria-label={video.title} />
                 <div>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
                   <h3>{video.title}</h3>
                   {video.caption ? <p>{video.caption}</p> : null}
                 </div>

@@ -162,19 +162,11 @@ mark {
 /* Metadata rows (identifiers, counts, years, dates) keep their figures in
    columns, in the same family as everything else. */
 .page-title > p,
-.research-areas article > span,
-.section-strip,
-.project-card-meta,
 .project-hero-topline span,
-.publication-section-meta,
-.publication-record-id,
+.publication-index,
 .publication-year-marker,
-.people-card-head span,
 .home-news-item time,
 .not-found-page > span { font-variant-numeric: tabular-nums; }
-
-/* The research showcase spans the sheet like every other section. */
-.research-showcase { width: var(--sheet-w); margin-inline: auto; }
 
 /* Skip link. Sits above the bar and only shows itself to keyboard users. */
 .skip-link {
@@ -281,6 +273,16 @@ mark {
 .home-copy h2 { margin: var(--space-7) 0 var(--space-4); font-size: clamp(28px, 2.6vw, 42px); font-weight: var(--weight-display); line-height: 1.05; letter-spacing: var(--track-heading); }
 .home-summary { max-width: 44ch; margin: 0 auto; color: var(--on-dark-2); font-size: clamp(17px, 1.25vw, 19px); line-height: 1.6; text-wrap: pretty; }
 
+/* Wide screens: a tighter intro, so the resting film (scaled to fit below
+   it) keeps as much of the first screen as possible. */
+@media (min-width: 900px) and (min-aspect-ratio: 4 / 3) {
+  .home-intro { padding: calc(var(--nav-h) + clamp(16px, 3.5vh, 44px)) var(--sheet-pad) clamp(20px, 3vh, 36px); }
+  .home-copy { width: min(760px, 100%); }
+  .hero-wordmark img { width: min(100%, clamp(400px, 56vh, 580px)); margin-inline: auto; }
+  .home-copy h2 { margin: var(--space-5) 0 var(--space-2); font-size: clamp(26px, 2.2vw, 36px); }
+  .home-summary { max-width: 62ch; }
+}
+
 /* The frame is full width in layout; its clip holds it --frame-inset off the
    viewport edges with rounded corners until the scroll opens it out. */
 .home-film {
@@ -304,11 +306,24 @@ mark {
 
 @keyframes film-open { to { clip-path: inset(0 0 round 0); } }
 @keyframes intro-recede { to { opacity: 0; transform: translateY(14vh) scale(.94); } }
+/* Wide screens: rather than cropping, the frame rests scaled down so the whole
+   16:9 picture sits under the intro on the first screen (HomeFilm measures
+   --film-rest-scale), and grows to full bleed on the same timeline. Corners
+   and controls are counter-scaled so they keep their real size at rest. */
+@keyframes film-grow {
+  from { transform: scale(var(--film-rest-scale, 1)); clip-path: inset(0 round calc(var(--radius-media) / var(--film-rest-scale, 1))); }
+  to { transform: none; clip-path: inset(0 round 0); }
+}
+@keyframes film-controls-grow { from { scale: calc(1 / var(--film-rest-scale, 1)); } to { scale: 1; } }
 @supports (animation-timeline: view()) and (timeline-scope: none) {
   @media (prefers-reduced-motion: no-preference) {
     .home-film,
     .home-copy { animation: film-open linear both; animation-timeline: --home-intro; animation-range: exit 0% exit 100%; }
     .home-copy { animation-name: intro-recede; }
+  }
+  @media (prefers-reduced-motion: no-preference) and (min-width: 900px) and (min-aspect-ratio: 4 / 3) {
+    .home-film { transform-origin: 50% 0; animation-name: film-grow; }
+    .home-film-controls { right: clamp(14px, 2vw, 32px); transform-origin: 100% 100%; animation: film-controls-grow linear both; animation-timeline: --home-intro; animation-range: exit 0% exit 100%; }
   }
 }
 
@@ -336,6 +351,22 @@ html:has(.film-dialog[open]) { overflow: hidden; }
   }
 }
 
+/* First-visit intro (HomeIntro). index.html decides before first paint
+   whether it plays, so the overlay never flashes; without a script it never
+   shows, and if the script fails to start it in time the failsafe clears it. */
+.intro-splash { display: none; }
+html[data-intro='play'] .intro-splash { position: fixed; z-index: 300; inset: 0; display: block; background: var(--night); animation: intro-failsafe 0s 3.4s forwards; }
+html[data-intro='play'] .intro-splash:is(.is-running, .is-opening) { animation: none; }
+/* Through the ring the canvas itself is the ink, so the page shows in the hole. */
+html[data-intro='play'] .intro-splash.is-opening { background: transparent; pointer-events: none; }
+.intro-splash canvas { display: block; width: 100%; height: 100%; }
+.intro-splash-name { position: absolute; top: var(--intro-name-top, 70%); right: 0; left: 0; margin: 0; color: var(--white); opacity: 0; font-size: clamp(22px, 2.2vw, 32px); font-weight: var(--weight-display); font-stretch: var(--width-display); letter-spacing: var(--track-heading); text-align: center; }
+.intro-splash.is-running .intro-splash-name { animation: intro-name-in var(--dur-4) var(--ease-out) .95s both; }
+.intro-splash.is-opening .intro-splash-name { animation: intro-name-out var(--dur-1) ease both; }
+@keyframes intro-name-in { from { opacity: 0; transform: translateY(10px); font-stretch: var(--width-display-wide); } to { opacity: 1; transform: none; } }
+@keyframes intro-name-out { from { opacity: 1; } to { opacity: 0; transform: translateY(-6px); } }
+@keyframes intro-failsafe { to { visibility: hidden; } }
+
 /* Recent projects: the research showcase in miniature. */
 .home-work { color: var(--white); background: var(--ink); }
 .home-work-inner { width: var(--sheet-w); margin-inline: auto; padding: clamp(72px, 9vw, 140px) 0 clamp(64px, 7vw, 112px); }
@@ -347,12 +378,12 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 .home-work-all:hover { border-color: var(--white); background: color-mix(in oklab, var(--white) 6%, transparent); }
 .home-work-all:hover svg { transform: translateX(3px); }
 .home-work-all:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
-.home-work-grid .research-project-card { min-height: clamp(320px, 27vw, 420px); }
+.home-work-grid .research-project-card { height: clamp(320px, 27vw, 420px); }
 /* Where the two homepage sections meet, one quiet hairline on the sheet. */
 .home-news + .home-work .home-work-inner,
 .home-work + .home-news .home-news-inner { border-top: 1px solid var(--rule-dark-soft); }
 
-/* News: a ledger in the same voice as the publications archive. */
+/* News: a ledger in the same voice as the publications page. */
 .home-news { color: var(--white); background: var(--ink); scroll-margin-top: var(--nav-h); }
 .home-news-inner { width: var(--sheet-w); margin-inline: auto; padding: clamp(72px, 9vw, 140px) var(--sheet-pad) clamp(64px, 7vw, 112px); }
 .home-news-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-4) var(--space-8); }
@@ -392,14 +423,11 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 .page-title h1,
 .join-heading h1 { margin: 0; font-size: clamp(52px, 6.4vw, 108px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: .92; letter-spacing: var(--track-display); }
 
-/* Research */
+/* Research. The claim opens the page; below it the projects are grouped
+   under the lab's three themes, each theme carrying its accent hue. */
 .research-page { background: var(--cream); }
-.research-showcase,
-.research-publications { scroll-margin-top: calc(var(--nav-h) + 12px); }
-/* The page opens straight on the claim — one centred module of claim and
-   marked themes; the strip below closes the block. */
-.research-intro { padding: clamp(128px, 15vh, 168px) var(--sheet-pad) clamp(56px, 7vw, 100px); text-align: center; }
-.research-intro h1 { max-width: 1040px; margin: 0 auto; font-size: clamp(38px, 4.6vw, 74px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1.02; letter-spacing: var(--track-display); }
+.research-intro { padding: clamp(128px, 15vh, 168px) var(--sheet-pad) clamp(40px, 5vw, 72px); text-align: center; }
+.research-intro h1 { max-width: 1040px; margin: 0 auto; font-size: clamp(38px, 4.6vw, 74px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1.02; letter-spacing: var(--track-display); text-wrap: balance; }
 .research-intro p { max-width: 660px; margin: clamp(20px, 2.2vw, 30px) auto 0; color: var(--on-light-2); font-size: clamp(16px, 1.3vw, 19px); line-height: 1.62; }
 /* Marker-pen emphasis: the claim reads highlighted, not merely bolder. */
 .research-intro strong {
@@ -413,74 +441,116 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 }
 /* In running text the marked themes also firm up in weight. */
 .research-intro p mark { font-weight: var(--weight-medium); }
-/* A quiet label titling the grid it sits above. */
-.section-strip { display: flex; justify-content: space-between; margin-inline: var(--sheet-pad); padding: 0 0 var(--space-4); color: var(--on-light-4); font-size: var(--text-micro); font-weight: var(--weight-label); }
+
+.research-theme { width: var(--sheet-w); margin-inline: auto; padding-top: clamp(48px, 6vw, 96px); }
+
+/* Visitors choose the order: newest first by default, oldest, grouped by
+   theme, or by name. The choice is a row of pills; outside the theme view a
+   legend names the hue on each plate's top edge. */
+.research-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4) var(--space-6); width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad); }
+.research-order { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+.research-order > span { margin-right: var(--space-2); color: var(--on-light-3); font-size: var(--text-label); font-weight: var(--weight-label); }
+.research-order label { position: relative; cursor: pointer; }
+.research-order input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.research-order label > span { display: inline-block; padding: 7px var(--space-4); color: var(--on-light-2); border: 1px solid var(--rule-light); border-radius: var(--radius-pill); font-size: var(--text-label); font-weight: var(--weight-medium); transition: color var(--dur-1) ease, background-color var(--dur-2) ease, border-color var(--dur-2) ease; }
+.research-order label:hover > span { border-color: var(--ink); }
+.research-order input:checked + span { color: var(--cream); border-color: var(--ink); background: var(--ink); }
+.research-order input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
+.research-legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; color: var(--on-light-2); font-size: var(--text-micro); list-style: none; }
+.research-catalogue { width: var(--sheet-w); margin-inline: auto; padding-top: var(--space-6); }
+.research-toolbar + .research-theme { padding-top: var(--space-6); }
+/* While the order changes, each plate is its own view-transition layer and
+   glides from its old place to its new one. */
+.is-reordering .research-project-card { view-transition-name: var(--card-transition, none); }
+html.is-reordering::view-transition-group(*) { animation-duration: var(--dur-3); animation-timing-function: var(--ease-out); }
+/* A theme opens on a hairline, its hue marking where the rule begins. */
+.research-theme-header { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4) clamp(32px, 6vw, 96px); align-items: end; margin: 0 var(--sheet-pad) var(--space-7); padding-top: var(--space-6); border-top: 1px solid var(--rule-light); }
+.research-theme-header::before { position: absolute; top: -2px; left: 0; width: 52px; height: 3px; background: var(--accent-mid); content: ""; }
+.research-theme-header h2 { margin: 0; font-size: clamp(28px, 2.8vw, 46px); font-weight: var(--weight-medium); font-stretch: var(--width-display); line-height: 1; letter-spacing: var(--track-heading); }
+.research-theme-header p { justify-self: end; max-width: 46ch; margin: 0; color: var(--on-light-3); font-size: 16px; line-height: 1.55; text-wrap: pretty; }
+
 /* Project plates stand apart on the ground, each a rounded media frame. */
 .research-project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin-inline: var(--sheet-pad); }
-.research-project-card { --project-image: none; position: relative; display: flex; min-height: clamp(360px, 30vw, 460px); flex-direction: column; justify-content: space-between; overflow: hidden; padding: var(--space-6); color: white; border: 0; border-radius: var(--radius-media); background: var(--ink); isolation: isolate; text-align: left; cursor: pointer; }
-.project-card-image { position: absolute; z-index: -4; inset: 0; background-image: var(--project-image); background-position: center; background-size: cover; transform: scale(1.01); transition: transform var(--dur-4) var(--ease-out), filter var(--dur-4) ease; }
-.project-card-hover { position: absolute; z-index: -3; inset: 0; opacity: 0; background-position: center; background-size: cover; transition: opacity var(--dur-2) ease; }
-.project-card-shade { position: absolute; z-index: -2; inset: 0; background: linear-gradient(180deg, rgb(var(--scrim) / .34) 0%, rgb(var(--scrim) / .04) 42%, rgb(var(--scrim) / .84) 100%); transition: background var(--dur-3) ease; }
-.research-project-card::after { position: absolute; z-index: -1; inset: 0; border: 0 solid var(--accent-bright); border-radius: inherit; content: ""; transition: border-width var(--dur-3) var(--ease-out); }
-/* The theme's hue sits on the card edge, where no photograph can wash it out. */
-.research-project-card::before { position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--accent); content: ""; }
-.project-card-meta { display: flex; justify-content: space-between; color: var(--on-dark); font-size: var(--text-micro); font-weight: var(--weight-label); text-shadow: 0 1px 4px rgb(var(--scrim) / .65); }
-.project-card-copy { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 30px; align-items: end; }
-.project-card-title { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-.project-card-title strong { max-width: 650px; font-size: clamp(28px, 2.7vw, 42px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1; letter-spacing: var(--track-heading); }
-.project-card-title > span { max-width: 290px; color: var(--on-dark-2); font-size: var(--text-label); font-weight: var(--weight-label); line-height: 1.32; letter-spacing: .008em; }
-.project-card-action { display: grid; width: 52px; height: 52px; place-items: center; border: 1px solid var(--on-dark-2); border-radius: 50%; background: color-mix(in oklab, var(--ink) 18%, transparent); transition: color var(--dur-2) ease, background var(--dur-2) ease, transform var(--dur-2) ease; }
-.research-project-card:hover .project-card-image { transform: scale(1.055); filter: saturate(1.12); }
-.research-project-card.has-hover-media .project-card-image { filter: brightness(.44) saturate(.68) contrast(1.08); }
-.research-project-card.has-hover-media:hover .project-card-image { filter: brightness(.4) saturate(.72) contrast(1.08); }
-.research-project-card.has-hover-media:hover .project-card-hover { opacity: 1; background-image: var(--project-hover-image); }
-.research-project-card.is-demo .project-card-image { filter: brightness(.62) saturate(.78) contrast(1.06); }
-.research-project-card.is-demo:hover .project-card-image { filter: brightness(.68) saturate(.88) contrast(1.06); }
-.research-project-card:hover .project-card-shade { background: linear-gradient(180deg, rgb(var(--scrim) / .42) 0%, rgb(var(--scrim) / .08) 38%, rgb(var(--scrim) / .9) 100%); }
-.research-project-card:hover::after { border-width: 6px; }
-.research-project-card:hover .project-card-action { color: var(--ink); background: var(--accent-bright); transform: rotate(5deg); }
-.research-project-card:focus-visible { z-index: 1; outline: 3px solid var(--accent-bright); outline-offset: 3px; }
-.research-areas { padding: clamp(80px, 9vw, 140px) var(--sheet-pad); }
-.research-areas > header { margin-bottom: var(--space-9); text-align: center; }
-.research-areas > header h2 { max-width: 900px; margin: 0 auto; font-size: clamp(32px, 3.4vw, 54px); font-weight: var(--weight-display); line-height: 1; letter-spacing: var(--track-display); }
-.research-areas > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 4vw, 64px); border-top: 1px solid var(--rule-light); }
-.research-areas article { position: relative; padding: 28px 0 var(--space-2); }
-/* Each approach is marked in its theme's hue where it meets the rule. */
-.research-areas article::before { position: absolute; top: -2px; left: 0; width: 52px; height: 3px; background: var(--accent-mid); content: ""; }
-.research-areas article > span { color: var(--accent-deep); font-size: var(--text-micro); font-weight: var(--weight-label); }
-.research-areas h3 { margin: var(--space-8) 0 16px; font-size: clamp(20px, 1.7vw, 26px); font-weight: var(--weight-medium); line-height: 1.12; }
-.research-areas p { max-width: 370px; margin: 0; color: var(--on-light-3); font-size: 14px; line-height: 1.5; }
+.research-project-grid[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.research-project-grid[data-columns='1'] { grid-template-columns: minmax(0, 1fr); }
 
-/* Research publications: an editorial archive appended to the project view.
-   The ink ground runs full-bleed — background splits cross the rails — while
-   the records themselves stay on the sheet. */
-.research-publications { color: white; background: var(--ink); }
-.publication-section-title { width: var(--sheet-w); margin-inline: auto; padding: clamp(52px, 6vw, 84px) var(--sheet-pad) 42px; }
-.publication-section-title > span { color: var(--on-dark-4); font-size: var(--text-label); font-weight: var(--weight-label); }
-.publication-section-title h2 { margin: var(--space-3) 0 0; font-size: clamp(40px, 4.6vw, 76px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: .95; letter-spacing: var(--track-display); }
-/* The archive's index: record count on the left, year jumps on the right.
-   The anchors move within the ledger, so they read as controls. */
-.publication-section-meta { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); justify-content: space-between; align-items: baseline; margin-top: var(--space-8); padding-top: 18px; border-top: 1px solid var(--rule-dark-soft); color: var(--on-dark-4); font-size: var(--text-micro); }
-.publication-section-meta p { margin: 0; }
-.publication-section-meta nav { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
-.publication-section-meta a { color: var(--on-dark-3); transition: color var(--dur-1) ease; }
-.publication-section-meta a:hover { color: var(--on-dark); }
-.publication-section-meta a:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
-.publication-award { display: inline-block; margin-left: 10px; padding: 2px 8px; color: var(--ink); border-radius: var(--radius-pill); background: var(--yellow); font-size: 12px; font-style: normal; }
+/* At rest the title sits centred on the project's still, in its own colour;
+   only light diagrams are dimmed to carry white type. Hovering or focusing
+   the plate plays the project's demo loop, frames it in the theme's hue and
+   moves the title down to the bottom edge, out of the footage's way. The
+   plate is its own size container, so the title travels exactly to its
+   padding line. */
+.research-project-card { --project-image: none; --card-pad: var(--space-6); position: relative; display: flex; height: clamp(360px, 30vw, 460px); flex-direction: column; justify-content: center; overflow: hidden; padding: var(--card-pad); color: var(--white); border-radius: var(--radius-media); background: var(--ink); container-type: size; isolation: isolate; text-align: center; }
+.research-project-grid[data-columns='2'] .research-project-card { height: clamp(380px, 34vw, 520px); }
+.research-project-grid[data-columns='1'] .research-project-card { height: clamp(380px, 38vw, 580px); }
+.project-card-image { position: absolute; z-index: -4; inset: 0; background: var(--project-image) center / cover no-repeat; transform: scale(1.01); transition: transform var(--dur-4) var(--ease-out), filter var(--dur-4) ease; }
+.research-project-card.is-bright .project-card-image { filter: brightness(.44) saturate(.68) contrast(1.08); }
+.project-card-video { position: absolute; z-index: -3; inset: 0; width: 100%; height: 100%; opacity: 0; object-fit: cover; transition: opacity var(--dur-3) ease; }
+.project-card-video[data-playing] { opacity: 1; }
+/* Two scrims trade places: a soft pool behind the centred title at rest, and
+   a floor gradient once the title has moved down. */
+.project-card-shade { position: absolute; z-index: -2; inset: 0; }
+.project-card-shade::before,
+.project-card-shade::after { position: absolute; inset: 0; content: ""; transition: opacity var(--dur-3) ease; }
+.project-card-shade::before { background: radial-gradient(closest-side, rgb(var(--scrim) / .58), rgb(var(--scrim) / .12)); }
+.project-card-shade::after { opacity: 0; background: linear-gradient(180deg, transparent 42%, rgb(var(--scrim) / .86) 100%); }
+/* The theme's hue sits on the card edge, where no photograph can wash it out,
+   and frames the whole plate on hover. */
+.research-project-card::before { position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--accent); content: ""; }
+.research-project-card::after { position: absolute; z-index: -1; inset: 0; border: 0 solid var(--accent-bright); border-radius: inherit; content: ""; transition: border-width var(--dur-3) var(--ease-out); }
+.project-card-copy { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); text-shadow: 0 1px 12px rgb(var(--scrim) / .55); transition: transform var(--dur-4) var(--ease-out); }
+.project-card-copy strong { max-width: 18ch; font-size: clamp(30px, 3vw, 48px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1; letter-spacing: var(--track-heading); }
+.research-project-grid[data-columns='1'] .project-card-copy strong { font-size: clamp(40px, 5vw, 76px); }
+.project-card-copy > span { max-width: 36ch; color: var(--on-dark-2); font-size: var(--text-label); font-weight: var(--weight-label); line-height: 1.35; text-wrap: balance; }
+.research-project-card:is(:hover, :focus-visible) .project-card-image { transform: scale(1.055); }
+.research-project-card:not(.is-bright):is(:hover, :focus-visible) .project-card-image { filter: saturate(1.12); }
+.research-project-card:is(:hover, :focus-visible) .project-card-shade::before { opacity: 0; }
+.research-project-card:is(:hover, :focus-visible) .project-card-shade::after { opacity: 1; }
+.research-project-card:hover::after { border-width: 6px; }
+.research-project-card:focus-visible { z-index: 1; outline: 3px solid var(--accent-bright); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .research-project-card:focus-visible .project-card-copy { transform: translateY(calc(50cqh - 50%)); }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .research-project-card:hover .project-card-copy { transform: translateY(calc(50cqh - 50%)); }
+}
+
+/* Onward link closing a page: a quiet pill that fills on hover. */
+.page-onward { width: var(--sheet-w); margin-inline: auto; padding: clamp(48px, 6vw, 88px) var(--sheet-pad) clamp(64px, 7vw, 100px); }
+.people-page .page-onward { padding-top: clamp(14px, 2vw, 28px); }
+.page-onward a { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3) var(--space-6); padding: 18px 22px 18px 28px; border: 1px solid var(--ink); border-radius: var(--radius-pill); transition: color var(--dur-2) ease, background var(--dur-2) ease; }
+.page-onward a:hover { color: var(--cream); background: var(--ink); }
+.page-onward a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.page-onward span { font-size: var(--text-label); font-weight: var(--weight-label); }
+.page-onward strong { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 15px; font-weight: var(--weight-strong); }
+.page-onward svg { transition: transform var(--dur-3) var(--ease-out); }
+.page-onward a:hover svg { transform: translateX(3px); }
+
+/* Publications. The archive keeps its own ground: ink for the title and
+   index, the lab's blue for the year-by-year ledger, running full-bleed while
+   the records stay on the sheet. Each year stays pinned beside its records
+   while they scroll. */
+.publications-page { color: var(--white); background: var(--ink); }
+.publication-index { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3) var(--space-6); width: var(--sheet-w); margin-inline: auto; padding: var(--space-6) var(--sheet-pad) var(--space-7); }
+.publication-index p { margin: 0; color: var(--on-dark-4); font-size: var(--text-label); }
+.publication-index nav { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.publication-index a { padding: 6px var(--space-3); color: var(--on-dark-3); border-radius: var(--radius-pill); font-size: var(--text-label); font-weight: var(--weight-medium); transition: color var(--dur-1) ease, background var(--dur-1) ease; }
+.publication-index a:hover { color: var(--on-dark); background: color-mix(in oklab, var(--white) 8%, transparent); }
+.publication-index a:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
 .publication-year-list { border-top: 1px solid var(--rule-dark); background: var(--blue); }
-.publication-year-group { display: grid; width: var(--sheet-w); grid-template-columns: minmax(120px, .35fr) 1.65fr; gap: clamp(38px, 6vw, 96px); margin-inline: auto; padding: 0 var(--sheet-pad); }
+.publication-year-group { display: grid; width: var(--sheet-w); grid-template-columns: minmax(120px, .35fr) 1.65fr; gap: clamp(38px, 6vw, 96px); margin-inline: auto; padding: 0 var(--sheet-pad); scroll-margin-top: calc(var(--nav-h) + var(--space-4)); }
 .publication-year-group + .publication-year-group > * { border-top: 1px solid var(--rule-dark); }
-.publication-year-marker { padding: var(--space-7) 0; }
-.publication-year-marker h3 { margin: 0; font-size: clamp(32px, 3.4vw, 52px); font-weight: var(--weight-display); line-height: .9; letter-spacing: var(--track-heading); scroll-margin-top: calc(var(--nav-h) + var(--space-6)); }
+.publication-year-marker { position: sticky; top: calc(var(--nav-h) + var(--space-4)); align-self: start; padding: var(--space-7) 0; }
+.publication-year-marker h2 { margin: 0; font-size: clamp(32px, 3.4vw, 52px); font-weight: var(--weight-display); line-height: .9; letter-spacing: var(--track-heading); }
 .publication-year-marker span { display: block; margin-top: 14px; color: var(--on-dark-4); font-size: var(--text-micro); }
-.publication-record { display: grid; grid-template-columns: 82px minmax(0, 1fr) 38px; gap: 22px; align-items: start; padding: 22px 0 24px; border-bottom: 1px solid var(--rule-dark-soft); }
+.publication-record { display: grid; grid-template-columns: minmax(0, 1fr) 38px; gap: 22px; align-items: start; padding: 22px 0 24px; border-bottom: 1px solid var(--rule-dark-soft); }
 .publication-record:last-child { border-bottom: 0; }
-.publication-record-id { padding-top: var(--space-1); color: var(--on-dark-4); font-size: var(--text-micro); }
 .publication-venue { color: var(--on-dark-2); font-size: var(--text-micro); font-weight: var(--weight-label); line-height: 1.35; }
-.publication-record .publication-citation { max-width: 820px; margin: 8px 0 0; color: white; font-size: clamp(16px, 1.3vw, 19px); font-weight: var(--weight-medium); line-height: 1.35; letter-spacing: -.002em; }
-.publication-record > a { display: grid; width: 36px; height: 36px; place-items: center; color: var(--ink); border-radius: 50%; background: white; transition: transform var(--dur-3) var(--ease-out); }
+.publication-award { display: inline-block; margin-left: 10px; padding: 2px 8px; color: var(--ink); border-radius: var(--radius-pill); background: var(--yellow); font-size: 12px; font-style: normal; }
+.publication-record .publication-citation { max-width: 820px; margin: 8px 0 0; color: var(--white); font-size: clamp(16px, 1.3vw, 19px); font-weight: var(--weight-medium); line-height: 1.35; letter-spacing: -.002em; }
+.publication-record > a { display: grid; width: 36px; height: 36px; place-items: center; color: var(--ink); border-radius: 50%; background: var(--white); transition: transform var(--dur-3) var(--ease-out); }
 .publication-record > a:hover { transform: rotate(45deg); }
-.publication-record-spacer { width: 36px; }
+.publication-record > a:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
 
 /* Individual research project */
 .project-page { color: white; background: var(--ink); }
@@ -509,16 +579,14 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 .project-external svg { transition: transform var(--dur-3) var(--ease-out); }
 .project-external:hover svg { transform: rotate(45deg); }
 .project-demos { width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad) clamp(70px, 9vw, 130px); }
-.project-demos > header { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(44px, 8vw, 140px); align-items: end; padding: var(--space-9) 0 var(--space-8); border-top: 1px solid var(--rule-dark-soft); }
-.project-demos > header span { color: var(--on-dark-4); font-size: var(--text-label); font-weight: var(--weight-label); }
+.project-demos > header { padding: var(--space-9) 0 var(--space-8); border-top: 1px solid var(--rule-dark-soft); }
 .project-demos > header h2 { margin: 0; font-size: clamp(32px, 3.4vw, 54px); font-weight: var(--weight-display); line-height: 1; letter-spacing: var(--track-display); }
 .project-demo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
 .project-demo-card { min-width: 0; overflow: hidden; border-radius: var(--radius-media); background: color-mix(in oklab, var(--white) 4%, var(--ink)); }
 .project-demo-card:only-child { grid-column: 1 / -1; }
 .project-demo-card:first-child:nth-last-child(3) { grid-column: 1 / -1; }
 .project-demo-card video { display: block; width: 100%; max-height: min(70svh, 760px); aspect-ratio: 16 / 9; background: black; object-fit: contain; }
-.project-demo-card > div { display: grid; grid-template-columns: 34px 1fr; gap: 7px var(--space-3); padding: var(--space-5) 22px 25px; }
-.project-demo-card > div > span { grid-row: 1 / span 2; padding-top: var(--space-1); color: var(--accent-bright); font-size: var(--text-micro); }
+.project-demo-card > div { display: grid; gap: 7px; padding: var(--space-5) 22px 25px; }
 .project-demo-card h3 { margin: 0; font-size: var(--space-5); font-weight: var(--weight-strong); }
 .project-demo-card p { margin: 0; color: var(--on-dark-4); font-size: 13px; line-height: 1.45; }
 .project-navigation { width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad) clamp(70px, 8vw, 110px); }
@@ -545,32 +613,22 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 .people-section { width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad) clamp(34px, 4vw, 56px); }
 .people-section > header { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-6); padding: clamp(32px, 4vw, 56px) 0 var(--space-4); border-bottom: 1px solid var(--rule-light); }
 .people-section h2 { margin: 0; font-size: clamp(26px, 2.4vw, 38px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: 1; letter-spacing: var(--track-heading); }
-.people-section > header span { color: var(--on-light-4); font-size: var(--text-micro); font-weight: var(--weight-label); }
 .people-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(30px, 3.2vw, 44px) clamp(20px, 2.2vw, 34px); padding-top: clamp(24px, 2.8vw, 36px); }
-/* Each person is a roster record: ordinal in a hanging column, name and role
-   aligned to one left edge, like the publication ledger's id-then-content grid. */
+/* Each person is a roster record: photograph, then name, role and links on
+   one left edge. */
 .people-card { display: flex; min-width: 0; flex-direction: column; }
 .people-card-photo { --person-image: none; width: 100%; aspect-ratio: 1 / 1.08; border-radius: var(--radius); background: var(--person-image) center 26% / cover no-repeat var(--blue); filter: saturate(.82); transition: filter var(--dur-2) ease; }
 .people-card:hover .people-card-photo { filter: saturate(1.06); }
-/* 22px = the ordinal's two mono digits plus gap; role and links share the edge. */
-.people-card-head { display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: baseline; margin-top: 13px; }
-.people-card-head span { color: var(--on-light-4); font-size: var(--text-micro); }
-.people-card h3 { margin: 0; font-size: clamp(17px, 1.3vw, 20px); font-weight: var(--weight-medium); line-height: 1.18; letter-spacing: -.004em; }
-.people-card > p { margin: 5px 0 0 22px; color: var(--on-light-3); font-size: 13px; line-height: 1.35; }
+.people-card h3 { margin: 13px 0 0; font-size: clamp(17px, 1.3vw, 20px); font-weight: var(--weight-medium); line-height: 1.18; letter-spacing: -.004em; }
+.people-card > p { margin: 5px 0 0; color: var(--on-light-3); font-size: 13px; line-height: 1.35; }
 /* An admitted member who has not started yet: a small tag under the name. */
 .people-card > .people-card-status { width: fit-content; padding: 2px 8px; color: var(--on-light-3); border: 1px solid var(--rule-light); border-radius: var(--radius-pill); font-size: 12px; line-height: 1.4; }
-.people-card-links { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: var(--space-1); margin: var(--space-1) 0 0 14px; }
+/* The icon buttons are wider than their glyphs; pull them back so the first
+   glyph lines up with the name above it. */
+.people-card-links { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: var(--space-1); margin: var(--space-1) 0 0 -8px; }
 .people-card-links a { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; color: var(--on-light-3); border-radius: 50%; transition: color var(--dur-1) ease, background var(--dur-1) ease; }
 .people-card-links a:hover { color: var(--cream); background: var(--ink); }
 .people-card-links a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.people-join { width: var(--sheet-w); margin-inline: auto; padding: clamp(14px, 2vw, 28px) var(--sheet-pad) clamp(64px, 7vw, 100px); }
-.people-join a { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3) var(--space-6); padding: 18px 22px 18px 28px; border: 1px solid var(--ink); border-radius: var(--radius-pill); transition: color var(--dur-2) ease, background var(--dur-2) ease; }
-.people-join a:hover { color: var(--cream); background: var(--ink); }
-.people-join a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.people-join span { font-size: var(--text-label); font-weight: var(--weight-label); }
-.people-join strong { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 15px; font-weight: var(--weight-strong); }
-.people-join svg { transition: transform var(--dur-3) var(--ease-out); }
-.people-join a:hover svg { transform: translateX(3px); }
 
 /* Join */
 /* The whole page is a quiet animated mosaic field on cream; isolation keeps
@@ -605,17 +663,11 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .research-project-card { min-height: 420px; }
-  .home-work-grid .research-project-card { min-height: 340px; padding: var(--space-5); }
-  .home-work-grid .project-card-title strong { font-size: 28px; }
-  .home-work-grid .project-card-action { width: 44px; height: 44px; }
-  .research-areas > div { grid-template-columns: 1fr; }
-  .research-areas > div { gap: 0; }
-  .research-areas article { padding: 28px 0 36px; }
-  .research-areas article + article { border-top: 1px solid var(--rule-light-soft); }
-  .research-areas article + article::before { content: none; }
-  .research-areas h3 { margin-top: 38px; }
-  .project-demos > header { grid-template-columns: 1fr; gap: var(--space-3); }
+  .research-theme-header { grid-template-columns: 1fr; }
+  .research-theme-header p { justify-self: start; }
+  .research-project-grid[data-columns] .research-project-card { height: clamp(340px, 48vw, 420px); }
+  .home-work-grid .research-project-card { --card-pad: var(--space-5); height: 340px; }
+  .home-work-grid .project-card-copy strong { font-size: 28px; }
   .publication-year-group { grid-template-columns: 126px 1fr; }
   .people-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px var(--space-4); }
 }
@@ -646,7 +698,7 @@ html:has(.film-dialog[open]) { overflow: hidden; }
   .home-work-inner { padding: var(--space-11) 0 var(--space-10); }
   .home-work-header { margin: 0 var(--space-5) var(--space-6); }
   .home-work-grid { grid-template-columns: 1fr; margin-inline: var(--space-3); }
-  .home-work-grid .research-project-card { min-height: 300px; }
+  .home-work-grid .research-project-card { height: 300px; }
   .home-news-inner { padding: var(--space-11) var(--space-5) var(--space-10); }
   .home-news-header p { font-size: 16px; }
   .home-news.is-empty .home-news-inner { grid-template-columns: 1fr; padding-block: var(--space-10); }
@@ -658,14 +710,14 @@ html:has(.film-dialog[open]) { overflow: hidden; }
   .page-title { padding: 88px var(--space-5) 34px; }
   .page-title h1,
   .join-heading h1 { font-size: 48px; }
-  .research-intro { padding: 92px var(--space-5) 56px; }
-  .section-strip { margin-inline: var(--space-5); }
-  .research-project-grid { grid-template-columns: 1fr; margin-inline: var(--space-3); }
-  .research-project-card { min-height: 400px; padding: var(--space-5); }
-  .project-card-copy { gap: 18px; }
-  .project-card-title strong { font-size: 32px; }
-  .project-card-title > span { max-width: 310px; font-size: 13px; }
-  .project-card-action { width: 46px; height: 46px; }
+  .research-intro { padding: 92px var(--space-5) var(--space-6); }
+  .research-order > span { margin-right: var(--space-1); }
+  .research-order label > span { padding: 6px var(--space-3); font-size: 13px; }
+  .research-project-grid,
+  .research-project-grid[data-columns] { grid-template-columns: 1fr; margin-inline: var(--space-3); }
+  .research-project-grid[data-columns] .research-project-card { --card-pad: var(--space-5); height: 360px; }
+  .research-project-grid[data-columns] .project-card-copy strong { font-size: 34px; }
+  .project-card-copy > span { font-size: 13px; }
   .project-hero { width: calc(100% - 2 * var(--frame-inset)); min-height: 620px; padding: calc(var(--nav-h) + var(--space-8)) var(--space-5) 36px; }
   .project-hero h1 { font-size: clamp(38px, 11vw, 58px); }
   .project-body { grid-template-columns: 1fr; gap: var(--space-7); padding: 58px var(--space-5) 70px; }
@@ -675,15 +727,15 @@ html:has(.film-dialog[open]) { overflow: hidden; }
   .project-demo-card:first-child:nth-last-child(3) { grid-column: 1; }
   .project-navigation { padding: 0 var(--space-5) 72px; }
   .project-next { margin-top: var(--space-6); }
-  .research-areas { padding: 72px var(--space-5); }
-  .publication-section-title { padding: 62px var(--space-5) 34px; }
-  .publication-section-title h2 { font-size: 32px; }
-  .publication-year-group { grid-template-columns: 1fr; gap: 0; padding: 0 var(--space-5); }
-  .publication-year-marker { display: flex; justify-content: space-between; align-items: end; padding: 34px 0 var(--space-5); border-bottom: 1px solid var(--rule-dark-soft); }
+  .publication-index { padding-bottom: var(--space-5); }
+  .publication-index nav { margin-left: calc(-1 * var(--space-3)); }
+  .publication-year-group { grid-template-columns: 1fr; gap: 0; }
   .publication-year-group + .publication-year-group > :last-child { border-top: 0; }
-  .publication-year-marker h3 { font-size: 34px; }
+  /* Phones stack the year over its records rather than pinning it aside. */
+  .publication-year-marker { position: static; display: flex; justify-content: space-between; align-items: end; padding: 34px 0 var(--space-5); border-bottom: 1px solid var(--rule-dark-soft); }
+  .publication-year-marker h2 { font-size: 34px; }
   .publication-year-marker span { margin: 0 0 2px; }
-  .publication-record { grid-template-columns: 28px minmax(0, 1fr) 36px; gap: 14px; padding: var(--space-6) 0 26px; }
+  .publication-record { gap: 14px; padding: var(--space-6) 0 26px; }
   .publication-record .publication-citation { font-size: 17px; }
   .not-found-page { padding: 120px var(--space-5) 70px; }
   .not-found-page h1 { font-size: 44px; }
@@ -691,7 +743,8 @@ html:has(.film-dialog[open]) { overflow: hidden; }
   .people-section h2 { font-size: 22px; }
   .people-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-4); }
   .people-card h3 { font-size: 16px; }
-  .people-join { padding: var(--space-3) var(--space-5) var(--space-11); }
+  .page-onward { padding: var(--space-9) var(--space-5) var(--space-11); }
+  .people-page .page-onward { padding-top: var(--space-3); }
   .join-page { padding: 90px var(--space-5) var(--space-9); }
   .join-heading > p:last-of-type { margin: var(--space-7) 0 22px; font-size: 18px; }
   .join-contact { grid-template-columns: 1fr auto; gap: var(--space-1) var(--space-4); padding: 15px var(--space-4); }
@@ -723,8 +776,7 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .research-areas > header,
-    .publication-section-title,
+    .research-theme-header,
     .project-demos > header,
     .people-section > header,
     .project-body-intro,
@@ -737,11 +789,10 @@ html:has(.film-dialog[open]) { overflow: hidden; }
     /* Whole year groups rather than every record: one composited layer per
        year instead of forty, and the archive reads as blocks anyway. */
     .research-project-card,
-    .research-areas article,
     .publication-year-group,
     .project-demo-card,
     .people-card,
-    .people-join {
+    .page-onward {
       animation: fade-in linear both;
       animation-timeline: view();
       animation-range: entry 10% entry 90%;
@@ -754,10 +805,8 @@ html:has(.film-dialog[open]) { overflow: hidden; }
    Grouped here because it is motion, and reduced-motion users opt out of it. */
 @media (prefers-reduced-motion: no-preference) {
   .site-nav nav a,
-  .research-project-card .project-card-title strong,
   .project-next strong { transition: font-stretch var(--dur-3) var(--ease-out), color var(--dur-1) ease; }
   .site-nav nav a:hover,
-  .research-project-card:hover .project-card-title strong,
   .project-next:hover strong { font-stretch: var(--width-display-wide); }
 }
 
@@ -771,7 +820,6 @@ html:has(.film-dialog[open]) { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
-  .research-project-card.has-hover-media:hover .project-card-hover { opacity: 0; background-image: none; }
   ::view-transition-old(*),
   ::view-transition-new(*) { animation: none !important; }
 }

@@ -2,7 +2,7 @@
 
 ## Direction
 
-A readable lab bulletin, not a promotional card grid. News replaces the homepage's lower introduction, research-theme cards, and publication preview. It follows the film-first hero described in `docs/homepage-design.md`, sharing its black ground, content edges, and typography. Motion stays in the hero; News remains still. Navigation destinations and the research archive remain unchanged; the homepage footer no longer has an animated mosaic.
+A readable lab bulletin, not a promotional card grid. News replaces the homepage's lower introduction, research-theme cards, and publication preview. It follows the film-first hero described in `docs/homepage-design.md`, sharing its black ground, content edges, and typography. Motion stays in the hero; News remains still. Navigation destinations and the publications archive remain unchanged; the homepage footer no longer has an animated mosaic.
 
 ```text
 Animated wordmark + dark campus atmosphere + brief lab introduction

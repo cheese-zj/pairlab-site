@@ -19,6 +19,19 @@
     <!-- pairlab:seo:end -->
     <link rel="icon" href="/pairlab-emblem.png" type="image/png" />
     <link rel="apple-touch-icon" href="/pairlab-emblem.png" />
+    <script>
+      /* The homepage's first-visit intro is decided here, before first paint,
+         so its overlay never flashes in or out. Add ?intro to replay it. */
+      (function () {
+        var play = false
+        try {
+          var still = matchMedia('(prefers-reduced-motion: reduce)').matches || (navigator.connection && navigator.connection.saveData)
+          var replay = /[?&]intro(=|&|$)/.test(location.search)
+          play = location.pathname === '/' && !still && (replay || !localStorage.getItem('pairlab:intro-seen'))
+        } catch (error) { /* Storage can be blocked; then the page simply opens. */ }
+        document.documentElement.dataset.intro = play ? 'play' : 'skip'
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

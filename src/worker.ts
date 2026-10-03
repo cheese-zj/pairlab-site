@@ -151,10 +151,6 @@ export default {
       })
     }
 
-    if (requestUrl.pathname === '/publications' || requestUrl.pathname.startsWith('/publications/')) {
-      return Response.redirect(new URL('/research', requestUrl), 301)
-    }
-
     if (mergedNestDexPaths.has(requestUrl.pathname)) {
       requestUrl.pathname = '/research/nestdex/'
       return Response.redirect(requestUrl, 301)

@@ -65,6 +65,44 @@ The controls sit bottom right: the film's own captions use the other corners.
   backdrop click closes it, focus returns to "Watch the film", page scroll is
   locked, and closing pauses and rewinds the film.
 
+## First-visit intro
+
+October 2026 direction: open a first visit with the PAIR Lab logo in motion,
+in the lab's colours, then hand over to the film.
+
+- The flat mark (`public/pairlab-mark-flat.png`) is sampled into a tile grid,
+  the same tile language as the mosaic band, so the logo is never redrawn by
+  hand. Tiles assemble from the gripper up while a diagonal wave of the four
+  research accents (lifted toward white for the night ground) runs through
+  them with a soft glow; they then resolve into the crisp white mark and
+  "PAIR Lab" fades in beneath.
+- Hand-over: the camera flies through the P's ring. The ring's opening grows
+  and drifts to the centre of the screen until it clears every corner, so
+  the homepage, with the reel already playing, appears inside the logo.
+  About 2.8 s in all.
+- Plays once per browser (`localStorage` `pairlab:intro-seen`); `/?intro`
+  replays it, and so does pressing the PAIR Lab logo in the site bar while
+  on the homepage (`src/introReplay.ts`): the page returns to the top behind
+  the ink and the intro runs again. Under reduced motion the logo only
+  returns to the top; on every other page it is an ordinary link home. Any key, click, wheel or touch scroll skips straight to the
+  hand-over. Never plays under reduced motion or Save-Data.
+- `index.html` decides before first paint (`html[data-intro]`), so the overlay
+  never flashes in or out. Without a script it never shows; if the script
+  has not started it within ~3 s, a CSS failsafe hides the overlay. The
+  overlay is decorative (`aria-hidden`): the page beneath stays the content.
+
+## Wide screens: the whole film on the first screen
+
+A 16:9 frame at full width is taller than what is left of a laptop screen
+under the wordmark, so laptops used to see only its top half. On landscape
+screens 900px and wider the intro is tightened and the frame rests scaled
+down, uncropped, so the whole picture fits under it, then grows to full bleed
+on the same scroll timeline as before. The resting scale (`--film-rest-scale`,
+0.5–1) depends on where the frame starts, so `HomeFilm` measures it: once by
+an inline script before first paint, then after resizes and webfont swaps.
+Corners and controls are counter-scaled to keep their real size. Phones keep
+their 4:5 crop; reduced motion keeps the static inset frame.
+
 ## Media pipeline and hosting
 
 `scripts/encode-home-film.sh <master.mp4> [loop-start] [loop-end] [title-frame]`
@@ -89,6 +127,7 @@ adaptive bitrate) is the next step; that needs account changes.
 
 Desktop/tablet/mobile down to 320px, no horizontal overflow, capsule fits at
 320px, keyboard path through the film controls and dialog, live reduced motion,
-pause/resume, generated SEO and `npm run check` (which includes the Worker's
+pause/resume, the intro (first visit, skip, replay, reduced motion), the
+resting frame on 1280–1440px laptops, generated SEO and `npm run check` (which includes the Worker's
 range cases). Vite dev/preview do not run the Worker; check ranges with
 `wrangler dev` before release. No deployment or push.

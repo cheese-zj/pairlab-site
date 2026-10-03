@@ -33,7 +33,7 @@ function LinkIcon({ kind }: Pick<PersonLink, 'kind'>) {
   return <Globe size={15} />
 }
 
-function PersonCard({ person, ordinal, showRole = false }: { person: Person, ordinal: string, showRole?: boolean }) {
+function PersonCard({ person, showRole = false }: { person: Person, showRole?: boolean }) {
   return (
     <article className="people-card">
       <div
@@ -42,10 +42,7 @@ function PersonCard({ person, ordinal, showRole = false }: { person: Person, ord
         role="img"
         aria-label={`${person.name} portrait`}
       />
-      <div className="people-card-head">
-        <span aria-hidden="true">{ordinal}</span>
-        <h3>{person.name}</h3>
-      </div>
+      <h3>{person.name}</h3>
       {showRole ? <p>{person.role}</p> : null}
       {person.incoming ? <p className="people-card-status">Incoming</p> : null}
       {person.links.length > 0 ? (
@@ -91,10 +88,9 @@ function PeoplePage() {
       <section className="people-section" aria-labelledby="people-section-faculty">
         <header>
           <h2 id="people-section-faculty"><mark className="hl-yellow">Faculty</mark></h2>
-          <span>01</span>
         </header>
         <div className="people-grid">
-          <PersonCard person={labLead} ordinal="01" showRole />
+          <PersonCard person={labLead} showRole />
         </div>
       </section>
 
@@ -104,17 +100,16 @@ function PeoplePage() {
             <h2 id={`people-section-${section.id}`}>
               <mark className={sectionWash[section.id] ?? 'hl-yellow'}>{section.title}</mark>
             </h2>
-            <span>{String(section.people.length).padStart(2, '0')}</span>
           </header>
           <div className="people-grid">
-            {section.people.map((person, index) => (
-              <PersonCard person={person} ordinal={String(index + 1).padStart(2, '0')} key={person.slug} />
+            {section.people.map((person) => (
+              <PersonCard person={person} key={person.slug} />
             ))}
           </div>
         </section>
       ))}
 
-      <aside className="people-join">
+      <aside className="page-onward">
         <Link to="/join">
           <span>Prospective students &amp; collaborators</span>
           <strong>View opportunities <ArrowRight size={18} /></strong>
