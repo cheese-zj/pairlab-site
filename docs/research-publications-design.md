@@ -34,8 +34,8 @@ two pages, and make the project plates show the robots working.
   its theme's hue and moves the title down to the bottom edge, out of the
   footage's way. Loops are short muted MP4s
   in `public/media/hover-*.mp4` (128–440 KB, made by
-  `scripts/encode-hover-clips.sh` from the reel's labelled segments and the
-  former hover GIFs, which weighed up to 6 MB). Nothing downloads until the
+  `scripts/encode-hover-clips.sh` from the reel's labelled segments, the
+  former hover GIFs, which weighed up to 6 MB, and project-site footage). Nothing downloads until the
   first hover; touch, reduced motion and Save-Data never load them. CASF and
   StereoPatch keep a still until footage of their own is approved.
 - **Publications has its own page** at `/publications`, keeping the
