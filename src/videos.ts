@@ -62,11 +62,12 @@ const wide = 16 / 9
 export const videoGroups: VideoGroup[] = [
   {
     id: 'real-to-sim',
+    // A new line of work in the lab, not yet a research project.
     label: 'Real to sim',
     span: 3,
     synced: { aspect: 2640 / 1080, columns: '1920fr 720fr', rows: '1fr 1fr' },
     videos: [
-      { id: 'real-to-sim-third', title: 'Third-person view', aspect: wide, sourceAspect: wide, area: '1 / 1 / 3 / 2' },
+      { id: 'real-to-sim-third', title: 'Sim, third person', mark: 'Sim', aspect: wide, sourceAspect: wide, area: '1 / 1 / 3 / 2' },
       { id: 'real-to-sim-real', title: 'Real', mark: 'Real', aspect: 4 / 3, sourceAspect: 4 / 3, area: '1 / 2 / 2 / 3' },
       { id: 'real-to-sim-sim', title: 'Sim', mark: 'Sim', aspect: 4 / 3, sourceAspect: 4 / 3, area: '2 / 2 / 3 / 3' },
     ],
