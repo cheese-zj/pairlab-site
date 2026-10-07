@@ -12,7 +12,7 @@ React + TypeScript + Vite, with static prerendering and a Cloudflare Worker. Pro
 | People and affiliations | `src/people.ts`; presentation in `src/pages/PeoplePage.tsx` |
 | Research catalogue, themes, preview copy, media references | `src/researchProjects.ts`; `src/pages/ResearchPage.tsx`, `ProjectPage.tsx`, `src/components/ProjectCard.tsx`; brief in `docs/research-publications-design.md` |
 | Publications | Page in `src/pages/PublicationsPage.tsx` (`/publications`); `src/publications.ts` is a bundled snapshot; `src/publicationSource.ts` owns the upstream URL/parser; `scripts/sync-publications.mjs` refreshes it |
-| Videos wall (`/videos`) | `src/videos.ts` (groups, curated order, tile shapes); `src/pages/VideosPage.tsx`, `src/components/videoWallLayout.ts`; media in `public/media/wall/` via `scripts/encode-video-wall.sh` |
+| Videos wall (`/videos`) | `src/videos.ts` (groups, curated order, tile shapes, synced groups); `src/pages/VideosPage.tsx`, `src/components/videoWallLayout.ts`; loops and posters in `public/media/wall/` via `scripts/encode-video-wall.sh`; clips a project site publishes stream from that site |
 | Layout and interaction | `src/pages/`, `src/components/`, `src/App.tsx` |
 | Design system | Tokens at the top of `src/styles.css`; consume existing spacing, colour, type, and motion tokens |
 | SEO and generated routes | `src/seo.ts`, `src/components/Seo.tsx`, `src/entry-server.tsx`, `scripts/prerender.mjs` |

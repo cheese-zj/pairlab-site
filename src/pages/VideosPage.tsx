@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import type { CSSProperties, KeyboardEvent, MouseEvent, PointerEvent } from 'react'
 import { flushSync } from 'react-dom'
-import { ArrowUpRight, ChevronLeft, ChevronRight, Layers, Pause, Play, Shuffle, X } from 'lucide-react'
+import { ArrowUpRight, ChevronLeft, ChevronRight, LayoutGrid, Layers, Maximize2, Pause, Play, Shuffle, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { columnsFor, layoutWall } from '../components/videoWallLayout'
 import type { Box } from '../components/videoWallLayout'
-import { groupLabel, groupProject, groupTheme, orderGroups, wallMedia } from '../videos'
+import { groupLabel, groupProject, groupTheme, loopSpeedLabel, orderGroups, wallMedia } from '../videos'
 import type { VideoGroup, WallVideo } from '../videos'
 
 const motionQuery = '(prefers-reduced-motion: reduce)'
@@ -38,7 +38,9 @@ type ViewTransitionDocument = Document & {
 const serverWidth = 1280
 const useClientLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
-type Entry = { video: WallVideo, group: VideoGroup }
+/* One tile on the wall: a single clip, or (video null) a synced group's
+   clips playing together. */
+type Entry = { id: string, group: VideoGroup, video: WallVideo | null }
 
 /* Positions are fractions of the wall's width, set in container units, so the
    prerendered wall already scales to any screen before JavaScript arrives. */
@@ -47,14 +49,79 @@ function boxStyle(box: Box, width: number): CSSProperties {
   return { '--x': unit(box.x), '--y': unit(box.y), '--w': unit(box.w), '--h': unit(box.h) } as CSSProperties
 }
 
-function Marks({ video }: { video: WallVideo }) {
-  if (!video.marks) return null
+const formatTime = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`
+
+/* Followers jump back into step with the lead once they drift a few frames. */
+function keepInStep(lead: HTMLVideoElement, followers: Array<HTMLVideoElement | null | undefined>) {
+  for (const video of followers) {
+    if (video && Math.abs(video.currentTime - lead.currentTime) > 0.12) video.currentTime = lead.currentTime
+  }
+}
+
+/* A synced group in the expanded view: every clip at full quality, in the
+   tile's layout, under one play control and one timeline. Any clip can be
+   lifted out to watch on its own. */
+function TogetherStage({ group, onSolo }: { group: VideoGroup, onSolo: (id: string) => void }) {
+  const players = useRef<Array<HTMLVideoElement | null>>([])
+  const [playing, setPlaying] = useState(true)
+  const [time, setTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const synced = group.synced!
+
+  const everyPlayer = (action: (video: HTMLVideoElement) => void) => players.current.forEach((video) => video && action(video))
+  const toggle = () => {
+    if (playing) everyPlayer((video) => video.pause())
+    else everyPlayer((video) => { video.play().catch(() => {}) })
+    setPlaying(!playing)
+  }
+  const seek = (to: number) => {
+    everyPlayer((video) => { video.currentTime = to })
+    setTime(to)
+  }
+
   return (
-    <span className="vw-marks" aria-hidden="true">
-      {video.marks.map((mark) => (
-        <span key={mark.label} style={{ left: `${mark.x * 100}%`, top: `${mark.y * 100}%` }}>{mark.label}</span>
-      ))}
-    </span>
+    <>
+      <div className="vw-together" style={{ gridTemplateColumns: synced.columns, gridTemplateRows: synced.rows }}>
+        {group.videos.map((video, index) => (
+          <div className="vw-panel" style={{ gridArea: video.area }} key={video.id}>
+            <video
+              ref={(element) => { players.current[index] = element }}
+              src={wallMedia(video).src}
+              poster={wallMedia(video).poster}
+              muted
+              autoPlay
+              loop
+              playsInline
+              aria-label={video.title}
+              onLoadedMetadata={index === 0 ? (event) => setDuration(event.currentTarget.duration) : undefined}
+              onTimeUpdate={index === 0 ? (event) => {
+                setTime(event.currentTarget.currentTime)
+                keepInStep(event.currentTarget, players.current.slice(1))
+              } : undefined}
+            />
+            {video.mark ? <span className="vw-mark" data-real={video.mark === 'Real' ? '' : undefined} aria-hidden="true">{video.mark}</span> : null}
+            <button className="vw-panel-solo" type="button" onClick={() => onSolo(video.id)} aria-label={`Watch ${video.title ?? 'this view'} on its own`}>
+              <Maximize2 size={16} />
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="vw-together-bar">
+        <button type="button" onClick={toggle} aria-label={playing ? 'Pause all views' : 'Play all views'}>
+          {playing ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
+        </button>
+        <input
+          type="range"
+          min={0}
+          max={duration || 0}
+          step={0.01}
+          value={time}
+          onChange={(event) => seek(Number(event.currentTarget.value))}
+          aria-label="Position in all views"
+        />
+        <span>{formatTime(time)} / {formatTime(duration)}</span>
+      </div>
+    </>
   )
 }
 
@@ -73,11 +140,15 @@ function VideosPage() {
   const [settled, setSettled] = useState(false)
   const [spotlight, setSpotlight] = useState<string | null>(null)
   const [openId, setOpenId] = useState<string | null>(null)
+  // Within an open synced group: the clip lifted out to watch alone, if any.
+  const [solo, setSolo] = useState<string | null>(null)
 
   const wallRef = useRef<HTMLDivElement>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
   const tileRefs = useRef(new Map<string, HTMLButtonElement>())
   const videoRefs = useRef(new Map<string, HTMLVideoElement>())
+  // Which tile each loop plays in: a synced tile holds several.
+  const tileOf = useRef(new Map<string, string>())
   const visible = useRef(new Set<string>())
 
   const motionAllowed = !reducedMotion && !saveData
@@ -91,8 +162,10 @@ function VideosPage() {
     [groups, width, columns, gap, grouped],
   )
   const entries = useMemo(() => {
-    const all: Entry[] = groups.flatMap((group) => group.videos.map((video) => ({ video, group })))
-    return all.sort((left, right) => (layout.rank.get(left.video.id) ?? 0) - (layout.rank.get(right.video.id) ?? 0))
+    const all: Entry[] = groups.flatMap((group): Entry[] => group.synced
+      ? [{ id: group.id, group, video: null }]
+      : group.videos.map((video) => ({ id: video.id, group, video })))
+    return all.sort((left, right) => (layout.rank.get(left.id) ?? 0) - (layout.rank.get(right.id) ?? 0))
   }, [groups, layout])
 
   useClientLayoutEffect(() => {
@@ -122,8 +195,8 @@ function VideosPage() {
      screen play. */
   const syncPlayback = useCallback(() => {
     for (const [id, video] of videoRefs.current) {
-      if (shouldPlay && visible.current.has(id)) {
-        if (!video.getAttribute('src')) video.src = wallMedia(id).loop
+      if (shouldPlay && visible.current.has(tileOf.current.get(id) ?? id)) {
+        if (!video.getAttribute('src')) video.src = video.dataset.loop ?? ''
         video.play().catch(() => {})
       } else {
         video.pause()
@@ -145,7 +218,7 @@ function VideosPage() {
   }, [syncPlayback])
 
   /* --- Expanded view --- */
-  const openIndex = entries.findIndex((entry) => entry.video.id === openId)
+  const openIndex = entries.findIndex((entry) => entry.id === openId)
   const openEntry = openIndex >= 0 ? entries[openIndex] : null
 
   const withTransition = (update: () => void, tileId: string | null, direction: 'open' | 'close') => {
@@ -172,6 +245,7 @@ function VideosPage() {
   const openVideo = (id: string) => {
     withTransition(() => {
       setOpenId(id)
+      setSolo(null)
       dialogRef.current?.showModal()
     }, id, 'open')
   }
@@ -190,7 +264,8 @@ function VideosPage() {
 
   const step = (by: number) => {
     if (openIndex < 0) return
-    setOpenId(entries[(openIndex + by + entries.length) % entries.length].video.id)
+    setOpenId(entries[(openIndex + by + entries.length) % entries.length].id)
+    setSolo(null)
   }
 
   const onDialogKeyDown = (event: KeyboardEvent<HTMLDialogElement>) => {
@@ -233,7 +308,7 @@ function VideosPage() {
       >
         {project ? (
           <Link className="vw-board-name" to={`/research/preview/${project.slug}`}>
-            {project.title} <ArrowUpRight size={15} aria-hidden="true" />
+            {groupLabel(group)} <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
         ) : (
           <span className="vw-board-name">{groupLabel(group)}</span>
@@ -243,8 +318,10 @@ function VideosPage() {
   }
   const boardsShown = new Set<string>()
 
-  const openMedia = openEntry ? wallMedia(openEntry.video.id) : null
   const openProject = openEntry ? groupProject(openEntry.group) : undefined
+  // The clip on the stage: the open tile's, or the one lifted out of a synced group.
+  const stageVideo = openEntry ? openEntry.video ?? openEntry.group.videos.find((video) => video.id === solo) ?? null : null
+  const together = Boolean(openEntry && !stageVideo)
 
   return (
     <main className="route-page videos-page">
@@ -284,56 +361,74 @@ function VideosPage() {
         style={{ '--wall-h': +(layout.height / width * 100).toFixed(3) } as CSSProperties}
         onPointerLeave={() => setSpotlight(null)}
       >
-        {entries.flatMap(({ video, group }) => {
-          const box = layout.tiles.get(video.id)
+        {entries.flatMap(({ id, group, video }) => {
+          const box = layout.tiles.get(id)
           if (!box) return null
-          const media = wallMedia(video.id)
           const label = groupLabel(group)
           const onBoard = layout.boards.has(group.id)
           const leadsBoard = onBoard && !boardsShown.has(group.id)
           boardsShown.add(group.id)
+          const speed = video ? loopSpeedLabel(video) : null
+          const loopOf = (clip: WallVideo, lead?: boolean) => (
+            <>
+              <img src={wallMedia(clip).poster} alt="" loading="lazy" decoding="async" />
+              <video
+                ref={(element) => {
+                  if (element) {
+                    videoRefs.current.set(clip.id, element)
+                    tileOf.current.set(clip.id, id)
+                  } else {
+                    videoRefs.current.delete(clip.id)
+                    tileOf.current.delete(clip.id)
+                  }
+                }}
+                data-loop={wallMedia(clip).loop}
+                muted
+                loop
+                playsInline
+                preload="none"
+                aria-hidden="true"
+                tabIndex={-1}
+                // Shown once frames arrive, so the still never flashes to black.
+                onPlaying={(event) => event.currentTarget.setAttribute('data-playing', '')}
+                onTimeUpdate={lead ? (event) => keepInStep(event.currentTarget, group.videos.slice(1).map((other) => videoRefs.current.get(other.id))) : undefined}
+              />
+              {clip.mark ? <span className="vw-mark" data-real={clip.mark === 'Real' ? '' : undefined} aria-hidden="true">{clip.mark}</span> : null}
+            </>
+          )
           return (
             [leadsBoard ? renderBoard(group) : null,
             <button
-              key={video.id}
+              key={id}
               className="vw-tile"
               type="button"
-              data-id={video.id}
+              data-id={id}
               data-accent={groupTheme(group)}
               data-lit={spotlight === group.id ? '' : undefined}
-              style={{ ...boxStyle(box, width), '--rank': layout.rank.get(video.id) ?? 0 } as CSSProperties}
+              style={{ ...boxStyle(box, width), '--rank': layout.rank.get(id) ?? 0 } as CSSProperties}
               ref={(element) => {
-                if (element) tileRefs.current.set(video.id, element)
-                else tileRefs.current.delete(video.id)
+                if (element) tileRefs.current.set(id, element)
+                else tileRefs.current.delete(id)
               }}
-              onClick={() => openVideo(video.id)}
+              onClick={() => openVideo(id)}
               onPointerEnter={() => setSpotlight(group.id)}
               onPointerMove={followPointer}
-              aria-label={[video.title, label].filter(Boolean).join(', ')}
+              aria-label={[video?.title, label].filter(Boolean).join(', ')}
               aria-haspopup="dialog"
             >
               <span className="vw-tile-inner">
-                <img src={media.poster} alt="" loading="lazy" decoding="async" />
-                <video
-                  ref={(element) => {
-                    if (element) videoRefs.current.set(video.id, element)
-                    else videoRefs.current.delete(video.id)
-                  }}
-                  muted
-                  loop
-                  playsInline
-                  preload="none"
-                  aria-hidden="true"
-                  tabIndex={-1}
-                  // Shown once frames arrive, so the still never flashes to black.
-                  onPlaying={(event) => event.currentTarget.setAttribute('data-playing', '')}
-                />
-                <Marks video={video} />
+                {video ? loopOf(video) : (
+                  <span className="vw-together" style={{ gridTemplateColumns: group.synced!.columns, gridTemplateRows: group.synced!.rows }}>
+                    {group.videos.map((clip, index) => (
+                      <span className="vw-panel" style={{ gridArea: clip.area }} key={clip.id}>{loopOf(clip, index === 0)}</span>
+                    ))}
+                  </span>
+                )}
                 <span className="vw-caption" aria-hidden="true">
-                  {onBoard || !video.title ? null : <small>{label}</small>}
-                  <strong>{video.title ?? label}</strong>
+                  {onBoard || !video?.title ? null : <small>{label}</small>}
+                  <strong>{video?.title ?? label}</strong>
                 </span>
-                {video.loopSpeed ? <span className="vw-speed" aria-hidden="true">{video.loopSpeed}×</span> : null}
+                {speed ? <span className="vw-speed" aria-hidden="true">{speed}</span> : null}
                 <span className="vw-cursor" aria-hidden="true"><Play size={18} fill="currentColor" /></span>
               </span>
             </button>]
@@ -346,7 +441,7 @@ function VideosPage() {
       <dialog
         className="vw-dialog"
         ref={dialogRef}
-        aria-label={openEntry ? [openEntry.video.title, groupLabel(openEntry.group)].filter(Boolean).join(', ') : 'Video'}
+        aria-label={openEntry ? [stageVideo?.title, groupLabel(openEntry.group)].filter(Boolean).join(', ') : 'Video'}
         onKeyDown={onDialogKeyDown}
         // Escape closes through the same morph as the close button.
         onCancel={(event) => {
@@ -356,12 +451,12 @@ function VideosPage() {
         onClick={onDialogClick}
         onClose={() => setOpenId(null)}
       >
-        {openEntry && openMedia ? (
+        {openEntry ? (
           <>
             <div className="vw-dialog-bar">
               {openProject ? (
                 <Link className="vw-dialog-project" to={`/research/preview/${openProject.slug}`} data-accent={openProject.theme}>
-                  {openProject.title} <ArrowUpRight size={15} aria-hidden="true" />
+                  {groupLabel(openEntry.group)} <ArrowUpRight size={15} aria-hidden="true" />
                 </Link>
               ) : (
                 <span className="vw-dialog-project">{groupLabel(openEntry.group)}</span>
@@ -375,48 +470,65 @@ function VideosPage() {
               <button className="vw-dialog-step" type="button" onClick={() => step(-1)} aria-label="Previous video">
                 <ChevronLeft size={24} />
               </button>
-              <div
-                className="vw-stage"
-                style={{ '--stage-aspect': openEntry.video.sourceAspect, '--poster': `url(${openMedia.poster})` } as CSSProperties}
-              >
-                <video
-                  key={openEntry.video.id}
-                  src={openMedia.src}
-                  controls
-                  autoPlay
-                  loop
-                  playsInline
-                  // The poster holds the stage until frames arrive, so the morph never lands on black.
-                  onPlaying={(event) => event.currentTarget.setAttribute('data-playing', '')}
-                  // Autoplay with sound can be refused; fall back to muted rather than a still.
-                  onLoadedData={(event) => {
-                    const player = event.currentTarget
-                    if (player.paused) {
-                      player.muted = true
-                      player.play().catch(() => {})
-                    }
-                  }}
-                />
-                <Marks video={openEntry.video} />
-              </div>
+              {stageVideo ? (
+                <div
+                  className="vw-stage"
+                  style={{ '--stage-aspect': stageVideo.sourceAspect, '--poster': `url(${wallMedia(stageVideo).poster})` } as CSSProperties}
+                >
+                  <video
+                    key={stageVideo.id}
+                    src={wallMedia(stageVideo).src}
+                    controls
+                    autoPlay
+                    loop
+                    playsInline
+                    // The poster holds the stage until frames arrive, so the morph never lands on black.
+                    onPlaying={(event) => event.currentTarget.setAttribute('data-playing', '')}
+                    // Autoplay with sound can be refused; fall back to muted rather than a still.
+                    onLoadedData={(event) => {
+                      const player = event.currentTarget
+                      if (player.paused) {
+                        player.muted = true
+                        player.play().catch(() => {})
+                      }
+                    }}
+                  />
+                  {stageVideo.mark ? <span className="vw-mark" data-real={stageVideo.mark === 'Real' ? '' : undefined} aria-hidden="true">{stageVideo.mark}</span> : null}
+                </div>
+              ) : (
+                <div className="vw-stage is-together" style={{ '--stage-aspect': openEntry.group.synced!.aspect } as CSSProperties}>
+                  <TogetherStage group={openEntry.group} onSolo={setSolo} />
+                </div>
+              )}
               <button className="vw-dialog-step" type="button" onClick={() => step(1)} aria-label="Next video">
                 <ChevronRight size={24} />
               </button>
             </div>
 
             <div className="vw-dialog-foot">
-              {openEntry.video.title ? <p>{openEntry.video.title}</p> : null}
-              {openEntry.group.videos.length > 1 ? (
+              {stageVideo?.title ? <p>{stageVideo.title}</p> : null}
+              {openEntry.group.synced ? (
+                <div className="vw-strip" role="group" aria-label={`Views in ${groupLabel(openEntry.group)}`}>
+                  <button className="vw-strip-all" type="button" aria-current={together ? 'true' : undefined} onClick={() => setSolo(null)}>
+                    <LayoutGrid size={16} aria-hidden="true" /> All together
+                  </button>
+                  {openEntry.group.videos.map((clip) => (
+                    <button type="button" key={clip.id} aria-current={clip.id === solo ? 'true' : undefined} aria-label={clip.title} onClick={() => setSolo(clip.id)}>
+                      <img src={wallMedia(clip).poster} alt="" />
+                    </button>
+                  ))}
+                </div>
+              ) : openEntry.group.videos.length > 1 ? (
                 <div className="vw-strip" role="group" aria-label={`More from ${groupLabel(openEntry.group)}`}>
                   {openEntry.group.videos.map((sibling) => (
                     <button
                       type="button"
                       key={sibling.id}
-                      aria-current={sibling.id === openEntry.video.id ? 'true' : undefined}
+                      aria-current={sibling.id === openEntry.id ? 'true' : undefined}
                       aria-label={sibling.title ?? groupLabel(openEntry.group)}
                       onClick={() => setOpenId(sibling.id)}
                     >
-                      <img src={wallMedia(sibling.id).poster} alt="" />
+                      <img src={wallMedia(sibling).poster} alt="" />
                     </button>
                   ))}
                 </div>
