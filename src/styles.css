@@ -598,6 +598,160 @@ html.is-reordering::view-transition-group(*) { animation-duration: var(--dur-3);
 .project-next:hover svg { transform: translateX(7px); }
 @keyframes project-reveal { from { opacity: .25; transform: scale(1.08); } to { opacity: 1; transform: scale(1); } }
 
+/* ==========================================================================
+   Videos. A Pinterest-style wall of the robots working: muted loops packed
+   into the shortest column, a project's clips sharing one board in its
+   theme's hue, and the full clip one press away. Words stay out of the
+   footage's way until a tile is hovered or focused.
+   ========================================================================== */
+.videos-page { color: var(--white); background: var(--ink); }
+.vw-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-5) var(--space-6); width: var(--sheet-w); margin-inline: auto; padding: calc(var(--nav-h) + clamp(40px, 6vw, 88px)) var(--sheet-pad) clamp(24px, 3vw, 40px); }
+.vw-header h1 { margin: 0; font-size: clamp(52px, 7.4vw, 128px); font-weight: var(--weight-display); font-stretch: var(--width-display); line-height: .86; letter-spacing: var(--track-display); }
+.vw-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.vw-order { display: flex; padding: 3px; border: 1px solid var(--rule-dark); border-radius: var(--radius-pill); }
+.vw-order button,
+.vw-switch { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 var(--space-4); color: var(--on-dark-2); border: 0; border-radius: var(--radius-pill); background: transparent; font-size: var(--text-label); font-weight: var(--weight-medium); cursor: pointer; transition: color var(--dur-1) ease, background-color var(--dur-2) ease, border-color var(--dur-2) ease; }
+.vw-order button:hover { color: var(--white); }
+.vw-order button[aria-pressed='true'] { color: var(--ink); background: var(--white); }
+.vw-switch { min-height: 44px; padding-right: var(--space-2); border: 1px solid var(--rule-dark); }
+.vw-switch:hover,
+.vw-pause:hover { border-color: var(--white); }
+.vw-switch-track { position: relative; width: 32px; height: 20px; margin-left: var(--space-1); border-radius: var(--radius-pill); background: var(--rule-dark); transition: background-color var(--dur-2) ease; }
+.vw-switch-track::after { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--white); content: ""; transition: transform var(--dur-3) var(--ease-out), background-color var(--dur-2) ease; }
+.vw-switch[aria-checked='true'] { color: var(--white); }
+.vw-switch[aria-checked='true'] .vw-switch-track { background: var(--yellow); }
+.vw-switch[aria-checked='true'] .vw-switch-track::after { background: var(--ink); transform: translateX(12px); }
+.vw-pause { display: grid; width: 44px; height: 44px; place-items: center; color: var(--white); border: 1px solid var(--rule-dark); border-radius: 50%; background: transparent; cursor: pointer; transition: border-color var(--dur-2) ease; }
+.vw-order button:focus-visible,
+.vw-switch:focus-visible,
+.vw-pause:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+
+/* The wall is its own size container: every position is a fraction of its
+   width (set by VideosPage), so the prerendered wall already fits any screen
+   and a resize only nudges the gaps. The sizer gives it its height. */
+.vw-frame { width: var(--sheet-w); margin-inline: auto; padding: 0 var(--sheet-pad) clamp(72px, 9vw, 140px); }
+.vw-wall { position: relative; container-type: inline-size; }
+.vw-wall-sizer { height: calc(var(--wall-h) * 1cqw); }
+.vw-tile,
+.vw-board { position: absolute; top: 0; left: 0; width: calc(var(--w) * 1cqw); height: calc(var(--h) * 1cqw); transform: translate(calc(var(--x) * 1cqw), calc(var(--y) * 1cqw)); }
+.vw-tile { padding: 0; color: var(--white); border: 0; background: none; cursor: pointer; text-align: left; }
+.vw-tile-inner { position: absolute; inset: 0; overflow: hidden; border-radius: var(--radius); background: var(--night); isolation: isolate; transition: scale var(--dur-3) var(--ease-out), box-shadow var(--dur-3) ease, opacity var(--dur-2) ease, filter var(--dur-2) ease; }
+.vw-tile-inner > img,
+.vw-tile-inner > video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.vw-tile-inner > video { opacity: 0; transition: opacity var(--dur-3) ease; }
+.vw-tile-inner > video[data-playing] { opacity: 1; }
+.vw-tile:hover .vw-tile-inner { box-shadow: 0 0 0 2px var(--accent-bright), var(--shadow-3); scale: 1.03; }
+.vw-tile:focus-visible { z-index: 2; outline: none; }
+.vw-tile:focus-visible .vw-tile-inner { box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--accent-bright); }
+.vw-tile:hover { z-index: 2; }
+
+/* Words arrive only with the pointer or focus: the clip's name over a floor
+   scrim, and how much faster the loop runs than the footage. */
+.vw-caption { position: absolute; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; gap: 2px; padding: 36px var(--space-3) var(--space-3); background: linear-gradient(180deg, transparent, rgb(var(--scrim) / .82)); opacity: 0; transform: translateY(10px); transition: opacity var(--dur-2) ease, transform var(--dur-3) var(--ease-out); pointer-events: none; }
+.vw-caption small { color: var(--on-dark-3); font-size: 12px; font-weight: var(--weight-label); }
+.vw-caption strong { font-size: var(--text-label); font-weight: var(--weight-medium); line-height: 1.25; text-wrap: balance; }
+.vw-speed { position: absolute; top: var(--space-2); right: var(--space-2); padding: 2px 8px; border-radius: var(--radius-pill); background: rgb(var(--scrim) / .6); backdrop-filter: blur(8px); font-size: 12px; font-weight: var(--weight-label); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity var(--dur-2) ease; }
+.vw-tile:is(:hover, :focus-visible) :is(.vw-caption, .vw-speed) { opacity: 1; transform: none; }
+
+/* A play disc in the theme's hue trails the pointer across the footage. */
+.vw-cursor { position: absolute; top: var(--py, 50%); left: var(--px, 50%); display: grid; width: 52px; height: 52px; margin: -26px 0 0 -26px; place-items: center; color: var(--ink); border-radius: 50%; background: var(--accent-bright); box-shadow: 0 8px 24px rgb(var(--scrim) / .4); opacity: 0; scale: .3; transition: opacity var(--dur-2) ease, scale var(--dur-3) var(--ease-out), top .14s ease-out, left .14s ease-out; pointer-events: none; }
+.vw-cursor svg { translate: 1px 0; }
+@media (hover: hover) {
+  .vw-tile:hover .vw-cursor { opacity: 1; scale: 1; }
+}
+
+/* Labels fixed to the footage itself, such as which half is real. */
+.vw-marks { position: absolute; inset: 0; pointer-events: none; }
+.vw-marks > span { position: absolute; margin: var(--space-2); padding: 3px 10px; border-radius: var(--radius-pill); background: rgb(var(--scrim) / .62); backdrop-filter: blur(8px); font-size: 12px; font-weight: var(--weight-strong); }
+.vw-marks > span:first-child { color: var(--ink); background: var(--yellow); }
+
+/* A project's clips share a board tinted with the theme's hue; its name
+   leads to the project. */
+.vw-board { border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent); border-radius: calc(var(--radius) + 10px); background: color-mix(in oklab, var(--accent) 14%, var(--ink)); transition: opacity var(--dur-2) ease, filter var(--dur-2) ease; }
+.vw-board-name { position: absolute; top: 0; right: 0; left: 0; display: flex; height: 44px; align-items: center; gap: 6px; padding: 0 var(--space-4); color: var(--accent-bright); font-size: 15px; font-weight: var(--weight-strong); }
+.vw-board-name svg { transition: transform var(--dur-3) var(--ease-out); }
+a.vw-board-name:hover svg { transform: translate(2px, -2px); }
+a.vw-board-name:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: -4px; border-radius: calc(var(--radius) + 6px); }
+
+/* Pointing at a clip lights its project and dims the rest of the wall. */
+@media (hover: hover) {
+  .vw-wall[data-spotlight] .vw-tile:not([data-lit]) .vw-tile-inner,
+  .vw-wall[data-spotlight] .vw-board:not([data-lit]) { opacity: .42; filter: saturate(.35); }
+}
+
+/* Rearranging (Shuffle, Featured, loosening the boards, or a new column
+   count) glides every tile to its new place, rippling out from the top. */
+@media (prefers-reduced-motion: no-preference) {
+  .vw-wall[data-ready] :is(.vw-tile, .vw-board) {
+    transition:
+      transform var(--dur-4) var(--ease-out) calc(min(var(--rank, 0), 24) * 14ms),
+      width var(--dur-4) var(--ease-out) calc(min(var(--rank, 0), 24) * 14ms),
+      height var(--dur-4) var(--ease-out) calc(min(var(--rank, 0), 24) * 14ms),
+      opacity var(--dur-3) ease;
+  }
+}
+
+/* First arrival: the wall waits for its real measurements, then each tile
+   rises out of a blur in order down the page. If scripts never start, the
+   failsafe shows the prerendered wall anyway. */
+@keyframes vw-arrive { from { opacity: 0; transform: translateY(56px) scale(.9); filter: blur(14px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes vw-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vw-failsafe { to { opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .vw-wall:not([data-ready]) :is(.vw-tile-inner, .vw-board) { opacity: 0; animation: vw-failsafe 0s 3s forwards; }
+  .vw-wall[data-ready]:not([data-settled]) .vw-tile-inner { animation: vw-arrive 1s var(--ease-out) backwards; animation-delay: calc(min(var(--rank), 24) * 55ms); }
+  .vw-wall[data-ready]:not([data-settled]) .vw-board { animation: vw-fade var(--dur-4) ease backwards; }
+  .vw-header h1 { animation: vw-title 1.1s var(--ease-out) both; }
+}
+@keyframes vw-title { from { opacity: 0; font-stretch: 125%; letter-spacing: .02em; } to { opacity: 1; } }
+
+/* Expanded view: a native modal, so focus stays inside, Escape closes it
+   and focus returns to the tile. Where the browser can, the tile itself
+   morphs into the stage (VideosPage names both "vw-stage"). */
+.vw-dialog { --chrome: 236px; width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; padding: 0; overflow: hidden; color: var(--white); border: 0; background: transparent; }
+.vw-dialog[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.vw-dialog::backdrop { background: rgb(var(--scrim) / .92); backdrop-filter: blur(14px); }
+.vw-dialog-bar { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-4) clamp(16px, 3vw, 32px); }
+.vw-dialog-project { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 var(--space-5); color: var(--accent-bright); border: 1px solid var(--rule-dark); border-radius: var(--radius-pill); font-size: var(--text-label); font-weight: var(--weight-strong); }
+a.vw-dialog-project { transition: border-color var(--dur-2) ease; }
+a.vw-dialog-project:hover { border-color: var(--accent-bright); }
+.vw-dialog-close,
+.vw-dialog-step { display: grid; width: 48px; height: 48px; flex: none; place-items: center; color: var(--white); border: 1px solid var(--rule-dark); border-radius: 50%; background: rgb(var(--scrim) / .5); cursor: pointer; transition: background-color var(--dur-2) ease, border-color var(--dur-2) ease; }
+.vw-dialog-close:hover,
+.vw-dialog-step:hover { border-color: var(--white); background: rgb(var(--scrim) / .8); }
+.vw-dialog :is(a, button):focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+.vw-dialog-body { display: grid; min-height: 0; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); padding: 0 clamp(12px, 2vw, 28px); }
+.vw-stage { position: relative; width: min(100%, (100dvh - var(--chrome)) * var(--stage-aspect)); justify-self: center; overflow: hidden; aspect-ratio: var(--stage-aspect); border-radius: var(--radius-media); background: var(--poster) center / cover no-repeat, var(--night); box-shadow: var(--shadow-3); view-transition-name: vw-stage; }
+.vw-stage video { display: block; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity var(--dur-2) ease; }
+.vw-stage video[data-playing] { opacity: 1; background: var(--night); }
+.vw-dialog-foot { display: flex; min-height: 0; flex-direction: column; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-6); }
+.vw-dialog-foot p { margin: 0; font-size: 17px; font-weight: var(--weight-medium); text-align: center; }
+.vw-strip { display: flex; max-width: 100%; gap: var(--space-2); overflow-x: auto; padding: var(--space-1); }
+.vw-strip button { width: 92px; height: 58px; flex: none; overflow: hidden; padding: 0; border: 0; border-radius: var(--radius-small); background: var(--night); opacity: .5; cursor: pointer; transition: opacity var(--dur-2) ease, transform var(--dur-3) var(--ease-out), box-shadow var(--dur-2) ease; }
+.vw-strip button img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.vw-strip button:hover { opacity: .85; transform: translateY(-2px); }
+.vw-strip button[aria-current] { opacity: 1; box-shadow: 0 0 0 2px var(--white); }
+html:has(.vw-dialog[open]) { overflow: hidden; }
+@media (prefers-reduced-motion: no-preference) {
+  /* A new clip settles in rather than cutting. */
+  .vw-stage video { animation: vw-swap var(--dur-3) var(--ease-out); }
+  /* Without a morph (other browsers), the dialog fades and the stage grows in. */
+  html:not([data-vw-morph]) .vw-dialog,
+  html:not([data-vw-morph]) .vw-dialog::backdrop { opacity: 0; transition: opacity var(--dur-3) var(--ease-out), overlay var(--dur-3) allow-discrete, display var(--dur-3) allow-discrete; }
+  html:not([data-vw-morph]) .vw-dialog[open],
+  html:not([data-vw-morph]) .vw-dialog[open]::backdrop { opacity: 1; }
+  @starting-style {
+    html:not([data-vw-morph]) .vw-dialog[open],
+    html:not([data-vw-morph]) .vw-dialog[open]::backdrop { opacity: 0; }
+  }
+  ::view-transition-group(vw-stage) { overflow: hidden; border-radius: var(--radius-media); animation-duration: .6s; animation-timing-function: var(--ease-out); }
+  ::view-transition-old(vw-stage),
+  ::view-transition-new(vw-stage) { height: 100%; object-fit: cover; }
+  html[data-vw-morph]::view-transition-old(root),
+  html[data-vw-morph]::view-transition-new(root) { animation-duration: .6s; }
+}
+@keyframes vw-swap { from { opacity: 0; scale: 1.03; } }
+
 /* 404 */
 .not-found-page { display: flex; justify-content: center; padding: 150px calc(max(var(--sheet-margin), (100% - var(--content-max-width)) / 2) + var(--sheet-pad)) 90px; color: white; background: var(--blue); flex-direction: column; }
 .not-found-page > span { color: var(--on-dark-4); font-size: var(--text-label); font-weight: var(--weight-label); }
@@ -677,12 +831,13 @@ html.is-reordering::view-transition-group(*) { animation-duration: var(--dur-3);
   /* The sheet is the viewport here; its lining tightens to the phone inset
      that the per-section overrides below already use. */
   :root { --nav-h: 56px; --sheet-margin: 0px; --sheet-pad: var(--space-5); --radius-media: 16px; }
-  /* The brand name drops out so all four routes fit the capsule at 320px. */
+  /* The brand name drops out and the labels narrow on the width axis, so
+     all five routes fit the capsule down to 320px. */
   .site-nav { top: var(--space-2); }
   .site-nav-inner { height: calc(var(--nav-h) - var(--space-2)); gap: var(--space-2); padding: 0 var(--space-1) 0 var(--space-4); }
   .site-nav-brand span { display: none; }
   .site-nav nav { gap: 0; }
-  .site-nav nav a { padding: var(--space-2) 10px; font-size: 13px; }
+  .site-nav nav a { padding: var(--space-2) 7px; font-size: 13px; font-stretch: 88%; }
   .site-footer-inner { grid-template-columns: 1fr 1fr; gap: 18px; padding: 22px var(--space-5); }
   .site-footer-inner p { display: none; }
   .site-footer-links { gap: 14px; }
@@ -738,6 +893,16 @@ html.is-reordering::view-transition-group(*) { animation-duration: var(--dur-3);
   .publication-year-marker span { margin: 0 0 2px; }
   .publication-record { gap: 14px; padding: var(--space-6) 0 26px; }
   .publication-record .publication-citation { font-size: 17px; }
+  .vw-header { padding: calc(var(--nav-h) + var(--space-9)) var(--space-5) var(--space-6); }
+  .vw-header h1 { font-size: 52px; }
+  .vw-switch { padding-left: var(--space-3); }
+  .vw-frame { padding: 0 var(--space-2) var(--space-11); }
+  .vw-caption { padding: 28px var(--space-2) var(--space-2); }
+  .vw-dialog { --chrome: 260px; }
+  /* The stage takes the full width; the arrows drop below it. */
+  .vw-dialog-body { grid-template-columns: 1fr 1fr; align-content: center; gap: var(--space-3); padding: 0; }
+  .vw-stage { grid-column: 1 / -1; grid-row: 1; border-radius: 0; }
+  .vw-dialog-body > .vw-dialog-step:first-child { justify-self: end; }
   .not-found-page { padding: 120px var(--space-5) 70px; }
   .not-found-page h1 { font-size: 44px; }
   .people-section { padding: 0 var(--space-5) var(--space-8); }
@@ -757,10 +922,10 @@ html.is-reordering::view-transition-group(*) { animation-duration: var(--dur-3);
   .join-types span + span { border-top: 1px solid var(--rule-light-soft); }
 }
 
-/* The narrowest phones: the capsule tightens so all four routes stay on one line. */
+/* The narrowest phones: the capsule tightens so all five routes stay on one line. */
 @media (max-width: 380px) {
-  .site-nav-inner { gap: var(--space-1); padding-left: var(--space-3); }
-  .site-nav nav a { padding-inline: 6px; font-size: 12.5px; }
+  .site-nav-inner { gap: var(--space-1); padding-left: var(--space-2); }
+  .site-nav nav a { padding-inline: 4px; font-size: 12px; font-stretch: 78%; }
 }
 
 /* ==========================================================================

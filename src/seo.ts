@@ -115,6 +115,22 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
       },
     ],
   },
+  '/videos': {
+    title: 'Robot Videos | PAIR Lab Sydney',
+    description: 'A wall of PAIR Lab robots at work: dexterous hands, three-arm coordination, mobile manipulation and real-to-sim experiments.',
+    image: '/media/wall/real-to-sim.webp',
+    type: 'website',
+    structuredData: [
+      breadcrumb('/videos', 'Videos'),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'PAIR Lab robot videos',
+        url: `${siteUrl}/videos`,
+        isPartOf: { '@id': `${siteUrl}/#organisation` },
+      },
+    ],
+  },
   '/people': {
     title: 'Robotics Researchers at PAIR Lab | University of Sydney',
     description: 'Meet the PAIR Lab researchers working on physical AI, robot learning and robotic manipulation at the University of Sydney.',
@@ -197,6 +213,7 @@ export const prerenderPaths = [
   '/research',
   ...researchProjects.map((project) => `/research/preview/${project.slug}`),
   '/publications',
+  '/videos',
   '/people',
   '/join',
 ]

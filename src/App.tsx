@@ -11,6 +11,7 @@ import PeoplePage from './pages/PeoplePage'
 import PublicationsPage from './pages/PublicationsPage'
 import ProjectPage from './pages/ProjectPage'
 import ResearchPage from './pages/ResearchPage'
+import VideosPage from './pages/VideosPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 // The scroll reset has to land inside the synchronous flush of a view
@@ -52,6 +53,7 @@ function App() {
           <Route path="/research/preview/:slug" element={<ProjectPage />} />
           <Route path="/people" element={<PeoplePage />} />
           <Route path="/publications" element={<PublicationsPage />} />
+          <Route path="/videos" element={<VideosPage />} />
           <Route path="/join" element={<JoinPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

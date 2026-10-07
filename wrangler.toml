@@ -20,6 +20,8 @@ run_worker_first = [
   "/media/*",
   "/publications",
   "/publications/*",
+  "/videos",
+  "/videos/*",
   "/PATCH",
   "/PATCH/*",
   "/trimanpolicy-site",

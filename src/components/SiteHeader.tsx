@@ -5,6 +5,7 @@ import { replayIntro } from '../introReplay'
 const navLinks = [
   { to: '/research', label: 'Research' },
   { to: '/publications', label: 'Publications' },
+  { to: '/videos', label: 'Videos' },
   { to: '/people', label: 'People' },
   { to: '/join', label: 'Join' },
 ]
