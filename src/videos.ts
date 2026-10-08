@@ -73,6 +73,21 @@ export const videoGroups: VideoGroup[] = [
     ],
   },
   {
+    id: 'hanging-mugs',
+    // Also new work, not yet a research project.
+    label: 'Hanging mugs',
+    span: 2,
+    synced: { aspect: 2, columns: '1fr 1fr 1fr', rows: '1fr 1fr' },
+    videos: [
+      { id: 'mugs-real-top', title: 'Real, top view', mark: 'Real', aspect: 4 / 3, sourceAspect: 4 / 3, area: '1 / 1' },
+      { id: 'mugs-real-left', title: 'Real, left wrist', mark: 'Real', aspect: 4 / 3, sourceAspect: 4 / 3, area: '1 / 2' },
+      { id: 'mugs-real-right', title: 'Real, right wrist', mark: 'Real', aspect: 4 / 3, sourceAspect: 4 / 3, area: '1 / 3' },
+      { id: 'mugs-sim-top', title: 'Sim, top view', mark: 'Sim', aspect: 4 / 3, sourceAspect: 4 / 3, area: '2 / 1' },
+      { id: 'mugs-sim-left', title: 'Sim, left wrist', mark: 'Sim', aspect: 4 / 3, sourceAspect: 4 / 3, area: '2 / 2' },
+      { id: 'mugs-sim-right', title: 'Sim, right wrist', mark: 'Sim', aspect: 4 / 3, sourceAspect: 4 / 3, area: '2 / 3' },
+    ],
+  },
+  {
     id: 'trimanpolicy',
     project: 'trimanpolicy',
     videos: [

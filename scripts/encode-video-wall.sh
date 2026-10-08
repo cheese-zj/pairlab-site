@@ -2,7 +2,8 @@
 # Encodes the media for the /videos wall (src/videos.ts). Rerun after a
 # source or a window below changes:
 #
-#   scripts/encode-video-wall.sh [real.mov sim-ego.mov sim-third.mov]
+#   scripts/encode-video-wall.sh [--real-to-sim real.mov sim-ego.mov sim-third.mov]
+#                                [--mugs mugs.mp4]
 #
 # Every wall entry has a loop and a poster in public/media/wall/:
 #   <id>-loop.mp4   a short muted loop for the tile, cropped to the tile's
@@ -18,12 +19,22 @@
 #   - the homepage reel, whose segments are labelled on screen by project
 #     (times below are in public/media/pairlab-reel-wide.mp4);
 #   - footage published on the projects' own sites, and GIFs the cards used;
-#   - the real-to-sim recordings, passed as arguments because the raw
-#     captures are too large to keep in public/. Without them the existing
-#     real-to-sim files are left alone.
+#   - recordings passed as options, because they are not served as they
+#     are: the raw real-to-sim captures, too large for public/, and the
+#     hanging-mugs composite, whose six views are cut apart. Without its
+#     option a recording's existing files are left alone.
 set -euo pipefail
 
 command -v ffmpeg >/dev/null && command -v cwebp >/dev/null || { echo 'Needs ffmpeg and cwebp (brew install ffmpeg webp).' >&2; exit 1; }
+
+real= sim_ego= sim_third= mugs=
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --real-to-sim) real=$2 sim_ego=$3 sim_third=$4; shift 4 ;;
+    --mugs) mugs=$2; shift 2 ;;
+    *) echo "Unknown option: $1" >&2; exit 1 ;;
+  esac
+done
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 public="$root/public"
@@ -134,30 +145,40 @@ remote core-sim-takephoto 'https://yananzhou.me/core/assets/media/RoboFactory_Ta
 remote core-sim-carry 'https://yananzhou.me/core/assets/media/DuoBench_Carry.mp4' 0 7.1 1.25
 remote core-sim-ballmaze 'https://yananzhou.me/core/assets/media/DuoBench_BallMaze.mp4' 0 7.9 1
 
-# Real to sim: three recordings of one run, kept as separate clips so the
-# expanded view can play them together or one at a time. They share a start
-# and a length, so the wall tile and the expanded view keep them in step.
-# Nothing is upscaled: the real camera stays at its native 640x480.
-if [[ $# -eq 3 ]]; then
-  real=$1 sim_ego=$2 sim_third=$3
-  # still <id> <full>: the poster, from one second in.
-  still() {
-    ffmpeg -v error -y -ss 1 -i "$wall/$1-loop.mp4" -frames:v 1 "$scratch/$1.png"
-    cwebp -quiet -q 74 "$scratch/$1.png" -o "$wall/$1.webp"
-  }
-  # sync <id> <source> <full-height> <loop-height>
-  sync() {
-    local id=$1 src=$2 full=$3 small=$4
-    ffmpeg -v error -y -i "$src" -an -vf "scale=-2:$full:flags=lanczos,fps=30,format=yuv420p" \
-      "${h264[@]}" -preset slow -crf 22 -g 60 "$wall/$id.mp4"
-    ffmpeg -v error -y -i "$src" -an -vf "scale=-2:$small:flags=lanczos,fps=24,format=yuv420p" \
-      "${h264[@]}" -preset veryslow -crf 29 -g 48 "$wall/$id-loop.mp4"
-    still "$id"
-  }
+# Views recorded together: separate clips of one run, so the expanded view
+# can play them together or one at a time. Each is encoded whole, so they
+# share a start and a length and the wall tile and the expanded view keep
+# them in step. Nothing is upscaled.
+# sync <id> <source> <full-height> <loop-height> [crop] [poster-seconds]
+sync() {
+  local id=$1 src=$2 full=$3 small=$4 crop=${5:+$5,} at=${6:-1}
+  ffmpeg -v error -y -i "$src" -an -vf "${crop}scale=-2:$full:flags=lanczos,fps=30,format=yuv420p" \
+    "${h264[@]}" -preset slow -crf 22 -g 60 "$wall/$id.mp4"
+  ffmpeg -v error -y -i "$src" -an -vf "${crop}scale=-2:$small:flags=lanczos,fps=24,format=yuv420p" \
+    "${h264[@]}" -preset veryslow -crf 29 -g 48 "$wall/$id-loop.mp4"
+  ffmpeg -v error -y -ss "$at" -i "$wall/$id-loop.mp4" -frames:v 1 "$scratch/$id.png"
+  cwebp -quiet -q 74 "$scratch/$id.png" -o "$wall/$id.webp"
+}
+
+# Real to sim: three recordings. The real camera stays at its native 640x480.
+if [[ -n $real ]]; then
   sync real-to-sim-real "$real" 480 480
   sync real-to-sim-sim "$sim_ego" 1080 540
   sync real-to-sim-third "$sim_third" 1080 540
   rm -f "$wall/real-to-sim.mp4" "$wall/real-to-sim-loop.mp4" "$wall/real-to-sim.webp"
+fi
+
+# Hanging mugs: one 1280x704 composite of six views, real above and sim
+# below, each row a top view and the left and right wrist cameras. Each view
+# is cut out at its native 416x312 (4:3), clear of the labels printed around
+# the panels. The poster is from six seconds in, with both mugs in hand.
+if [[ -n $mugs ]]; then
+  sync mugs-real-top "$mugs" 312 312 crop=416:312:4:50 6
+  sync mugs-real-left "$mugs" 312 312 crop=416:312:432:50 6
+  sync mugs-real-right "$mugs" 312 312 crop=416:312:858:50 6
+  sync mugs-sim-top "$mugs" 312 312 crop=416:312:4:390 6
+  sync mugs-sim-left "$mugs" 312 312 crop=416:312:432:390 6
+  sync mugs-sim-right "$mugs" 312 312 crop=416:312:858:390 6
 fi
 
 ls -lh "$wall"
