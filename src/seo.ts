@@ -118,7 +118,7 @@ const staticPages: Record<string, Omit<SeoData, 'path'>> = {
   '/videos': {
     title: 'Robot Videos | PAIR Lab Sydney',
     description: 'A wall of PAIR Lab robots at work: dexterous hands, three-arm coordination, mobile manipulation and real-to-sim experiments.',
-    image: '/media/wall/real-to-sim.webp',
+    image: '/media/wall/real-to-sim-third.webp',
     type: 'website',
     structuredData: [
       breadcrumb('/videos', 'Videos'),
